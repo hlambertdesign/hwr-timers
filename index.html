@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Wellness Technology Timers</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700&display=swap">
+<!-- GRAVESEND SANS: when you have the Adobe Fonts web project, paste its <link> line here, e.g.
+<link rel="stylesheet" href="https://use.typekit.net/XXXXXXX.css"> -->
+<style>
+:root{
+  --brown:#653B2C; --clay:#CD734C; --cream:#FBFCF7; --ink:#272727;
+  --track:rgba(101,59,44,.14);
+  --grad:linear-gradient(90deg, rgb(104, 57, 44) 0%, rgb(113, 65, 51) 3.67%, rgb(142, 85, 67) 5.09%, rgb(142, 85, 67) 6.43%, rgb(122, 69, 57) 8.24%, rgb(122, 69, 57) 9.82%, rgb(136, 81, 67) 11.87%, rgb(144, 91, 76) 18.18%, rgb(170, 117, 99) 21.65%, rgb(203, 156, 130) 23.78%, rgb(203, 156, 130) 25.52%, rgb(191, 133, 115) 28.83%, rgb(211, 168, 147) 31.35%, rgb(210, 168, 146) 40.82%, rgb(178, 123, 104) 44.05%, rgb(131, 84, 68) 54.31%, rgb(108, 62, 49) 62.43%, rgb(100, 57, 44) 66.77%, rgb(105, 61, 46) 73.56%, rgb(114, 68, 59) 76.24%, rgb(139, 82, 64) 77.74%, rgb(169, 101, 81) 83.97%, rgb(221, 180, 152) 87.44%, rgb(221, 180, 152) 89.25%, rgb(146, 93, 77) 92.96%, rgb(114, 68, 59) 96.83%, rgb(102, 65, 57) 100%);
+  --head:'Gravesend Sans','Work Sans',system-ui,sans-serif;
+  --body:'Work Sans',system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--cream);color:var(--ink);font-family:var(--body);-webkit-font-smoothing:antialiased;min-height:100vh;display:flex;flex-direction:column}
+.grad{background:var(--grad)}
+.head,.num{font-family:var(--head)}
+.num{font-variant-numeric:tabular-nums}
+button{font-family:var(--body);cursor:pointer;-webkit-tap-highlight-color:transparent}
+button:disabled{opacity:.38;cursor:default}
+button:focus-visible{outline:3px solid var(--clay);outline-offset:3px}
+
+header{background:var(--brown);color:var(--cream)}
+.nav{max-width:1280px;margin:0 auto;padding:28px 32px 30px;display:flex;flex-wrap:wrap;gap:24px;align-items:flex-end;justify-content:space-between}
+.eyebrow{font-size:13px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:#E9C2A9;margin-bottom:8px}
+h1{margin:0;font-size:36px;line-height:1.05;font-weight:600;letter-spacing:.01em;white-space:nowrap}
+.nav-right{display:flex;flex-wrap:wrap;gap:20px 28px;align-items:center;justify-content:flex-end}
+.clock{display:flex;flex-direction:column;gap:2px;align-items:flex-end}
+.clock .time-now{font-size:30px;font-weight:500;line-height:1}
+.clock .date-now{font-size:14px;color:#E9C2A9}
+.nav-btns{display:flex;gap:10px}
+.strip-h{height:6px}
+
+main{flex:1;width:100%;max-width:1280px;margin:0 auto;padding:32px 32px 48px;display:flex;flex-direction:column;gap:20px}
+.notice{padding:14px 18px;border-radius:12px;background:#F3E3D8;color:var(--brown);font-size:15px;font-weight:500}
+.notice[hidden]{display:none}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(380px,100%),1fr));gap:24px}
+
+.card{--card-bg:#F4EFE7;--muted:#6B5148;position:relative;overflow:hidden;display:flex;flex-direction:column;gap:20px;padding:32px 28px 28px;border-radius:22px;background:var(--card-bg);color:var(--ink);border:1px solid rgba(101,59,44,.14)}
+.card.is-done{--card-bg:var(--brown);--muted:#EBCDB9;color:var(--cream);border-color:var(--brown)}
+.card .strip{position:absolute;top:0;left:0;right:0;height:6px}
+.card-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;min-height:58px}
+.card h2{margin:0 0 4px;font-size:25px;line-height:1.15;font-weight:600;letter-spacing:.01em}
+.sub{font-size:15px;color:var(--muted)}
+.chip{flex:none;padding:6px 12px;border-radius:999px;font-size:13px;font-weight:600;letter-spacing:.04em;background:rgba(101,59,44,.10);color:var(--brown)}
+.chip-running{background:var(--brown);color:var(--cream)}
+.chip-done{background:var(--clay);color:var(--ink)}
+.ring-wrap{display:flex;justify-content:center;padding:4px 0}
+.ring{width:240px;height:240px;border-radius:50%;display:flex;align-items:center;justify-content:center}
+.ring-in{width:212px;height:212px;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;background:var(--card-bg)}
+.time{font-size:58px;line-height:1;font-weight:500;letter-spacing:.01em}
+.is-paused .time{opacity:.55}
+.subtext{font-size:14px;font-weight:500;color:var(--muted);text-align:center;padding:0 16px}
+.ringing{animation:pulse 1.4s ease-out infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(205,115,76,.65)}70%{box-shadow:0 0 0 22px rgba(205,115,76,0)}100%{box-shadow:0 0 0 0 rgba(205,115,76,0)}}
+
+.segs{position:relative;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;padding:5px;border-radius:999px;background:rgba(101,59,44,.10)}
+.thumb{position:absolute;top:5px;bottom:5px;left:5px;width:calc((100% - 16px) / 2);border-radius:999px;background:var(--brown);box-shadow:0 4px 12px -6px rgba(101,59,44,.8);transition:transform .38s cubic-bezier(.65,0,.35,1)}
+.segs[data-sel="1"] .thumb{transform:translateX(calc(100% + 6px))}
+.seg{position:relative;z-index:1;border:0;min-height:48px;padding:0 12px;font-size:16px;font-weight:600;border-radius:999px;background:transparent;color:var(--brown);transition:color .38s cubic-bezier(.65,0,.35,1)}
+.seg.sel{color:var(--cream)}
+.fixed{min-height:58px;display:flex;align-items:center;justify-content:center;text-align:center;font-size:15px;font-weight:500;color:var(--muted)}
+
+.actions{display:flex;flex-direction:column;gap:10px;margin-top:auto}
+.row2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.btn-primary{border:0;border-radius:999px;min-height:56px;padding:0 24px;font-size:18px;font-weight:600;letter-spacing:.02em;background:var(--brown);color:var(--cream);box-shadow:0 6px 16px -8px rgba(101,59,44,.7);transition:transform .12s ease,filter .12s ease}
+.is-done .btn-primary{background:var(--cream);color:var(--brown)}
+.btn-primary:hover:not(:disabled){filter:brightness(1.12)}
+.btn-primary:active:not(:disabled){transform:scale(.985)}
+.btn-ghost{background:transparent;color:inherit;border:1.5px solid currentColor;border-radius:999px;min-height:48px;padding:0 18px;font-size:15px;font-weight:600;letter-spacing:.02em;transition:background .12s ease}
+.btn-ghost:hover:not(:disabled){background:rgba(205,115,76,.16)}
+header .btn-ghost{color:var(--cream)}
+#muteBtn{display:flex;align-items:center;justify-content:center;gap:10px;width:160px}
+#muteBtn svg{flex:none}
+
+@media (max-width:900px){h1{white-space:normal}.nav-right{justify-content:flex-start}.clock{align-items:flex-start}}
+@media (prefers-reduced-motion:reduce){.ringing{animation:none}.btn-primary,.btn-ghost,.seg,.thumb{transition:none}}
+</style>
+</head>
+<body>
+<header>
+  <div class="nav">
+    <div>
+      <div class="eyebrow">Heights Wellness Retreat</div>
+      <h1 class="head">Wellness Technology Timers</h1>
+    </div>
+    <div class="nav-right">
+      <div class="clock">
+        <div class="num time-now" id="clock"></div>
+        <div class="date-now" id="dateLine"></div>
+      </div>
+      <div class="nav-btns">
+        <button class="btn-ghost" id="muteBtn" type="button" aria-pressed="false">
+          <svg id="icOn" aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/></svg>
+          <svg id="icOff" aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="m16 9 6 6"/><path d="m22 9-6 6"/></svg>
+          <span id="muteLabel">Sound on</span>
+        </button>
+        <button class="btn-ghost" id="testBtn" type="button">Test sound</button>
+      </div>
+    </div>
+  </div>
+  <div class="grad strip-h"></div>
+</header>
+
+<main>
+  <div class="notice" id="unlockNotice" hidden>Timers are still running from earlier. Tap anywhere once to turn the alarm sound back on.</div>
+  <div class="grid" id="grid"></div>
+</main>
+
+<script>
+(function () {
+  'use strict';
+
+  // ---- Your technologies. Add or edit lines here to change the dashboard. ----
+  var DEVICES = [
+    { id: 'cl1', name: 'Curvalounger', sub: 'Rapid Recharge · Chair 1', programs: [{ key: 'table', label: 'Table', min: 20 }] },
+    { id: 'cl2', name: 'Curvalounger', sub: 'Rapid Recharge · Chair 2', programs: [{ key: 'table', label: 'Table', min: 20 }] },
+    { id: 'ly',  name: 'Lymphatic Drainage', sub: 'Suit', programs: [{ key: 'upper', label: 'Upper body', min: 20 }, { key: 'lower', label: 'Lower body', min: 30 }] },
+    { id: 'am',  name: 'Ammortal Chamber', sub: 'Table', programs: [{ key: 'table', label: 'Table', min: 25 }] },
+    { id: 'sa',  name: 'Sauna', sub: 'Sauna', programs: [{ key: 'sauna', label: 'Sauna', min: 25 }] }
+  ];
+  var STORE = 'hwr-timers-v1';
+  var CLAY = '#CD734C', TRACK = 'rgba(101,59,44,0.14)';
+
+  var timers = {}, muted = false, audioReady = false, ctx = null, master = null, lastChime = 0;
+
+  try { var raw = localStorage.getItem(STORE); if (raw) { var s = JSON.parse(raw); if (s && s.timers) timers = s.timers; } } catch (e) {}
+  function save() { try { localStorage.setItem(STORE, JSON.stringify({ timers: timers })); } catch (e) {} }
+
+  function dev(id) { return DEVICES.filter(function (d) { return d.id === id; })[0]; }
+  function prog(d, key) { return d.programs.filter(function (p) { return p.key === key; })[0] || d.programs[0]; }
+  function get(id) {
+    var d = dev(id);
+    return timers[id] || { status: 'idle', program: d.programs[0].key, remaining: d.programs[0].min * 60000, endAt: 0 };
+  }
+  function put(id, patch) { var t = get(id); for (var k in patch) t[k] = patch[k]; timers[id] = t; save(); render(); }
+  function fmtClock(ms) { return new Date(ms).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }); }
+
+  // ---- Sound ----
+  function ensureAudio() {
+    try {
+      if (!ctx) { var AC = window.AudioContext || window.webkitAudioContext; if (AC) ctx = new AC(); }
+      if (ctx && !master) { master = ctx.createGain(); master.connect(ctx.destination); }
+      if (ctx && ctx.state === 'suspended') ctx.resume();
+      if (ctx && !audioReady) { audioReady = true; updateHeader(); }
+    } catch (e) {}
+  }
+  function chime() {
+    if (!ctx || !master || muted) return;
+    try {
+      master.gain.value = 1;
+      var t0 = ctx.currentTime + 0.03;
+      [[659.25, 0], [783.99, 0.34], [1046.5, 0.68]].forEach(function (n) {
+        [[1, 0.22], [2.01, 0.06], [3.0, 0.025]].forEach(function (h) {
+          var osc = ctx.createOscillator(), gn = ctx.createGain(), o = n[1];
+          osc.type = 'sine'; osc.frequency.value = n[0] * h[0];
+          gn.gain.setValueAtTime(0.0001, t0 + o);
+          gn.gain.exponentialRampToValueAtTime(h[1], t0 + o + 0.015);
+          gn.gain.exponentialRampToValueAtTime(0.0001, t0 + o + 1.7);
+          osc.connect(gn); gn.connect(master);
+          osc.start(t0 + o); osc.stop(t0 + o + 1.8);
+        });
+      });
+    } catch (e) {}
+  }
+
+  // ---- Timer actions ----
+  function start(id) {
+    ensureAudio();
+    var t = get(id), d = dev(id), rem = t.status === 'paused' ? t.remaining : prog(d, t.program).min * 60000;
+    put(id, { status: 'running', remaining: rem, endAt: Date.now() + rem });
+  }
+  function stop(id) { put(id, { status: 'paused', remaining: Math.max(0, get(id).endAt - Date.now()) }); }
+  function reset(id) {
+    ensureAudio();
+    var t = get(id), full = prog(dev(id), t.program).min * 60000;
+    if (t.status === 'running') put(id, { remaining: full, endAt: Date.now() + full });
+    else put(id, { status: 'idle', remaining: full, endAt: 0 });
+  }
+  function cancel(id) { var t = get(id); put(id, { status: 'idle', remaining: prog(dev(id), t.program).min * 60000, endAt: 0 }); }
+  function choose(id, key) {
+    var t = get(id); if (t.status !== 'idle') return;
+    var d = dev(id);
+    t.program = key; t.remaining = prog(d, key).min * 60000; timers[id] = t; save();
+    // Update in place (no re-render) so the highlight can slide smoothly
+    var card = grid.querySelector('[data-id="' + id + '"]');
+    card.querySelector('.segs').setAttribute('data-sel', d.programs.map(function (pr) { return pr.key; }).indexOf(key));
+    card.querySelectorAll('.seg').forEach(function (b) {
+      var on = b.getAttribute('data-key') === key;
+      b.classList.toggle('sel', on); b.setAttribute('aria-pressed', String(on));
+    });
+    var v = view(d);
+    card.querySelector('[data-time]').textContent = v.text;
+    card.querySelector('[data-sub]').textContent = v.sub;
+  }
+
+  // ---- View ----
+  function view(d) {
+    var t = get(d.id), p = prog(d, t.program), total = p.min * 60000, now = Date.now();
+    var remaining = t.status === 'running' ? Math.max(0, t.endAt - now) : t.status === 'done' ? 0 : t.remaining;
+    var secs = Math.ceil(remaining / 1000);
+    var text = String(Math.floor(secs / 60)).padStart(2, '0') + ':' + String(secs % 60).padStart(2, '0');
+    var deg = Math.max(0, Math.min(360, remaining / total * 360));
+    var ring = t.status === 'done' ? CLAY : t.status === 'idle' ? TRACK :
+      'conic-gradient(from 0deg, ' + CLAY + ' 0deg ' + deg + 'deg, ' + TRACK + ' ' + deg + 'deg 360deg)';
+    var sub = t.status === 'done' ? 'Time to take your guest out' : t.status === 'running' ? 'Ends ' + fmtClock(t.endAt) : t.status === 'paused' ? 'Stopped' : p.min + ' min session';
+    return { t: t, p: p, text: text, ring: ring, sub: sub };
+  }
+
+  function cardHTML(d) {
+    var v = view(d), st = v.t.status, idle = st === 'idle', done = st === 'done';
+    var chip = done ? "Time's up" : st === 'running' ? 'In session' : st === 'paused' ? 'Stopped' : 'Ready';
+    var primary = done ? 'Stop alarm' : st === 'running' ? 'Stop' : st === 'paused' ? 'Resume' : 'Start';
+    var programs = '';
+    if (d.programs.length > 1) {
+      var selIdx = d.programs.map(function (pr) { return pr.key; }).indexOf(v.t.program);
+      programs = '<div class="segs" role="group" aria-label="Program" data-sel="' + selIdx + '"><span class="thumb" aria-hidden="true"></span>' + d.programs.map(function (pr) {
+        var sel = pr.key === v.t.program;
+        return '<button type="button" class="seg' + (sel ? ' sel' : '') + '" data-act="program" data-key="' + pr.key + '" aria-pressed="' + sel + '"' + (idle ? '' : ' disabled') + '>' + pr.label + '</button>';
+      }).join('') + '</div>';
+    }
+    return '<section class="card is-' + st + '" data-id="' + d.id + '">' +
+      '<div class="grad strip"></div>' +
+      '<div class="card-top"><div><h2 class="head">' + d.name + '</h2><div class="sub">' + d.sub + '</div></div><div class="chip chip-' + st + '">' + chip + '</div></div>' +
+      '<div class="ring-wrap"><div class="ring' + (done ? ' ringing' : '') + '" data-ring style="background:' + v.ring + '"><div class="ring-in">' +
+        '<div class="num time" role="timer" data-time>' + v.text + '</div><div class="subtext" data-sub>' + v.sub + '</div></div></div></div>' +
+      programs +
+      '<div class="actions"><button type="button" class="btn-primary" data-act="primary">' + primary + '</button>' +
+        '<div class="row2"><button type="button" class="btn-ghost" data-act="reset"' + (idle ? ' disabled' : '') + '>Reset</button>' +
+        '<button type="button" class="btn-ghost" data-act="cancel"' + (idle ? ' disabled' : '') + '>Cancel</button></div></div>' +
+      '</section>';
+  }
+
+  var grid = document.getElementById('grid');
+  function render() { grid.innerHTML = DEVICES.map(cardHTML).join(''); updateHeader(); }
+
+  function activeCount() {
+    return DEVICES.filter(function (d) { var s = get(d.id).status; return s === 'running' || s === 'paused'; }).length;
+  }
+  function updateHeader() {
+    var n = activeCount(), now = Date.now();
+    document.getElementById('clock').textContent = fmtClock(now);
+    document.getElementById('dateLine').textContent =
+      new Date(now).toLocaleDateString([], { weekday: 'long', month: 'short', day: 'numeric' }) + ' · ' +
+      (n === 0 ? 'No guests in session' : n === 1 ? '1 in session' : n + ' in session');
+    document.getElementById('muteLabel').textContent = muted ? 'Sound off' : 'Sound on';
+    document.getElementById('muteBtn').setAttribute('aria-pressed', String(muted));
+    document.getElementById('icOn').style.display = muted ? 'none' : '';
+    document.getElementById('icOff').style.display = muted ? '' : 'none';
+    document.getElementById('testBtn').disabled = muted;
+    document.getElementById('unlockNotice').hidden = audioReady || n === 0;
+  }
+
+  // ---- Events ----
+  grid.addEventListener('click', function (e) {
+    var b = e.target.closest('button[data-act]'); if (!b || b.disabled) return;
+    var id = b.closest('.card').getAttribute('data-id'), act = b.getAttribute('data-act'), st = get(id).status;
+    ensureAudio();
+    if (act === 'primary') { if (st === 'done') cancel(id); else if (st === 'running') stop(id); else start(id); }
+    else if (act === 'reset') reset(id);
+    else if (act === 'cancel') cancel(id);
+    else if (act === 'program') choose(id, b.getAttribute('data-key'));
+  });
+  document.getElementById('muteBtn').addEventListener('click', function () {
+    muted = !muted;
+    if (master) master.gain.value = muted ? 0 : 1;
+    updateHeader();
+  });
+  document.getElementById('testBtn').addEventListener('click', function () { ensureAudio(); chime(); });
+  document.addEventListener('click', function () { ensureAudio(); });
+
+  // ---- Clock tick (uses real clock time, so it stays accurate if the tab sleeps) ----
+  function tick() {
+    var now = Date.now(), finished = false, anyDone = false;
+    DEVICES.forEach(function (d) {
+      var t = get(d.id);
+      if (t.status === 'running' && t.endAt <= now) { t.status = 'done'; t.remaining = 0; timers[d.id] = t; finished = true; }
+      if (t.status === 'done') anyDone = true;
+    });
+    if (finished) { save(); render(); }
+    else {
+      DEVICES.forEach(function (d) {
+        if (get(d.id).status !== 'running') return;
+        var v = view(d), card = grid.querySelector('[data-id="' + d.id + '"]');
+        if (!card) return;
+        card.querySelector('[data-time]').textContent = v.text;
+        card.querySelector('[data-ring]').style.background = v.ring;
+      });
+      updateHeader();
+    }
+    if (anyDone && now - lastChime > 3800) { lastChime = now; chime(); }
+  }
+
+  render();
+  setInterval(tick, 250);
+})();
+</script>
+</body>
+</html>
