@@ -46,11 +46,46 @@ h1{margin:0;font-size:clamp(22px,2.3vw,32px);line-height:1.05;font-weight:600;le
 .clock .date-now{font-size:13px;color:#E9C2A9}
 .nav-btns{display:flex;gap:10px}
 .strip-h{height:6px;flex:none}
+.fab{position:fixed;left:0;top:50%;z-index:90;display:flex;align-items:center;gap:8px;width:32px;padding:14px 0 12px;justify-content:center;border-radius:14px 0 0 14px;color:var(--brown);cursor:pointer;
+  writing-mode:vertical-rl;transform:translateY(-50%) rotate(180deg);transform-origin:50% 50%;
+  font:600 11.5px/1 var(--body);letter-spacing:.14em;text-transform:uppercase;
+  background:linear-gradient(90deg,#FFFFFF,#F7F1E9);border:1px solid rgba(101,59,44,.2);border-right:0;
+  box-shadow:inset 1.5px 0 1px #fff,-8px 0 16px -8px rgba(39,39,39,.3),-1px 0 3px rgba(39,39,39,.08);
+  transition:transform .22s cubic-bezier(.2,.8,.2,1),width .18s ease,filter .12s ease}
+.fab:hover{width:36px;filter:brightness(1.02)}
+.fab:active{transform:translateY(-50%) rotate(180deg) scale(.95);transition-duration:.08s}
+.fab svg{flex:none;transform:rotate(-90deg);transition:transform .18s ease}
+.fab:hover svg{transform:rotate(-90deg) translateY(-2px)}
+/* Credits popup */
+.modal{position:fixed;inset:0;z-index:100;display:grid;place-items:center;padding:20px;background:rgba(39,39,39,.38);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);animation:fadein .18s ease}
+.modal[hidden]{display:none}
+.modal-card{position:relative;width:min(440px,100%);max-height:calc(100dvh - 40px);overflow:auto;padding:28px 28px 26px;border-radius:24px;background:var(--cream);color:var(--ink);border:1px solid rgba(255,255,255,.8);box-shadow:0 30px 60px -20px rgba(39,39,39,.55),inset 0 1px 1px #fff;animation:popin .22s cubic-bezier(.2,.8,.2,1)}
+.modal-card h2{margin:0 0 4px;font-size:24px;font-weight:600;line-height:1.15;letter-spacing:-.01em}
+.modal-card .eb{font-size:11.5px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#7A5C4F;margin:0 0 18px}
+.modal-card h3{margin:18px 0 6px;font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#7A5C4F}
+.modal-card p,.modal-card li{margin:0;font-size:15px;line-height:1.5;color:var(--ink)}
+.modal-card ul{margin:0;padding:0;list-style:none;display:grid;gap:8px}
+.modal-card li{padding:10px 14px;border-radius:14px;background:#F4EFE7;border:1px solid rgba(101,59,44,.1)}
+.modal-card li span{display:block;font-size:13px;color:var(--muted,#6B5148)}
+.modal-card li a{font-weight:500}
+.modal-card ul.two{grid-template-columns:1fr 1fr}
+.modal-card ul.two li:first-child{grid-column:1/-1}
+.modal-card a{color:var(--brown);text-underline-offset:3px}
+.modal-x{position:absolute;top:14px;right:14px;width:34px;height:34px;display:grid;place-items:center;border-radius:999px;border:1px solid rgba(101,59,44,.18);background:rgba(255,255,255,.6);color:var(--brown);cursor:pointer;transition:transform .22s cubic-bezier(.2,.8,.2,1),filter .12s ease}
+.modal-x:hover{filter:brightness(.96)}
+.modal-x:active{transform:scale(.92)}
+@keyframes fadein{from{opacity:0}to{opacity:1}}
+@keyframes popin{from{opacity:0;transform:translateY(8px) scale(.97)}to{opacity:1;transform:none}}
 
 html,body{height:100%}
 body{height:100dvh;min-height:640px;overflow-x:hidden}
 main{flex:1;min-height:0;width:100%;max-width:1800px;margin:0 auto;padding:18px 24px 22px;display:flex;flex-direction:column;gap:12px}
-.notice{flex:none;padding:10px 16px;border-radius:12px;background:#F3E3D8;color:var(--brown);font-size:14px;font-weight:500}
+.notice{flex:none;display:flex;align-items:center;gap:12px;padding:8px 10px 8px 16px;border-radius:14px;background:#F3E3D8;color:var(--brown);font-size:14px;font-weight:500;border:1px solid rgba(205,115,76,.35)}
+.notice svg{flex:none}
+.notice .ntext{flex:1;min-width:0}
+.notice .nclose{flex:none;width:30px;height:30px;display:grid;place-items:center;border:0;border-radius:999px;background:transparent;color:var(--brown);transition:background .12s ease,transform .22s cubic-bezier(.2,.8,.2,1)}
+.notice .nclose:hover{background:rgba(101,59,44,.1)}
+.notice .nclose:active{transform:scale(.92)}
 .notice[hidden]{display:none}
 .grid{flex:1;min-height:0;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));grid-template-rows:minmax(0,1fr);gap:clamp(10px,1.2vw,20px)}
 
@@ -58,60 +93,106 @@ main{flex:1;min-height:0;width:100%;max-width:1800px;margin:0 auto;padding:18px 
 .card.is-done{--card-bg:#FFFAF3;color:var(--ink);border-color:var(--clay);box-shadow:0 0 0 1px var(--clay)}
 .card .strip{position:absolute;top:0;left:0;right:0;height:5px}
 .card-top{display:flex;flex-direction:column;align-items:center;text-align:center;gap:clamp(4px,.9vh,8px)}
-.card h2{margin:0;width:100%;text-align:center;font-size:clamp(16px,10cqw,52px);line-height:1.12;font-weight:600;letter-spacing:.01em;text-wrap:balance;min-height:2.24em;display:flex;align-items:flex-start;justify-content:center}
+.card h2{margin:0;width:100%;text-align:center;font-size:clamp(16px,10cqw,52px);line-height:1.12;font-weight:600;letter-spacing:-.012em;text-wrap:balance;min-height:2.24em;display:flex;align-items:flex-start;justify-content:center}
 .sub{text-align:center;width:100%;font-size:clamp(11px,4.1cqw,20px);color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
-.chip{padding:0;background:none;text-transform:uppercase;letter-spacing:.14em;font-size:clamp(10.5px,4.4cqw,17px);line-height:1.3;font-weight:600;color:#7A5C4F;text-align:center;text-wrap:balance}
+.chip{padding:0;background:none;text-transform:uppercase;letter-spacing:.11em;font-size:clamp(10.5px,4.4cqw,17px);line-height:1.3;font-weight:600;color:#7A5C4F;text-align:center;text-wrap:balance}
 .chip-running{color:var(--brown)}
-.chip-done{color:var(--brown);animation:jiggle 2.6s ease-in-out infinite;transform-origin:50% 60%}
-@keyframes jiggle{0%,55%,100%{transform:rotate(0) translateX(0)}6%{transform:rotate(-4deg) translateX(-2px)}14%{transform:rotate(4deg) translateX(2px)}22%{transform:rotate(-3deg) translateX(-1.5px)}30%{transform:rotate(3deg) translateX(1.5px)}38%{transform:rotate(-1.5deg)}46%{transform:rotate(1deg)}}
-.ring-wrap{flex:1 1 0;min-height:0;container-type:size;display:grid;place-items:center}
+.chip-done{color:var(--brown)}
+@keyframes wiggle{0%,55%,100%{transform:rotate(0) translateX(0)}6%{transform:rotate(-4deg) translateX(-2px)}14%{transform:rotate(4deg) translateX(2px)}22%{transform:rotate(-3deg) translateX(-1.5px)}30%{transform:rotate(3deg) translateX(1.5px)}38%{transform:rotate(-1.5deg)}46%{transform:rotate(1deg)}}
+.ring-wrap{flex:1 1 0;min-height:0;container-type:size;display:grid;place-items:start center}
 .ring{position:relative;width:min(100cqw,100cqh,520px);aspect-ratio:1;border-radius:50%;container-type:size}
 .ring-svg{position:absolute;inset:0;width:100%;height:100%;transform:rotate(-90deg)}
 .ring-track,.ring-arc{fill:none;stroke-width:7}
 .ring-track{stroke:var(--track)}
-.ring-arc{stroke:var(--clay);stroke-linecap:round;transition:stroke-dasharray .25s linear}
+.ring-arc{stroke:url(#glassArc);stroke-linecap:round;transition:stroke-dasharray .25s linear;filter:drop-shadow(0 1.2px 1.4px rgba(150,66,32,.4))}
+.ring-gloss{fill:none;stroke:#fff;stroke-opacity:.5;stroke-width:1.5;stroke-linecap:round;transition:stroke-dasharray .25s linear}
+.ring-glow{fill:none;stroke:#FFE6D6;stroke-opacity:.3;stroke-width:1.2;stroke-linecap:round;transition:stroke-dasharray .25s linear}
 .is-done .ring-track{stroke:transparent}
-.is-done .ring-arc{stroke:var(--clay)}
 .ring-in{position:absolute;inset:7%;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3%;background:var(--card-bg)}
 .time{font-size:23cqw;line-height:1;font-weight:500;letter-spacing:.01em}
 .is-paused .time{opacity:.55}
+.ot{font-size:max(10px,4.8cqw);font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--clay);text-align:center;line-height:1}
+.rows-view .ot{font-size:clamp(10px,1.6vh,13px);align-self:center}
 .subtext{font-size:max(11px,6.2cqw);font-weight:500;color:var(--muted);text-align:center;padding:0 12%;line-height:1.25}
 .ringing{animation:pulse 1.4s ease-out infinite}
 @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(205,115,76,.6)}70%{box-shadow:0 0 0 18px rgba(205,115,76,0)}100%{box-shadow:0 0 0 0 rgba(205,115,76,0)}}
 
 .seg-spacer{height:calc(var(--seg-h) + 12px);flex:none}
-.segs{position:relative;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px;padding:6px;border-radius:999px;background:rgba(101,59,44,.10);flex:none}
-.thumb{position:absolute;top:6px;bottom:6px;left:6px;width:calc((100% - 16px) / 2);border-radius:999px;background:var(--brown);box-shadow:0 4px 12px -6px rgba(101,59,44,.8);transition:transform .38s cubic-bezier(.65,0,.35,1),filter .15s ease}
+.segs{position:relative;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px;padding:6px;border-radius:999px;flex:none;border:1px solid rgba(255,255,255,.55);background:linear-gradient(180deg,rgba(101,59,44,.13),rgba(101,59,44,.06));-webkit-backdrop-filter:blur(8px) saturate(1.4);backdrop-filter:blur(8px) saturate(1.4);box-shadow:inset 0 2px 5px rgba(101,59,44,.16),inset 0 -1px 1px rgba(255,255,255,.8)}
+.thumb{position:absolute;top:6px;bottom:6px;left:6px;width:calc((100% - 16px) / 2);border-radius:999px;overflow:hidden;border:1px solid rgba(255,255,255,.22);background:linear-gradient(180deg,rgba(128,78,60,.95),rgba(101,59,44,.93) 55%,rgba(88,50,37,.95));box-shadow:inset 0 1.5px 1px rgba(255,255,255,.45),inset 0 -2px 4px rgba(255,255,255,.1),0 8px 14px -8px rgba(101,59,44,.85);transition:transform .38s cubic-bezier(.65,0,.35,1),filter .15s ease}
+.thumb::before,.vthumb::before{content:"";position:absolute;left:8%;right:8%;top:2px;height:44%;border-radius:999px;pointer-events:none;background:linear-gradient(180deg,rgba(255,255,255,.38),rgba(255,255,255,.03))}
 .segs[data-sel="1"] .thumb{transform:translateX(calc(100% + 4px))}
 .seg{position:relative;z-index:1;border:0;min-height:var(--seg-h);padding:0 2px;font-size:clamp(12px,6.6cqw,26px);font-weight:500;border-radius:999px;background:transparent;color:var(--brown);white-space:nowrap;transition:color .38s cubic-bezier(.65,0,.35,1),background .15s ease}
 .seg.sel{color:var(--cream)}
 @container (max-width:170px){.seg{font-size:10.5px;padding:0}}
 @container (max-width:178px){.chip span{display:block}.chip .dot{display:none}}
-.seg:hover:not(:disabled):not(.sel){background:rgba(101,59,44,.09);color:#4A2A1E}
 .segs:has(.seg.sel:hover:not(:disabled)) .thumb{filter:brightness(1.14)}
 .seg:disabled{opacity:1;cursor:default}
 .seg:disabled:not(.sel){opacity:.5}
 
 .actions{display:flex;flex-direction:column;gap:8px;flex:none}
-.row2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
+.grip{position:absolute;top:10px;right:8px;z-index:3;width:26px;height:26px;padding:0;border:0;border-radius:8px;background:transparent;color:#7A5C4F;opacity:.5;cursor:grab;display:grid;place-items:center;touch-action:none;transition:opacity .15s ease,background .15s ease}
+.grip:hover,.grip:focus-visible{opacity:1;background:rgba(101,59,44,.08)}
+.grip svg{width:14px;height:14px;pointer-events:none}
+.card.is-dragging{z-index:10;transition:none;animation:none;box-shadow:0 18px 36px -12px rgba(39,39,39,.4);cursor:grabbing}
+.card.is-dragging .grip{cursor:grabbing;opacity:1}
+.card.is-shifting{animation:none;transition:transform .22s cubic-bezier(.2,.8,.2,1)}
+body.is-reordering,body.is-reordering *{cursor:grabbing!important;user-select:none}
+.row2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
 .btn{width:100%;border:0;border-radius:999px;min-height:clamp(48px,7.8vh,62px);padding:0 2px;font-size:clamp(13.5px,7cqw,28px);font-weight:600;letter-spacing:.02em;transition:transform .22s cubic-bezier(.2,.8,.2,1),filter .12s ease,background .12s ease}
-.btn-fill{background:var(--brown);color:var(--cream);box-shadow:0 6px 14px -8px rgba(101,59,44,.75)}
-.btn-outline{background:#FBFCF7;color:var(--ink);box-shadow:0 6px 14px -8px rgba(101,59,44,.75)}
-.btn-text{background:transparent;color:#7A5C4F}
+.btn-fill,.btn-clay{position:relative;isolation:isolate;overflow:hidden;color:var(--cream);border:1px solid rgba(255,255,255,.3);
+  background:linear-gradient(180deg,rgba(226,146,110,.96) 0%,rgba(205,115,76,.95) 52%,rgba(184,95,58,.96) 100%);
+  -webkit-backdrop-filter:blur(10px) saturate(1.5);backdrop-filter:blur(10px) saturate(1.5);
+  text-shadow:0 1px 1px rgba(90,38,18,.45);
+  box-shadow:inset 0 1.5px 1px rgba(255,255,255,.55),inset 0 -3px 6px rgba(255,235,220,.16),inset 0 0 0 1px rgba(255,255,255,.08),0 12px 22px -12px rgba(160,80,45,.9),0 2px 4px rgba(160,80,45,.2)}
+.btn-fill::before,.btn-clay::before{content:"";position:absolute;z-index:-1;left:7%;right:7%;top:2px;height:46%;border-radius:999px;pointer-events:none;background:linear-gradient(180deg,rgba(255,255,255,.42),rgba(255,255,255,.05))}
+.btn-fill::after,.btn-clay::after{content:"";position:absolute;z-index:-1;left:20%;right:20%;bottom:2px;height:26%;border-radius:999px;pointer-events:none;background:radial-gradient(ellipse at 50% 100%,rgba(255,235,220,.38),rgba(255,235,220,0) 70%)}
+.btn-outline,.btn-text{position:relative;isolation:isolate;overflow:hidden;border:1px solid rgba(255,255,255,.8);
+  background:linear-gradient(180deg,rgba(255,255,255,.32) 0%,rgba(255,255,255,.03) 50%,rgba(205,115,76,.05) 100%);
+  -webkit-backdrop-filter:blur(8px) saturate(1.4);backdrop-filter:blur(8px) saturate(1.4);
+  box-shadow:inset 0 1.5px 1px rgba(255,255,255,.95),inset 0 -2px 5px rgba(101,59,44,.07),inset 0 0 0 1px rgba(101,59,44,.07),0 10px 18px -12px rgba(101,59,44,.5),0 1px 3px rgba(101,59,44,.1)}
+.btn-outline{color:var(--ink)}
+.btn-text{color:#7A5C4F}
+.btn-outline::before,.btn-text::before{content:"";position:absolute;z-index:-1;left:8%;right:8%;top:2px;height:42%;border-radius:999px;pointer-events:none;background:linear-gradient(180deg,rgba(255,255,255,.55),rgba(255,255,255,0))}
+.btn-outline::after,.btn-text::after{content:"";position:absolute;z-index:-1;left:22%;right:22%;bottom:2px;height:24%;border-radius:999px;pointer-events:none;background:radial-gradient(ellipse at 50% 100%,rgba(205,115,76,.16),rgba(205,115,76,0) 70%)}
+.btn-clay{animation:btnbounce 1.5s ease-in-out infinite}
+.btn-clay:active{animation:none}
+@keyframes btnbounce{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
 .btn-fill:hover{filter:brightness(1.12)}
-.btn-outline:hover{background:#fff}
-.btn-text:hover{background:rgba(205,115,76,.14)}
-.btn-fill:active,.btn-outline:active,.btn-ghost:active:not(:disabled){transform:scale(.94);transition-duration:.08s}
-.btn-ghost{background:transparent;color:inherit;border:1.5px solid currentColor;border-radius:999px;min-height:44px;padding:0 18px;font-size:15px;font-weight:600;letter-spacing:.02em;transition:transform .22s cubic-bezier(.2,.8,.2,1),background .12s ease}
-.btn-ghost:hover:not(:disabled){background:rgba(205,115,76,.16)}
+.btn-outline:hover{filter:brightness(1.03)}
+.btn-text:hover{filter:brightness(1.03);color:var(--brown)}
+.btn-fill:active,.btn-outline:active,.btn-text:active,.btn-ghost:active:not(:disabled){transform:scale(.94);transition-duration:.08s}
+.btn-ghost{color:inherit;border:1px solid rgba(251,252,247,.5);background:linear-gradient(180deg,rgba(255,255,255,.26) 0%,rgba(255,255,255,.05) 50%,rgba(255,255,255,.1) 100%);-webkit-backdrop-filter:blur(10px) saturate(1.5);backdrop-filter:blur(10px) saturate(1.5);box-shadow:inset 0 1.5px 1px rgba(255,255,255,.5),inset 0 -2px 5px rgba(255,255,255,.08),0 6px 12px -8px rgba(0,0,0,.5);border-radius:999px;min-height:44px;padding:0 18px;font-size:15px;font-weight:600;letter-spacing:.02em;transition:transform .22s cubic-bezier(.2,.8,.2,1),background .12s ease}
+.btn-ghost:hover:not(:disabled){filter:brightness(1.22)}
 header .btn-ghost{color:var(--cream)}
-#muteBtn{display:flex;align-items:center;justify-content:center;gap:10px;width:160px}
-#muteBtn svg{flex:none}
+#muteBtn,#resetOrderBtn,#resetAllBtn{display:grid;place-items:center;width:44px;height:44px;min-height:44px;padding:0}
+#muteBtn svg,#resetOrderBtn svg,#resetAllBtn svg{flex:none}
+#resetAllBtn:disabled,#resetOrderBtn:disabled{opacity:.4;cursor:default}
+.armable .ic-armed{display:none}
+.armable.confirm{background:linear-gradient(180deg,rgba(226,146,110,.97),rgba(205,115,76,.96) 55%,rgba(184,95,58,.97));border-color:rgba(255,255,255,.45);color:var(--cream)}
+.armable.confirm:hover:not(:disabled){filter:brightness(1.08)}
+.armable.confirm .ic-idle{display:none}
+.armable.confirm .ic-armed{display:block}
+/* Pill tooltips for the header icon buttons */
+.btn-ghost{position:relative}
+[data-tip]::after{content:attr(data-tip);position:absolute;top:calc(100% + 10px);left:50%;transform:translate(-50%,-4px);padding:6px 13px;border-radius:999px;background:var(--cream);color:var(--ink);font:400 13px/1.25 var(--body);letter-spacing:.01em;white-space:nowrap;box-shadow:0 8px 20px -8px rgba(0,0,0,.5);opacity:0;pointer-events:none;z-index:60;transition:opacity .14s ease,transform .14s ease}
+[data-tip]::before{content:"";position:absolute;top:calc(100% + 6px);left:50%;width:10px;height:10px;margin-left:-5px;background:var(--cream);border-radius:2px;transform:translateY(-4px) rotate(45deg);opacity:0;pointer-events:none;z-index:61;transition:opacity .14s ease,transform .14s ease}
+#muteBtn[data-tip]::after{left:auto;right:0;transform:translate(0,-4px)}
+#muteBtn[data-tip]::before{left:auto;right:17px;margin-left:0}
+@media (hover:hover){
+  [data-tip]:hover::after,[data-tip]:focus-visible::after{opacity:1;transform:translate(-50%,0);transition-delay:.3s}
+  [data-tip]:hover::before,[data-tip]:focus-visible::before{opacity:1;transform:translateY(0) rotate(45deg);transition-delay:.3s}
+  #muteBtn[data-tip]:hover::after,#muteBtn[data-tip]:focus-visible::after{transform:translate(0,0)}
+}
+@media (prefers-reduced-motion:reduce){[data-tip]::after,[data-tip]::before{transition:none}}
+#testBtn{display:grid;place-items:center;width:44px;height:44px;min-height:44px;padding:0}
+#testBtn svg{flex:none}
 
 
 /* View toggle (header) */
-.viewtoggle{position:relative;display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:4px;border-radius:999px;background:rgba(251,252,247,.12)}
-.vthumb{position:absolute;top:4px;bottom:4px;left:4px;width:calc((100% - 12px) / 2);border-radius:999px;background:var(--cream);box-shadow:0 4px 12px -6px rgba(0,0,0,.45);transition:transform .38s cubic-bezier(.65,0,.35,1)}
+.layout-group{display:flex;align-items:center;gap:8px}
+.viewtoggle{position:relative;display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:4px;border-radius:999px;border:1px solid rgba(255,255,255,.2);background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.17));-webkit-backdrop-filter:blur(10px) saturate(1.5);backdrop-filter:blur(10px) saturate(1.5);box-shadow:inset 0 1px 1px rgba(255,255,255,.3),inset 0 -2px 5px rgba(0,0,0,.14)}
+.vthumb{position:absolute;top:4px;bottom:4px;left:4px;width:calc((100% - 12px) / 2);border-radius:999px;overflow:hidden;background:linear-gradient(180deg,#fff 0%,#FBFCF7 50%,#EFE6DB 100%);box-shadow:inset 0 1.5px 1px rgba(255,255,255,.95),inset 0 -3px 6px rgba(205,115,76,.16),0 8px 16px -8px rgba(0,0,0,.55);transition:transform .38s cubic-bezier(.65,0,.35,1)}
 .viewtoggle[data-sel="1"] .vthumb{transform:translateX(calc(100% + 4px))}
 .viewtoggle button{position:relative;z-index:1;display:flex;align-items:center;justify-content:center;border:0;background:transparent;color:var(--cream);min-height:38px;min-width:52px;padding:0 14px;border-radius:999px;transition:color .38s cubic-bezier(.65,0,.35,1)}
 .viewtoggle button[aria-pressed="true"]{color:var(--brown)}
@@ -129,6 +210,8 @@ header .btn-ghost{color:var(--cream)}
 .rows-view .card h2{font-size:clamp(18px,3.3vh,30px);justify-content:flex-start;text-align:left;min-height:0;text-wrap:balance}
 .rows-view .chip{font-size:clamp(11px,1.8vh,15px)}
 .rows-view .ring-wrap{display:none}
+.rows-view .grip{top:50%;left:12px;right:auto;margin-top:-13px}
+.rows-view .card{padding-left:clamp(40px,3.4vw,54px)}
 .rows-view .rowinfo{display:flex;flex:1 1 0;min-width:0;flex-direction:column;justify-content:center;gap:clamp(4px,.8vh,8px)}
 .rows-view .seg-spacer{display:none}
 .rows-view .segs{flex:0 0 clamp(210px,19vw,280px)}
@@ -138,9 +221,9 @@ header .btn-ghost{color:var(--cream)}
 .rtime{font-family:var(--body);font-variant-numeric:tabular-nums;font-size:clamp(32px,6.4vh,62px);line-height:1;font-weight:500;letter-spacing:.01em}
 .rsub{font-size:clamp(12px,1.9vh,16px);font-weight:500;color:var(--muted)}
 .is-paused .rtime{opacity:.55}
-.bar{height:clamp(8px,1.3vh,12px);border-radius:999px;background:var(--track);overflow:hidden}
-.fill{height:100%;border-radius:999px;background:var(--clay);transition:width .25s linear}
-.is-done .fill{background:var(--clay)}
+.bar{height:clamp(8px,1.3vh,12px);border-radius:999px;overflow:hidden;background:linear-gradient(180deg,rgba(101,59,44,.16),rgba(101,59,44,.08));box-shadow:inset 0 1px 2px rgba(101,59,44,.22),inset 0 -1px 1px rgba(255,255,255,.75)}
+.fill{position:relative;height:100%;border-radius:999px;background:linear-gradient(180deg,#EBA083 0%,#CD734C 52%,#B05734 100%);box-shadow:inset 0 1px 1px rgba(255,255,255,.65),inset 0 -1px 2px rgba(255,235,220,.25),0 1px 3px rgba(150,66,32,.4);transition:width .25s linear}
+.fill::after{content:"";position:absolute;left:5px;right:5px;top:1px;height:38%;border-radius:999px;background:linear-gradient(180deg,rgba(255,255,255,.6),rgba(255,255,255,.08));pointer-events:none}
 
 /* Narrow screens (phones, small tablets): let cards wrap and the page scroll */
 @media (max-width:1260px){
@@ -154,13 +237,14 @@ header .btn-ghost{color:var(--cream)}
   h1{font-size:clamp(20px,5vw,26px)}
   .clock .time-now{font-size:22px}
   main{padding:12px 16px 14px;gap:8px}
-  .viewtoggle{display:none}
+  #viewToggle{display:none}
   .grid{display:flex;flex-direction:column;gap:8px}
-  .rows-view .card{--seg-h:32px;flex:1 1 0;min-height:0;display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"top actions" "info actions";align-items:center;column-gap:12px;row-gap:3px;padding:8px 10px 8px 18px;border-radius:16px}
-  .rows-view .card.has-seg{flex-grow:1.35;grid-template-areas:"top actions" "info actions" "seg seg"}
+  .rows-view .card{--seg-h:32px;flex:1 1 0;min-height:0;display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"top seg" "info actions";align-items:center;column-gap:12px;row-gap:3px;padding:8px 18px 8px 34px;border-radius:16px}
+  .rows-view .card.has-seg{flex-grow:1.2}
+  .rows-view .card:not(.has-seg){grid-template-areas:"top actions" "info actions"}
   .rows-view .card-top{grid-area:top;align-self:end;gap:2px}
   .rows-view .card h2{font-size:clamp(15px,2.6vh,20px)}
-  .rows-view .chip{font-size:clamp(10px,1.6vh,12.5px);letter-spacing:.12em;text-align:left}
+  .rows-view .chip{font-size:clamp(10px,1.6vh,12.5px);letter-spacing:.09em;text-align:left}
   .rows-view .rowinfo{grid-area:info;align-self:start;gap:4px}
   .rtime{font-size:clamp(22px,3.8vh,34px);line-height:1}
   .rows-view .card{padding-top:6px;padding-bottom:6px;row-gap:2px}
@@ -169,21 +253,22 @@ header .btn-ghost{color:var(--cream)}
   .rsub{font-size:clamp(11px,1.7vh,13px);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .rtime-line{flex-wrap:nowrap;gap:10px}
   .bar{height:7px}
-  .rows-view .segs{grid-area:seg;width:100%}
-  .rows-view .seg{font-size:12.5px}
+  .rows-view .segs{grid-area:seg;width:100%;align-self:end;padding:4px;gap:3px;margin-bottom:8px}
+  .rows-view .seg{font-size:11.5px;padding:0}
   .rows-view .card{--seg-h:28px}
-  .rows-view .actions{grid-area:actions;width:clamp(118px,32vw,190px)}
+  .rows-view .actions{grid-area:actions;width:clamp(150px,36vw,210px);align-self:start}
   .rows-view .btn{min-height:clamp(38px,6vh,48px);font-size:clamp(14px,2.2vh,17px)}
 }
-}
-@media (prefers-reduced-motion:reduce){.ringing,.chip-done{animation:none}.btn,.btn-ghost,.seg,.thumb,.fill,.viewtoggle button,.vthumb{transition:none}}
+@media (max-width:480px){.rows-view .card h2{font-size:15px}.rows-view .card{padding-left:30px}.rtime{font-size:clamp(20px,3.6vh,28px)}.rtime-line{gap:8px}.rows-view .card-top,.rows-view .rowinfo{min-width:0}}
+@media (max-width:560px){.notice{font-size:13px;padding:6px 8px 6px 12px;gap:10px}}
+@media (prefers-reduced-motion:reduce){.ringing,.btn-clay,.modal,.modal-card{animation:none}.btn,.btn-ghost,.seg,.thumb,.fill,.viewtoggle button,.vthumb{transition:none}}
 </style>
 </head>
 <body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs><linearGradient id="glassArc" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#B05734"/><stop offset=".5" stop-color="#CD734C"/><stop offset="1" stop-color="#EBA083"/></linearGradient></defs></svg>
 <header>
   <div class="nav">
     <div>
-      <div class="eyebrow">Heights Wellness Retreat</div>
       <h1 class="head">Wellness Technology Timers</h1>
     </div>
     <div class="nav-right">
@@ -193,29 +278,54 @@ header .btn-ghost{color:var(--cream)}
       </div>
       <div class="viewtoggle" id="viewToggle" data-sel="0" role="group" aria-label="Card layout (vertical or horizontal)">
         <span class="vthumb" aria-hidden="true"></span>
-        <button type="button" id="vCols" aria-pressed="true" aria-label="Vertical layout" title="Vertical layout">
+        <button type="button" id="vCols" aria-pressed="true" aria-label="Vertical layout" data-tip="Vertical layout">
           <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="4.5" height="16" rx="1.2"/><rect x="9.75" y="4" width="4.5" height="16" rx="1.2"/><rect x="16.5" y="4" width="4.5" height="16" rx="1.2"/></svg>
         </button>
-        <button type="button" id="vRows" aria-pressed="false" aria-label="Horizontal layout" title="Horizontal layout">
+        <button type="button" id="vRows" aria-pressed="false" aria-label="Horizontal layout" data-tip="Horizontal layout">
           <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="4.5" rx="1.2"/><rect x="3" y="9.75" width="18" height="4.5" rx="1.2"/><rect x="3" y="16.5" width="18" height="4.5" rx="1.2"/></svg>
         </button>
       </div>
       <div class="nav-btns">
-        <button class="btn-ghost" id="muteBtn" type="button" aria-pressed="false">
+        <button class="btn-ghost" id="resetOrderBtn" type="button" aria-label="Reset card order" data-tip="Reset card order"><svg class="ic-idle" aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 6H3"/><path d="M7 12H3"/><path d="M7 18H3"/><path d="M12 18a5 5 0 0 0 9-3 4.5 4.5 0 0 0-4.5-4.5c-1.33 0-2.54.54-3.41 1.41L11 14"/><path d="M11 10v4h4"/></svg><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ic-armed"><path d="M20 6 9 17l-5-5"/></svg></button>
+        <button class="btn-ghost" id="resetAllBtn" type="button" aria-label="Reset all timers" data-tip="Reset all timers"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ic-idle"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M12 7v5l4 2"/></svg><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ic-armed"><path d="M20 6 9 17l-5-5"/></svg></button>
+        <button class="btn-ghost" id="testBtn" type="button" aria-label="Test alarm sound" data-tip="Test alarm sound"><svg id="icBell" aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg><svg id="icBellOff" aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/><path d="M17 17H3s3-2 3-9a6 6 0 0 1 .3-1.9"/><path d="M8.7 3A6 6 0 0 1 18 8c0 2.7.4 4.7.9 6"/><path d="m2 2 20 20"/></svg></button>
+        <button class="btn-ghost" id="muteBtn" type="button" aria-pressed="false" aria-label="Sound on. Click to mute" data-tip="Sound on">
           <svg id="icOn" aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/></svg>
           <svg id="icOff" aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="m16 9 6 6"/><path d="m22 9-6 6"/></svg>
-          <span id="muteLabel">Sound on</span>
         </button>
-        <button class="btn-ghost" id="testBtn" type="button">Test sound</button>
       </div>
     </div>
   </div>
 </header>
 
 <main>
-  <div class="notice" id="unlockNotice" hidden>Timers are still running from earlier. Tap anywhere once to turn the alarm sound back on.</div>
+  <div class="notice" id="unlockNotice" role="status" hidden><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/></svg><span class="ntext">Timers are still running from earlier. Make sure sound notifications are on!</span><button type="button" class="nclose" id="noticeClose" aria-label="Dismiss notice"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button></div>
   <div class="grid" id="grid"></div>
 </main>
+<button class="fab" id="infoFab" type="button" aria-haspopup="dialog" aria-expanded="false" aria-label="Info and credits">Info<svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"/></svg></button>
+<div class="modal" id="creditsModal" role="dialog" aria-modal="true" aria-labelledby="creditsTitle" hidden>
+  <div class="modal-card">
+    <button class="modal-x" id="creditsClose" type="button" aria-label="Close credits"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
+        <h2 class="head" id="creditsTitle">Credits</h2>
+    <h3>Design &amp; build</h3>
+    <ul class="two">
+      <li><span>Designed by</span><a href="https://www.hannahlambertdesign.com/" target="_blank" rel="noopener">Hannah Lambert Design</a></li>
+      <li><span>Built with</span>Claude</li>
+      <li><span>Hosted on</span>Netlify</li>
+    </ul>
+    <h3>Typography</h3>
+    <ul>
+      <li><span>Body text &middot; Google Fonts</span>Work Sans</li>
+      <li><span>Headings &middot; Adobe Fonts</span>Gravesend Sans</li>
+    </ul>
+    <h3>Sound effects</h3>
+    <!-- To add more credits, copy a <li> line below. -->
+    <ul>
+      <li>Minimal Pop Click UI 2<span>by Floraphonic</span></li>
+      <li>Infographic Pop 8<span>by Floraphonic</span></li>
+    </ul>
+  </div>
+</div>
 <div class="grad strip-h"></div>
 
 <script>
@@ -224,13 +334,23 @@ header .btn-ghost{color:var(--cream)}
 
   // ---- Your technologies. Add or edit lines here to change the dashboard. ----
   var DEVICES = [
+    { id: 'ly',  name: 'Lymphatic Drainage', room: 'Room 12', programs: [{ key: 'upper', label: 'Upper', min: 20 }, { key: 'lower', label: 'Lower', min: 30 }] },
     { id: 'am',  name: 'Ammortal Chamber', room: 'Room 13', programs: [{ key: 'table', label: 'Table', min: 25 }] },
     { id: 'sa',  name: 'Halo Salt Therapy', room: 'Room 14', programs: [{ key: 'sauna', label: 'Sauna', min: 25 }] },
-    { id: 'ly',  name: 'Lymphatic Drainage', room: 'Room 12', programs: [{ key: 'upper', label: 'Upper body', min: 20 }, { key: 'lower', label: 'Lower body', min: 30 }] },
     { id: 'cl1', name: 'Rapid Recharge Chair 1', room: 'The Well', programs: [{ key: 'table', label: 'Table', min: 20 }] },
     { id: 'cl2', name: 'Rapid Recharge Chair 2', room: 'The Well', programs: [{ key: 'table', label: 'Table', min: 20 }] }
   ];
-  var STORE = 'hwr-timers-v1';
+  var STORE = 'hwr-timers-v1', ORDER = 'hwr-order-v1';
+  var DEFAULT_ORDER = DEVICES.map(function (d) { return d.id; });
+  var armClear = {};
+  var noticeGone = false;
+  try { noticeGone = sessionStorage.getItem('hwr-notice-x') === '1'; } catch (e) {}
+  try { // restore the saved card order
+    var ord = JSON.parse(localStorage.getItem(ORDER) || 'null');
+    if (ord && ord.length) DEVICES.sort(function (a, b) { var i = ord.indexOf(a.id), j = ord.indexOf(b.id); return (i < 0 ? 99 : i) - (j < 0 ? 99 : j); });
+  } catch (e) {}
+  function isDefaultOrder() { return DEVICES.every(function (d, i) { return d.id === DEFAULT_ORDER[i]; }); }
+  function saveOrder() { try { localStorage.setItem(ORDER, JSON.stringify(DEVICES.map(function (d) { return d.id; }))); } catch (e) {} }
   var CLAY = '#CD734C', TRACK = 'rgba(101,59,44,0.14)';
 
   var timers = {}, muted = false, audioReady = false, ctx = null, master = null, lastChime = 0;
@@ -248,11 +368,43 @@ header .btn-ghost{color:var(--cream)}
   function fmtClock(ms) { return new Date(ms).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }); }
 
   // ---- Sound ----
+  var noiseBuf = null;
+  function noise() {
+    if (!noiseBuf) { noiseBuf = ctx.createBuffer(1, Math.floor(ctx.sampleRate * 0.4), ctx.sampleRate); var d = noiseBuf.getChannelData(0); for (var i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1; }
+    var s = ctx.createBufferSource(); s.buffer = noiseBuf; return s;
+  }
+  function env(g, t, peak, attack, decay) { g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(peak, t + attack); g.gain.exponentialRampToValueAtTime(0.0001, t + attack + decay); }
+  // UI sounds: recorded samples (embedded below) played through the same master volume / mute switch.
+  var SAMPLES = { click: "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qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq//vUZAAP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAETEFNRTMuMTAwqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqpMQU1FMy4xMDCqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq//vUZAAP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAETEFNRTMuMTAwqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqpMQU1FMy4xMDCqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq//vUZAAP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAETEFNRTMuMTAwqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqpMQU1FMy4xMDCqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq//vUZAAP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAETEFNRTMuMTAwqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqpMQU1FMy4xMDCqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq//vUZAAP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAETEFNRTMuMTAwqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqpMQU1FMy4xMDCqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq//vUZAAP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAETEFNRTMuMTAwqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqpMQU1FMy4xMDCqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq//vUZAAP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAETEFNRTMuMTAwqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqpMQU1FMy4xMDCqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq//vUZAAP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAETEFNRTMuMTAwqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqpMQU1FMy4xMDCqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq//vUZAAP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAETEFNRTMuMTAwqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqpMQU1FMy4xMDCqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq//vUZAAP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAETEFNRTMuMTAwqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqpMQU1FMy4xMDCqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq//vUZAAP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAETEFNRTMuMTAwqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqpMQU1FMy4xMDCqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq//vUZAAP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAETEFNRTMuMTAwqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqpMQU1FMy4xMDCqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq//vUZAAP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAETEFNRTMuMTAwqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqpMQU1FMy4xMDCqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq//vUZAAP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAETEFNRTMuMTAwqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqpMQU1FMy4xMDCqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq//vUZAAP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAETEFNRTMuMTAwqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqpMQU1FMy4xMDCqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq//vUZAAP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAETEFNRTMuMTAwqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqpMQU1FMy4xMDCqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq//vUZAAP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAETEFNRTMuMTAwqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqpMQU1FMy4xMDCqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq//vUZAAP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAETEFNRTMuMTAwqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqpMQU1FMy4xMDCqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq//vUZAAP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAETEFNRTMuMTAwqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqpMQU1FMy4xMDCqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq//vUZAAP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAETEFNRTMuMTAwqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqpMQU1FMy4xMDCqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq//vUZAAP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAETEFNRTMuMTAwqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqpMQU1FMy4xMDCqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq//vUZAAP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAETEFNRTMuMTAwqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqpMQU1FMy4xMDCqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq//vUZAAP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAETEFNRTMuMTAwqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqpMQU1FMy4xMDCqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq//vUZAAP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAETEFNRTMuMTAwqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqpMQU1FMy4xMDCqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq//vUZAAP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAETEFNRTMuMTAwqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqpMQU1FMy4xMDCqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq//vUZAAP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAETEFNRTMuMTAwqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqpMQU1FMy4xMDCqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq//vUZAAP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAETEFNRTMuMTAwqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqpMQU1FMy4xMDCqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq//vUZAAP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAETEFNRTMuMTAwqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqpMQU1FMy4xMDCqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq//vUZAAP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAETEFNRTMuMTAwqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqpMQU1FMy4xMDCqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq//vUZAAP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAETEFNRTMuMTAwqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqpMQU1FMy4xMDCqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq//vUZAAP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAETEFNRTMuMTAwqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqpMQU1FMy4xMDCqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq//vUZAAP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAETEFNRTMuMTAwqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqpMQU1FMy4xMDCqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq//vUZAAP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAETEFNRTMuMTAwqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqpMQU1FMy4xMDCqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq//vUZAAP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAETEFNRTMuMTAwqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqpMQU1FMy4xMDCqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq//vUZAAP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAETEFNRTMuMTAwqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqpMQU1FMy4xMDCqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq//vUZAAP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAETEFNRTMuMTAwqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqpMQU1FMy4xMDCqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq//vUZAAP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAETEFNRTMuMTAwqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqpMQU1FMy4xMDCqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq//vUZAAP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAETEFNRTMuMTAwqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqpMQU1FMy4xMDCqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq", bloop: "//vUZAAABkFfzw1nAAQAAA0goAABMRmZKln+gAE9HKADOtAACkBKDpZx6n/+esY8cZThxOApxRxBxIQEAGMUZhxmEIGBUM9cPljYJWBmZf8uWmG69C7bD1A0V0x2Jy5chcsvGpvI4g1hnDuWYYfx/H8hyWWN08YjFJzOnp8+7z/DD9509JSWN08bp7dSNxun7//rDPPP8KSksbpKSkw5+fcKe3qpSUlJzOkpLHM69vP8869PT0+eqSNy+3qpSUmG6lJSUljDDdPGJZY3Xp6fPVenp5fT2+6pI3L7eqSkpMN0lJSYYc/edJgc/g+KBSAAAYF4LgmQkHWxgAwbWYMoHbGBvAH5gXwGWYfGPFmGrhN5jnbEwadGEwmFjkIhpLIcsYYOCGGDhBYZgxIGAYB4APmAOgTIWAKDP5zTgQ2ZGYBgw/S0zH9ADKI6zHQeDBEEoqMgbD1qGTQ0jjIENjWUAQcOJgMMpnUFoiBUwIAAwhIYw+HsChAYMieGFwYnA2YtgwPBk7a8DAkKgUXYcB2FiUgUazGcBTAkFhoPV5llzDEXDD8AUALmPvHVbi7Ub5zhiEBZh8URgKSAcGhEFQoDhhODg4CRi6OBgOAZEBkByVAlfTJZUxGHOZGAQDg4EiYLEtCQBisETBwAwYBq+AIAalEiQ5CwDxyjmoBu1a1DLfMEAXMAQSBAFggADCsAjBcNggNjAoF2FLbWFTlhxynhiNZ/sqD5qzhuxe/WRgoBpgUE4KEUwJBhWclAgiCIwFBYmA8AADOqqr1WGobDg41quPJV/1qWvzDv//f//T1V6z5W14GTOk16Juk/bu0szFP+GgaeSyv/EV9CQcGAYT/6AwSAQyRH0/Snj/a/KBaATDsEcoJgBpA9ug8DwEYE375eBZo/twvY2lpKHP/zE3NzBaP/+mgkibpq//9jQoHAv/6Kf//JqgAgAY5Ae4YCUYA4KwgBoMY8J9wDBdAVMEkbAzn3nji4QFOKshk0LQ9jC2DhMHgHMweAIzAdAkMBkAoS//vUZB2IiAVkyS97AARPosjG7YwAopnXGy/t64FMimFpvpUIACW2vVqDbOM20DSO3YlFDK7dd/WsuKsKEofVlyERl4B5WpJDq0mlvzcpt3rlmpTUMIg6XTyZK80NUjlvImuIptG2uzMM2IatvDKHGZG0JrLyuFF1ywhTJgZeJHVcDEoVXaS1xOpg1qlh2kcaOxSmx5rcpsQ9nFZTOyqfls7TX6vcecrX6W5D1Baq2YlnjhrHWWNLWpoBvQzhTZy3kqtxnsponKm4rMRqhtUt6VW7v933HDL/xwl01aq2ZVnZ1rHK+Cj3dehIAUACoDGysEBsnAw5E2CEIaYxDntiR7xobEAvk4r/ctYpddfb+c2mLhIFGOEv4oFQEV6pDYEgkakQ1u+FB5kerngm5frUWWlaVAUiJSFv40Kgaegx1EDeMDFAfgMFqGCWgwhgWIGQYEUAKmDCAtJgRwUEYFMBzGBdhkRqsb/IYr8CZH/hBqwcYWPCRKHAcMggIQVTiBwQwIRASUL7rBsEuSWO0bDMJhuzdgSHCwkmWMg6nDDHrPMsT5lX3SpTZbDwOMXkjiOovEKOOIpVMVB7MiaTDo/1s5MvjTZVwhqQKtJjmTi4g6hra2nXlW5bVxjq9XqQ7y2HUb7DFD/OU4jmXChIPGQgynCEysEjIwp9RvHNSTb72HFYE5BjqyKzqNumf4UiF3qZqvM5D7seo926KxIdGpErNqsPONNnjQ48CIrM1felZqy5xeHDc953NV7Pek1savuFqHnDA8rSO/3b6xTdPLsAyEWZHTlikaFSgWMOGQUCoPGHjxhJOYQRmnXZ1Fr4EBdbsijJimuz1pP61WERVBg8gdVG3olXi9rKNjfrGERGEnigKzgF93r+Ssb51JGy0ZLztVUAAE0ark/hio1MGUyODAz4VszAHkxqLowLd80OQsx3jQ9k387rtrzXcFHMLECwwUgHzAfAGGgDAIAEmGJAPMFZ6onQMAYelu8Cl7+LiMkniHpk8mAmrYpCXg0RSi2M//vUZC8IiTR1yEu+elBN4RhHZxwEJEXZHK756QGBDZ7Jrg0QhJwjanVQ8Vyoh+FtF/Yc5QKUWoaomZLyWEgLYN8NNDtEEUK6NhmP1aZTsLoe59H0BuLyojIZC3x2Mtkx1ny2rMjITceJe4RfEYyD4PA/ZT+OM/j9XaOHCpWlD45P10nDJRy+6GWPNMwyTq1HlgNZjJ4vMCt5kLhnu+ZUmzMJBDHJYXFWJ5OLC5bVeuIqqhqdTOp9xmFjXDUnXjKsIjTps1Hgq+d21xIWrtmoE8FTuMBj89IUSlaW1LPEeMD1upiPe7k9YmSkPc+QAoEpJuH86Dml/GVwQJU5K4wqC4nMup47PijW4QDAyrE6sWqiE8wWZLNQTgIag4m9wqh9ZjXrSV/oftoz1XIXJc2nyQG+onUKqLD0tsGERk5ki8zJG40rKkw/HMw7FQw4FIIJExiaAwYfs6cd42zU9jDfAxCA5QMCMBgLQCAUDABAKAEEAEl1krmLJ1t8jUogjQnBJU0T6M2ikHS5C1oYC3DuT55j9OkwzVWBmlbdiEyDgQsaZghXDINITQUg7B+NY41WQk6UW9L4QhwWFdEQs2T9NhDEmLWxk8FhLoaiFpk8UPZSXnUPQT0vgmEE4kXM+dK0h5tmyj39TVTJlw08oVTjEyNYUc8ZC/sZ+QoGUuwKZjc02ql3AqwMUNJwJrsUI+EstRX7K5PmRaQ2ikaVewIapni5hNzco6mI/soGKO8QhwTEF4ypE3XjJhsfPO3WfqN6yMkOdVxZcRGWrG3zruM9eLTFZiiqyZyYrqtyg3AAFjj0CUGGLGQNZUPX0DUYUMG3snDGWDigUApirzQ7K5aBBRKookhNY14bZUrk3DMUfqDIUCYDHnwwDTBOmMH3Fid6C7D4zMMvgs+9xQR0LmGWstJOTQeJMCqpJM/e2Ik/+R4WX0yfD0DBUYSioYKggZGlUY1iCYJCEYhtwaXryZbBuYNgsIAFCAWS7ghixeF5UDB1ppAB1bZUA5I08S2JQ0mg//vUZCGDh+d1R4OvZHJHoNf8YTgDJHnXFxXXgAGmEFxGtDAA8kSXRjRqdnXKeelDHjEWLstM2lAP0t46SbPDcQlRivG+rhYVSm0CdJjvS8qBDlyxoCAaapJyU6MaUautJQ5lw1MzgxLAPG4+gOEtSnSDpZIUlbRfXIZoZD+YpypXF5o0bG5ZRvQLx/SmCGf1vVdRDM2z5CfgWFht1Vy0ck6+GrI7cxBYyWwQJjg/fUllK0sgVwOKWuqyeICXrWejXfkCLI7NI0OX5x5DbTqDt/nYHCM5AlS+kYWnCp0qAAACDKASsX/CgYiIULDYcjooUuAv6Wgy4BJci82TOjGvtYhtKXVz00neRDj3wnlUhqn4CFaUGXRg52xBK9EJZ2iskkKUX0jggEAOaQHMWTuM+wXMyQlMDQqIQBMOwhMOCfMCCjMKCkMDBaMewTDAMSRBQGuiiqYCAengJVHmUScmpLh2pc3iFGi3kKKVeOIkKqTpchZjPDvT4sAyh3IsqymIRCNsjgJgXAkxOCNiEpAmxmq0cQtI+B4H8e+CQhXn8nDuH+bxNx+oasqc62l4fphFyWjkYiZFksj5Pw5x2j5O4nSPMScuBbokFoRLAcp0mGg8qxmdsC6UtrC2pxhOg1kgfybUJ7Gk4olhR7MwvE+ijJjJc+roXzKTjxBuB8s0x4NU6+rsFuOezI2NScfQWFOKV8lY2mFyUSKTMBlissJTrtgRqteJx0zR375tRypco8aErZWRwbVKtNyikSCvWVzAVKpb4TC3N08uwBOMPMgdIkJEIjuLLAqCRmKgdSlWCfypsqaGiFEqGrEqtqdJi1CwFHC2QnpGDdXBBqsZRQfCRYERcIgIOoioaaEywkBoFTJc7YDRDsLQ8JTIlHIxMh7gmhV6oKRcPCIWTYE2PsT6PUQrsTJCNIh5doiJiNv/7Y2kiCAQ+AZI5gVMow6sFQyo3FvQoLQVFSwZKNzRT6EB4wgYYJqpGXgAhBhOWCRKrAuCX/KISZMwTneR1W+1URDq//vUZCaAB+ZWy/5rIAB/6qb2zCwAHxXVEx3HgAmeC9nHsjADol3hCEhkXjTCLxrxgCCUMWgotrCs4jTDpSXjRnR/eN+yyKj0FI4tDRWWHaswFd8gsMCUi4LLW+gSWzLq13bZTEl5M3h14naqRvObx3Zjt63KJfIpBDEZbeo/rixWdjU21q9rv3quNW3iiuqeD0i2X0eEYa0l9MqzFkp1kTV36q46+xlh+PLN6kpLFvv195/r2u2JdXlUapt/UMlktQKaBO0NWk3/6nulijxb/0rW1agABAgZAQECEI0kStALcHkKqBqLxQ9ALyuxyvnc2UvMM9bGLrI8elDWtZTImErWc/bnEDkUbTupsW5nzcOrtx6GGyqJy5bs4/jqaq3uOS4862wa318cVh4HYsOgmVbzUbYIECFxJMjsf3/Ha597zlaEVzjue2GnW2/6nFuY/7e00ADgAAHIywGC0xgWhUKAYvEx6MIC4x+LTKhWMbgcwmE0DBEDxIDqoLGQQCoBAviuLRPS+o0yzoQS4Q4gi3K/Ogri8K5MELFyeDqXnjwWU4T3LywFuSSMswk5elA0rpRnSk30Sz1ZRR+qZFKdRHC2PUkxopqgF6TCqw4nM1nsrVyhqkaYqNdQ7rTMu1U4JmWR03KpCWBWsTDZOMj9SP8rL+18rbxtjq6NHg9jgMkezVR62RmtrV2ZGxxhQFFFfMX+LN0OLbcGjGwQGZey9gPcTu3GdifWf+JLFi5w/vWt2WG8c4y2q4td0fQ58zyxaYyxR4fjZ3ad6yyIgHOAGHkj3RZKx1kagiD7eRifrc3Zm5gADkzMTlVcpuMZVAGifoZoUWfh00xR3t01Ir3NizeaDQpttaqVtuZ5WweBua0pGQusYOZamoFk+4tmnxbfamKaneolJxPt//71tf//+/7///E561N2KjJIs2AZM5TqIVBDABkrJioCoNCQ6LAKtEpCga0pDNWNMQuEW6LyEwMkKuNbz3SJW2GYdbrYQIqE3o3FmlFslvISl+rVlyNQ//vUZCYNSJF1QQNvZzJi6fYyPSMWIF3W+k29l0FrsBiYkI28sFBAUse27sUL014s0xlz+2XkZUgla8mjmHeEFM4LoQpBF2LaQ9nHiVKrDBG6QNfHpMVnXTAXmqnSSuSKncEaymerkSjqGKi0LPQ70Uf8RRl+PMyVEYEdpWTsO8rXA5pWsyVCchfi9J5XKc8o746RKyueLK2o83FpNOBFOCAYkABy1MU3lq9aap4SWenKGyHPlYrxIeQJ1haxgyVKi8HxfOFhVXNMIKEPxehhKyczwnqUBcLh4MlCqN8yiYdPlyc4XiKesrLTACrIDcNcmR5ABpUaHktaHPDLIagNU1IuQ/h/1SU2IhIlNnbzp32LKCgarFhE02Y40lz/KR/QpmZa/GK9XLyp5asdJfhLu6ND/p3atTYGAwYF5IUIlpEaU2iU7HnXVelldqnsgQw9cOJljq3QysSBIADg4AhCFQqHGMG5pSCTEMMKVBAUpUiEXaUBFQBUagK1Yq3Zv21VVcxwiyyYzP2RMOjaFRbszouomJAADYxHM/WE6UIci6tBpJ4gprBGRgjoL1JEJSnSWwiRKNoWlwEeMtkMAOqy+wXcW5aYSWtQtxBkJbDibScuEAuSikUS5UKwpxcTRWFw0q7Sli1MSse0MrQ1Jtk1Fq4OhGHZpWIIhE5KSVhKhOXXqeSVh08zVcYnNVpZ2q1nmSSOtYCmRHLoROXuFZBWkpU0uZJJ6ckkyOaSy1XjIqk0xHEmmIgh6yfWXqWBKQxFTRRuaymOj45bMYoIVP1WvAiIgxUEQJZjGOWsKt95h/NS5ejUyJnL/OuExN7a/3OqscdtaGlCmqrlSgVNjVvWHGbnnqsZhUFQ7qTL8wxntZaAlGgYUwYWCY442BNLVZjq2cIwFgzOXgX/6K0BTLyjljjYXTkAzIlBGBMUFYImMxGJgAKKBAEiBBUywVGZt1ssdfcs6xWNO09barxRRd1nLCmLJCvxDTDXga2XhdyRu6vots7CRTvoJUrWfF3mLoqq//vUZCqP+LN1tgtPZyBcagUiCCN+QAABpAAAACAAADSAAAAEKq4QqL2tQj8MM6Xc+BejlkE9HiSoepNp4nQ0QEURYtXinJaXUvL4npiivHmZJdlg6kicMF4TpTqmqtTqEqad9FH0eh5kJTCWOVkA8+VSytKxLAyIS8VDqZAqHgBvEITQ9Koil47BqYASLZNKpZXRu5eA6PRyLYIj6dKoDJ1b3FY+eJIqQIUItDiaADH6m0JJJp0/QcgbKV2lY/HUhDscl1EJS8m4ymVLUxTNV2nRavcxKQjF8RWFx1RDJqEZH0MR06ACtBQEEOX9ysb/IwiQmFC80IwkwwxeIhGhP/8vwwrgJATgIIUv926Sk1I/+GvMpKsNSanSn8OHSb1he1KNsakGcTKlhRYUaL5UGRZRRt9f38pirv/2Es32Jfu/9UxBTUUzLjEwMFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV" };
+  var bufs = {}, loading = false;
+  function loadSamples() {
+    if (loading || !ctx) return;
+    loading = true;
+    Object.keys(SAMPLES).forEach(function (k) {
+      try {
+        var bin = atob(SAMPLES[k]), bytes = new Uint8Array(bin.length);
+        for (var i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+        var p = ctx.decodeAudioData(bytes.buffer, function (buf) { bufs[k] = buf; }, function () {});
+        if (p && p.catch) p.catch(function () {});
+      } catch (e) {}
+    });
+  }
+  function playSample(k, gain) {
+    if (!ctx || !master || muted) return;
+    if (!bufs[k]) { loadSamples(); return; }
+    try {
+      var s = ctx.createBufferSource(), g = ctx.createGain();
+      s.buffer = bufs[k]; g.gain.value = gain; s.connect(g); g.connect(master); s.start();
+    } catch (e) {}
+  }
+  function mechClick() { playSample('click', 1); }
+  function plop() { playSample('bloop', 1); }   // card dropped into a new spot
   function ensureAudio() {
     try {
       if (!ctx) { var AC = window.AudioContext || window.webkitAudioContext; if (AC) ctx = new AC(); }
       if (ctx && !master) { master = ctx.createGain(); master.connect(ctx.destination); }
       if (ctx && ctx.state === 'suspended') ctx.resume();
+      if (ctx) loadClick();
       if (ctx && !audioReady) { audioReady = true; updateHeader(); }
     } catch (e) {}
   }
@@ -308,7 +460,7 @@ header .btn-ghost{color:var(--cream)}
     var v = view(d);
     card.querySelectorAll('[data-time]').forEach(function (el) { el.textContent = v.text; });
     card.querySelectorAll('[data-sub]').forEach(function (el) { el.textContent = v.sub; });
-    var a = card.querySelector('[data-arc]'); if (a) { a.style.strokeDasharray = v.arcPct + ' 100'; a.style.opacity = v.arcHidden ? 0 : 1; }
+    card.querySelectorAll('[data-arc]').forEach(function (a) { a.style.strokeDasharray = v.arcPct + ' 100'; a.style.opacity = v.arcHidden ? 0 : 1; });
     var f = card.querySelector('[data-fill]'); if (f) f.style.width = v.pct + '%';
   }
 
@@ -317,13 +469,14 @@ header .btn-ghost{color:var(--cream)}
     var t = get(d.id), p = prog(d, t.program), total = p.min * 60000, now = Date.now();
     var remaining = t.status === 'running' ? Math.max(0, t.endAt - now) : t.status === 'done' ? 0 : t.remaining;
     var secs = Math.ceil(remaining / 1000);
-    var text = String(Math.floor(secs / 60)).padStart(2, '0') + ':' + String(secs % 60).padStart(2, '0');
+    if (t.status === 'done' && t.endAt) secs = Math.floor(Math.max(0, now - t.endAt) / 1000);
+    var text = (t.status === 'done' && t.endAt ? '+' : '') + String(Math.floor(secs / 60)).padStart(2, '0') + ':' + String(secs % 60).padStart(2, '0');
     var deg = Math.max(0, Math.min(360, remaining / total * 360));
     var pct = t.status === 'done' ? 100 : t.status === 'idle' ? 0 : Math.max(0, Math.min(100, 100 - remaining / total * 100));
     var arcPct = t.status === 'done' ? 100 : Math.max(0, Math.min(100, remaining / total * 100));
     var ring = t.status === 'done' ? '#FBFCF7' : t.status === 'idle' ? TRACK :
       'conic-gradient(from 0deg, ' + CLAY + ' 0deg ' + deg + 'deg, ' + TRACK + ' ' + deg + 'deg 360deg)';
-    var sub = t.status === 'done' ? 'Time to take your guest out' : t.status === 'running' ? 'Ends ' + fmtClock(t.endAt) : t.status === 'paused' ? 'Paused' : p.min + ' min session';
+    var sub = t.status === 'done' ? 'Take your guest out' : t.status === 'running' ? 'Ends ' + fmtClock(t.endAt) : t.status === 'paused' ? 'Paused' : p.min + ' min session';
     return { t: t, p: p, text: text, ring: ring, sub: sub, pct: pct, arcPct: arcPct, arcHidden: t.status === 'idle' };
   }
 
@@ -331,7 +484,7 @@ header .btn-ghost{color:var(--cream)}
     var v = view(d), st = v.t.status, idle = st === 'idle', done = st === 'done';
     var chip = done ? "Time's up" : st === 'running' ? 'In session' : st === 'paused' ? 'Paused' : 'Ready';
     var actions;
-    if (done) actions = '<button type="button" class="btn btn-fill" data-act="primary">Stop alarm</button>';
+    if (done) actions = '<button type="button" class="btn btn-clay" data-act="primary">Stop alarm</button>';
     else if (idle) actions = '<button type="button" class="btn btn-fill" data-act="primary">Start</button>';
     else if (st === 'running') actions = '<div class="row2"><button type="button" class="btn btn-outline" data-act="primary">Pause</button><button type="button" class="btn btn-text" data-act="cancel">Cancel</button></div>';
     else actions = '<div class="row2"><button type="button" class="btn btn-fill" data-act="primary">Resume</button><button type="button" class="btn btn-text" data-act="reset">Reset</button></div>';
@@ -345,12 +498,15 @@ header .btn-ghost{color:var(--cream)}
     }
     return '<section class="card is-' + st + (d.programs.length > 1 ? ' has-seg' : '') + '" data-id="' + d.id + '">' +
       '<div class="grad strip"></div>' +
+      '<button type="button" class="grip" data-grip aria-label="Reorder ' + d.name + ' (drag, or use arrow keys)" title="Drag to reorder"><svg viewBox="0 0 14 14" aria-hidden="true" fill="currentColor"><circle cx="4.5" cy="3" r="1.4"/><circle cx="9.5" cy="3" r="1.4"/><circle cx="4.5" cy="7" r="1.4"/><circle cx="9.5" cy="7" r="1.4"/><circle cx="4.5" cy="11" r="1.4"/><circle cx="9.5" cy="11" r="1.4"/></svg></button>' +
       '<div class="card-top"><div class="chip chip-' + st + '"><span>' + chip + '</span>' + (d.room ? '<span class="dot" aria-hidden="true"> \u00b7 </span><span>' + d.room + '</span>' : '') + '</div><h2 class="head">' + d.name + '</h2></div>' +
       '<div class="ring-wrap"><div class="ring' + (done ? ' ringing' : '') + '">' +
         '<svg class="ring-svg" viewBox="0 0 100 100" aria-hidden="true"><circle class="ring-track" cx="50" cy="50" r="46.5"/>' +
-        '<circle class="ring-arc" data-arc cx="50" cy="50" r="46.5" pathLength="100" style="stroke-dasharray:' + v.arcPct + ' 100;opacity:' + (v.arcHidden ? 0 : 1) + '"/></svg><div class="ring-in">' +
-        '<div class="num time" role="timer" data-time>' + v.text + '</div><div class="subtext" data-sub>' + v.sub + '</div></div></div></div>' +
-      '<div class="rowinfo"><div class="rtime-line"><div class="rtime" role="timer" data-time>' + v.text + '</div><div class="rsub" data-sub>' + v.sub + '</div></div>' +
+        '<circle class="ring-arc" data-arc cx="50" cy="50" r="46.5" pathLength="100" style="stroke-dasharray:' + v.arcPct + ' 100;opacity:' + (v.arcHidden ? 0 : 1) + '"/>' +
+        '<circle class="ring-gloss" data-arc cx="50" cy="50" r="48.1" pathLength="100" style="stroke-dasharray:' + v.arcPct + ' 100;opacity:' + (v.arcHidden ? 0 : 1) + '"/>' +
+        '<circle class="ring-glow" data-arc cx="50" cy="50" r="44.1" pathLength="100" style="stroke-dasharray:' + v.arcPct + ' 100;opacity:' + (v.arcHidden ? 0 : 1) + '"/></svg><div class="ring-in">' +
+        (done ? '<div class="ot">Overtime</div>' : '') + '<div class="num time" role="timer" data-time>' + v.text + '</div><div class="subtext" data-sub>' + v.sub + '</div></div></div></div>' +
+      '<div class="rowinfo"><div class="rtime-line">' + (done ? '<div class="ot">Overtime</div>' : '') + '<div class="rtime" role="timer" data-time>' + v.text + '</div><div class="rsub" data-sub>' + v.sub + '</div></div>' +
         '<div class="bar"><div class="fill" data-fill style="width:' + v.pct + '%"></div></div></div>' +
       programs +
       '<div class="actions">' + actions + '</div>' +
@@ -358,7 +514,11 @@ header .btn-ghost{color:var(--cream)}
   }
 
   var grid = document.getElementById('grid');
-  function render() { grid.innerHTML = DEVICES.map(cardHTML).join(''); updateHeader(); }
+  var dragging = false, renderLater = false;
+  function render() {
+    if (dragging) { renderLater = true; return; }
+    grid.innerHTML = DEVICES.map(cardHTML).join(''); updateHeader();
+  }
 
   function activeCount() {
     return DEVICES.filter(function (d) { var s = get(d.id).status; return s === 'running' || s === 'paused'; }).length;
@@ -369,12 +529,23 @@ header .btn-ghost{color:var(--cream)}
     document.getElementById('dateLine').textContent =
       new Date(now).toLocaleDateString([], { weekday: 'long', month: 'short', day: 'numeric' }) + ' · ' +
       (n === 0 ? 'No guests in session' : n === 1 ? '1 in session' : n + ' in session');
-    document.getElementById('muteLabel').textContent = muted ? 'Sound off' : 'Sound on';
+    var mb = document.getElementById('muteBtn');
+    mb.setAttribute('aria-label', muted ? 'Sound off. Click to turn sound on' : 'Sound on. Click to mute');
+    mb.setAttribute('data-tip', muted ? 'Sound off' : 'Sound on');
     document.getElementById('muteBtn').setAttribute('aria-pressed', String(muted));
     document.getElementById('icOn').style.display = muted ? 'none' : '';
     document.getElementById('icOff').style.display = muted ? '' : 'none';
-    document.getElementById('testBtn').disabled = muted;
-    document.getElementById('unlockNotice').hidden = audioReady || n === 0;
+    var tb = document.getElementById('testBtn');
+    tb.disabled = muted;
+    document.getElementById('icBell').style.display = muted ? 'none' : '';
+    document.getElementById('icBellOff').style.display = muted ? '' : 'none';
+    tb.setAttribute('aria-label', muted ? 'Alarm sound is off' : 'Test alarm sound');
+    tb.setAttribute('data-tip', muted ? 'Alarm sound is off (turn sound on to test)' : 'Test alarm sound');
+    document.getElementById('resetOrderBtn').disabled = isDefaultOrder();
+    var ra = document.getElementById('resetAllBtn'), anyOn = DEVICES.some(function (d) { return get(d.id).status !== 'idle'; });
+    ra.disabled = !anyOn; if (!anyOn && armClear.resetAllBtn) armClear.resetAllBtn();
+    if (isDefaultOrder() && armClear.resetOrderBtn) armClear.resetOrderBtn();
+    document.getElementById('unlockNotice').hidden = audioReady || n === 0 || noticeGone;
   }
 
   // ---- Events ----
@@ -392,8 +563,106 @@ header .btn-ghost{color:var(--cream)}
     if (master) master.gain.value = muted ? 0 : 1;
     updateHeader();
   });
+  document.getElementById('noticeClose').addEventListener('click', function () {
+    noticeGone = true; try { sessionStorage.setItem('hwr-notice-x', '1'); } catch (e) {}
+    updateHeader();
+  });
+  // Credits popup
+  var modal = document.getElementById('creditsModal'), creditsBtn = document.getElementById('infoFab');
+  function openCredits() { modal.hidden = false; creditsBtn.setAttribute('aria-expanded', 'true'); document.getElementById('creditsClose').focus({ preventScroll: true }); }
+  function closeCredits() { if (modal.hidden) return; modal.hidden = true; creditsBtn.setAttribute('aria-expanded', 'false'); creditsBtn.focus(); }
+  creditsBtn.addEventListener('click', openCredits);
+  document.getElementById('creditsClose').addEventListener('click', closeCredits);
+  modal.addEventListener('click', function (e) { if (e.target === modal) closeCredits(); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeCredits(); });
+  // Two-step buttons: first click arms (clay fill + check icon), a second click within 3s confirms.
+  function armable(id, label, armedTip, action) {
+    var btn = document.getElementById(id), timer = null;
+    btn.classList.add('armable');
+    function clear() {
+      clearTimeout(timer); timer = null; btn.classList.remove('confirm');
+      btn.setAttribute('aria-label', label); btn.setAttribute('data-tip', label);
+    }
+    armClear[id] = clear;
+    btn.addEventListener('click', function () {
+      if (!btn.classList.contains('confirm')) {
+        btn.classList.add('confirm');
+        btn.setAttribute('aria-label', 'Click again to confirm: ' + label.toLowerCase()); btn.setAttribute('data-tip', armedTip);
+        timer = setTimeout(clear, 3000); return;
+      }
+      clear(); action();
+    });
+  }
+  armable('resetAllBtn', 'Reset all timers', 'Click again to reset all timers', function () {
+    DEVICES.forEach(function (d) { var t = get(d.id); timers[d.id] = { status: 'idle', program: t.program, remaining: prog(d, t.program).min * 60000, endAt: 0 }; });
+    save(); render();
+  });
+  armable('resetOrderBtn', 'Reset card order', 'Click again to reset card order', function () {
+    DEVICES.sort(function (a, b) { return DEFAULT_ORDER.indexOf(a.id) - DEFAULT_ORDER.indexOf(b.id); });
+    saveOrder(); render();
+  });
   document.getElementById('testBtn').addEventListener('click', function () { ensureAudio(); chime(); });
   document.addEventListener('click', function () { ensureAudio(); });
+  document.addEventListener('pointerdown', function (e) {
+    var b = e.target.closest && e.target.closest('button');
+    if (!b || b.disabled || b.hasAttribute('data-grip') || b.id === 'testBtn' || b.id === 'muteBtn') return;
+    ensureAudio(); mechClick();
+  });
+
+  // ---- Drag to reorder (works in both layouts; touch, mouse and arrow keys) ----
+  var drag = null;
+  function horizontalFlow() { return !document.body.classList.contains('rows-view'); }
+  function moveDevice(from, to) { DEVICES.splice(to, 0, DEVICES.splice(from, 1)[0]); saveOrder(); }
+  grid.addEventListener('pointerdown', function (e) {
+    var g = e.target.closest('[data-grip]'); if (!g || (e.button !== undefined && e.button > 0)) return;
+    var cards = Array.prototype.slice.call(grid.querySelectorAll('.card')), card = g.closest('.card');
+    e.preventDefault();
+    var horiz = horizontalFlow();
+    drag = { card: card, cards: cards, from: cards.indexOf(card), to: cards.indexOf(card), horiz: horiz, id: e.pointerId,
+      x0: e.clientX, y0: e.clientY, rects: cards.map(function (c) { return c.getBoundingClientRect(); }) };
+    dragging = true; card.classList.add('is-dragging'); document.body.classList.add('is-reordering');
+    cards.forEach(function (c) { if (c !== card) c.classList.add('is-shifting'); });
+    try { g.setPointerCapture(e.pointerId); } catch (err) {}
+  });
+  grid.addEventListener('pointermove', function (e) {
+    if (!drag || e.pointerId !== drag.id) return;
+    var r = drag.rects, f = drag.from, h = drag.horiz;
+    var d = h ? e.clientX - drag.x0 : e.clientY - drag.y0;
+    var lo = h ? r[0].left - r[f].left : r[0].top - r[f].top, hi = h ? r[r.length - 1].left - r[f].left : r[r.length - 1].top - r[f].top;
+    d = Math.max(lo, Math.min(hi, d));
+    drag.card.style.transform = h ? 'translateX(' + d + 'px) scale(1.02)' : 'translateY(' + d + 'px) scale(1.01)';
+    var center = h ? r[f].left + r[f].width / 2 + d : r[f].top + r[f].height / 2 + d, to = f, best = 1e9;
+    r.forEach(function (q, i) { var c = h ? q.left + q.width / 2 : q.top + q.height / 2; if (Math.abs(c - center) < best) { best = Math.abs(c - center); to = i; } });
+    drag.to = to;
+    drag.cards.forEach(function (c, i) {
+      if (c === drag.card) return;
+      var dest = i;
+      if (f < to && i > f && i <= to) dest = i - 1; else if (f > to && i >= to && i < f) dest = i + 1;
+      var dx = h ? r[dest].left - r[i].left : 0, dy = h ? 0 : r[dest].top - r[i].top;
+      c.style.transform = dest === i ? '' : 'translate(' + dx + 'px,' + dy + 'px)';
+    });
+  });
+  function endDrag(e) {
+    if (!drag || (e && e.pointerId !== drag.id)) return;
+    var from = drag.from, to = drag.to;
+    drag.cards.forEach(function (c) { c.classList.remove('is-shifting', 'is-dragging'); c.style.transform = ''; });
+    document.body.classList.remove('is-reordering');
+    drag = null; dragging = false;
+    if (from !== to) { moveDevice(from, to); plop(); } else plop();
+    render(); renderLater = false;
+  }
+  grid.addEventListener('pointerup', endDrag);
+  grid.addEventListener('pointercancel', endDrag);
+  grid.addEventListener('keydown', function (e) {
+    var g = e.target.closest && e.target.closest('[data-grip]'); if (!g) return;
+    var k = e.key, step = (k === 'ArrowLeft' || k === 'ArrowUp') ? -1 : (k === 'ArrowRight' || k === 'ArrowDown') ? 1 : 0;
+    if (!step) return;
+    e.preventDefault();
+    var id = g.closest('.card').getAttribute('data-id'), i = DEVICES.map(function (d) { return d.id; }).indexOf(id), j = i + step;
+    if (j < 0 || j >= DEVICES.length) return;
+    moveDevice(i, j); render(); plop(0);
+    var again = grid.querySelector('.card[data-id="' + id + '"] [data-grip]'); if (again) again.focus();
+  });
 
   // ---- Clock tick (uses real clock time, so it stays accurate if the tab sleeps) ----
   function tick() {
@@ -406,7 +675,7 @@ header .btn-ghost{color:var(--cream)}
     if (finished) { save(); render(); }
     else {
       DEVICES.forEach(function (d) {
-        if (get(d.id).status !== 'running') return;
+        var st0 = get(d.id).status; if (st0 !== 'running' && st0 !== 'done') return;
         var card = grid.querySelector('[data-id="' + d.id + '"]');
         if (!card) return;
         paint(card, d);
