@@ -1,0 +1,1336 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Therapist Match</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700&display=swap">
+<!-- Gravesend Sans (Adobe Fonts) is used for headings only. The family name is set in the --head line in the <style> block below.
+     It styles the page title, the form and result headings, each card title and the popup title. If the Adobe link ever stops loading, they fall back to Work Sans.
+     ADOBE WEB PROJECT: paste your project's embed link on the next line (same kit as hwr-timers: gul6fro). -->
+<link rel="stylesheet" href="https://use.typekit.net/gul6fro.css">
+<style>
+/* ===== Brand fonts =====
+   Adobe Fonts web project
+   - Embed: the <link> just above this <style> block. To use a different web project, swap its URL there,
+     or delete that <link> and paste the project's @import line here instead, as the very first line of this block:
+     @import url("https://use.typekit.net/gul6fro.css");
+   - Family name: put the CSS name Adobe lists for the web project into --head below (for Gravesend Sans it's "gravesend-sans").
+   Every heading on the page reads from --head, so changing that one line updates them all. */
+/* Layout: hwr-timers header band + gradient strip, a glass-and-clay form card, then one result column per unavailable therapist. Single light look, matching the timers. */
+:root{
+  --brown:#653B2C; --clay:#CD734C; --cream:#FBFCF7; --ink:#272727;
+  --card:#F4EFE7; --done:#FFFAF3; --muted:#6B5148; --label:#7A5C4F; --peach:#E9C2A9;
+  --track:rgba(101,59,44,.14); --line:rgba(101,59,44,.14);
+  --good:#2F6B4F; --good-bg:#E2EFE7; --warn:#8A4B12; --warn-bg:#F7E6D3;
+  --grad:linear-gradient(90deg, rgb(104, 57, 44) 0%, rgb(113, 65, 51) 3.67%, rgb(142, 85, 67) 5.09%, rgb(142, 85, 67) 6.43%, rgb(122, 69, 57) 8.24%, rgb(122, 69, 57) 9.82%, rgb(136, 81, 67) 11.87%, rgb(144, 91, 76) 18.18%, rgb(170, 117, 99) 21.65%, rgb(203, 156, 130) 23.78%, rgb(203, 156, 130) 25.52%, rgb(191, 133, 115) 28.83%, rgb(211, 168, 147) 31.35%, rgb(210, 168, 146) 40.82%, rgb(178, 123, 104) 44.05%, rgb(131, 84, 68) 54.31%, rgb(108, 62, 49) 62.43%, rgb(100, 57, 44) 66.77%, rgb(105, 61, 46) 73.56%, rgb(114, 68, 59) 76.24%, rgb(139, 82, 64) 77.74%, rgb(169, 101, 81) 83.97%, rgb(221, 180, 152) 87.44%, rgb(221, 180, 152) 89.25%, rgb(146, 93, 77) 92.96%, rgb(114, 68, 59) 96.83%, rgb(102, 65, 57) 100%);
+  --head:"gravesend-sans","Gravesend Sans","Work Sans",system-ui,sans-serif; /* headers only: brand font from the Adobe web project, then fallbacks */
+  --body:'Work Sans',system-ui,sans-serif;
+  --ease:cubic-bezier(.2,.8,.2,1);
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+/* Anything marked hidden stays hidden, even where a rule gives it display:flex (banner, tab panes, popup).
+   The Claude viewer adds this rule on its own; a plain page (local file, Netlify) needs it here. */
+[hidden]{display:none!important}
+body{margin:0;background:var(--cream);color:var(--ink);font-family:var(--body);font-size:16px;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--brown)}
+/* All headers use the brand font: page title, form steps, guest sections, result headings, card names, start card, credits popup */
+.head,h1,h2,h3,h4,h5,h6{font-family:var(--head)}
+.wrap{max-width:1640px;margin:0 auto;padding-left:max(24px,env(safe-area-inset-left,0px));padding-right:max(24px,env(safe-area-inset-right,0px))}
+@media (max-width:520px){.wrap{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}}
+button{font-family:var(--body);cursor:pointer;-webkit-tap-highlight-color:transparent}
+button:focus-visible,select:focus-visible{outline:3px solid var(--clay);outline-offset:3px}
+
+/* Header, as in hwr-timers */
+header{background:var(--brown);color:var(--cream)}
+.nav{padding-block:14px 16px;display:flex;flex-wrap:wrap;gap:12px 24px;align-items:flex-end;justify-content:space-between}
+h1{margin:0;font-size:clamp(22px,2.3vw,32px);line-height:1.05;font-weight:600;letter-spacing:.01em}
+.clock{display:flex;flex-direction:column;gap:2px;align-items:flex-end}
+/* Header icon buttons, as on hwr-timers */
+.nav-right{display:flex;flex-wrap:wrap;gap:12px 24px;align-items:center;justify-content:flex-end}
+.nav-btns{display:flex;gap:10px}
+.btn-ghost{position:relative;display:inline-grid;place-items:center;color:var(--cream);cursor:pointer;border:1px solid rgba(251,252,247,.5);background:linear-gradient(180deg,rgba(255,255,255,.26) 0%,rgba(255,255,255,.05) 50%,rgba(255,255,255,.1) 100%);-webkit-backdrop-filter:blur(10px) saturate(1.5);backdrop-filter:blur(10px) saturate(1.5);box-shadow:inset 0 1.5px 1px rgba(255,255,255,.5),inset 0 -2px 5px rgba(255,255,255,.08),0 6px 12px -8px rgba(0,0,0,.5);border-radius:999px;min-height:44px;padding:0 18px;font-size:15px;font-weight:600;letter-spacing:.02em;transition:transform .22s cubic-bezier(.2,.8,.2,1),background .12s ease}
+.btn-ghost:hover{filter:brightness(1.22)}
+.btn-ghost:active{transform:scale(.94);transition-duration:.08s}
+.icon-ghost{width:48px;padding:0}
+header [data-tip]::after{content:attr(data-tip);position:absolute;top:calc(100% + 10px);right:0;transform:translateY(-4px);padding:6px 13px;border-radius:999px;background:var(--cream);color:var(--ink);font:400 13px/1.25 var(--body);letter-spacing:.01em;white-space:nowrap;box-shadow:0 8px 20px -8px rgba(0,0,0,.5);opacity:0;pointer-events:none;z-index:60;transition:opacity .14s ease,transform .14s ease}
+header [data-tip]::before{content:"";position:absolute;top:calc(100% + 6px);right:19px;width:10px;height:10px;background:var(--cream);border-radius:2px;transform:translateY(-4px) rotate(45deg);opacity:0;pointer-events:none;z-index:61;transition:opacity .14s ease,transform .14s ease}
+@media (hover:hover){
+  header [data-tip]:hover::after,header [data-tip]:focus-visible::after{opacity:1;transform:none;transition-delay:.3s}
+  header [data-tip]:hover::before,header [data-tip]:focus-visible::before{opacity:1;transform:rotate(45deg);transition-delay:.3s}
+}
+/* Therapist directory popup */
+#dirModal .modal-card{width:min(520px,100%)}
+#dirModal .modal-x{position:sticky;top:-14px;right:auto;float:right;z-index:3;margin:-14px -14px 0 12px;background:rgba(255,255,255,.88);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+/* Directory filter: funnel button left of the X, with a small menu */
+#dirModal .dir-filter{position:sticky;top:-14px;float:right;z-index:4;margin:-14px 0 0 0}
+#dirModal .dir-filter-btn{position:relative;top:auto;right:auto;float:none;margin:0}
+#dirModal .dir-filter-btn.on{color:var(--cream);border-color:rgba(255,255,255,.3);background:linear-gradient(180deg,rgba(226,146,110,.96) 0%,rgba(205,115,76,.95) 52%,rgba(184,95,58,.96) 100%)}
+.dir-filter-menu{position:absolute;top:calc(100% + 8px);right:0;width:210px;padding:6px;display:grid;gap:2px;border-radius:16px;background:#FFFFFF;border:1px solid rgba(101,59,44,.14);box-shadow:0 18px 36px -16px rgba(39,39,39,.45)}
+.dir-filter-menu button{display:flex;align-items:center;gap:9px;width:100%;padding:9px 12px;border:0;border-radius:10px;background:transparent;font:500 14px var(--body);color:var(--ink);text-align:left;cursor:pointer}
+.dir-filter-menu button svg{color:var(--label)}
+.dir-filter-menu button:hover{background:#F4EFE7}
+.dir-filter-menu button[aria-pressed="true"]{background:rgba(205,115,76,.14);color:#A44E2C;font-weight:600}
+.dir-filter-menu button[aria-pressed="true"] svg{color:currentColor}
+.dir-filter-menu button[aria-pressed="true"]::after{content:"\2713";margin-left:auto;font-weight:700}
+.dir-filter-menu .dir-filter-all{justify-content:center;margin-top:4px;border-top:1px solid rgba(101,59,44,.1);border-radius:0 0 10px 10px;color:var(--label);font-size:13px}
+#dirModal .info-head{position:sticky;top:-28px;z-index:2;margin:-28px -28px 0;padding:28px 76px 10px 28px;background:var(--cream)}
+#dirModal .info-head::after{content:"";position:absolute;left:0;right:0;top:100%;height:20px;pointer-events:none;background:linear-gradient(180deg,var(--cream) 0%,rgba(251,252,247,0) 100%)}
+#dirModal .info-head .eb{margin-bottom:0}
+.dir-list{list-style:none;margin:20px 0 0;padding:0;display:grid;gap:6px}
+#dirModal .dir-list{margin-top:20px}
+.modal-card .dir-list li{padding:0;background:none;border:0}
+.dir-row{width:100%;display:flex;align-items:center;gap:12px;padding:10px 12px 10px 16px;border-radius:14px;border:1px solid rgba(101,59,44,.1);background:#F4EFE7;color:var(--ink);font:inherit;text-align:left;cursor:pointer;transition:background .12s ease,transform .15s ease}
+.dir-row:hover{background:#EFE7DB}
+.dir-row:active{transform:scale(.99)}
+.dir-row b{font-family:var(--head);font-size:17px;font-weight:600;min-width:6.5em}
+.dir-row .dir-tags{flex:1;display:flex;flex-wrap:wrap;gap:6px}
+.dir-row .tag{font-size:12px}
+.dir-row .g-chip{display:inline-flex;align-items:center;gap:4px;padding-left:7px}
+.dir-row > svg{flex:none;color:var(--label)}
+/* Female chip in clay pink (info popup and directory) */
+#infoSub .g-chip.g-F,#dirModal .g-chip.g-F{background:rgba(205,115,76,.16);color:#A44E2C}
+/* Male chip in the same blue as the Service animal chip */
+#infoSub .g-chip.g-M,#dirModal .g-chip.g-M{background:#E2EDF8;color:#1E5287}
+.clock .time-now{font-size:26px;font-weight:500;line-height:1;font-variant-numeric:tabular-nums}
+.clock .date-now{font-size:13px;color:var(--peach)}
+.strip-h{height:6px;background:var(--grad)}
+
+main .wrap{padding-block:16px 40px;display:flex;flex-direction:column;gap:20px}
+.notice{display:flex;align-items:center;gap:12px;padding:10px 16px;border-radius:14px;background:#F3E3D8;color:var(--brown);font-size:14px;font-weight:500;border:1px solid rgba(205,115,76,.35)}
+.notice svg{flex:none}
+
+/* Panels: timer-card surface with the 5px gradient strip */
+.panel{position:relative;overflow:hidden;background:var(--card);border:1px solid var(--line);border-radius:20px;padding:20px 26px 20px;display:flex;flex-direction:column;gap:16px}
+.strip{position:absolute;top:0;left:0;right:0;height:5px;background:var(--grad)}
+@media (max-width:520px){.panel{padding:26px 16px 20px}}
+.step{display:flex;flex-direction:column;gap:8px;min-width:0}
+.step-h{display:flex;flex-direction:column;align-items:flex-start;gap:4px}
+.step-n{flex:none;font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--clay)}
+h2{margin:0;font-family:var(--head);font-size:clamp(19px,1.7vw,23px);font-weight:600;line-height:1.15;letter-spacing:-.012em}
+.hint{font-size:13.5px;color:var(--muted);margin:0}
+.lbl{font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--label)}
+
+/* Glass buttons from hwr-timers */
+.btn{position:relative;isolation:isolate;overflow:hidden;border-radius:999px;min-height:52px;padding:0 24px;font-size:16px;font-weight:600;letter-spacing:.02em;display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:transform .22s var(--ease),filter .12s ease}
+.btn:active:not(:disabled){transform:scale(.94);transition-duration:.08s}
+.btn:disabled{opacity:.4;cursor:default}
+.btn-fill{color:var(--cream);border:1px solid rgba(255,255,255,.22);
+  background:linear-gradient(180deg,rgba(128,78,60,.97) 0%,rgba(101,59,44,.96) 55%,rgba(88,50,37,.97) 100%);
+  text-shadow:0 1px 1px rgba(40,20,12,.45);
+  box-shadow:inset 0 1.5px 1px rgba(255,255,255,.45),inset 0 -2px 4px rgba(255,255,255,.1),inset 0 0 0 1px rgba(255,255,255,.06),0 12px 22px -12px rgba(101,59,44,.9),0 2px 4px rgba(101,59,44,.2)}
+.btn-fill::before{content:"";position:absolute;z-index:-1;left:7%;right:7%;top:2px;height:46%;border-radius:999px;pointer-events:none;background:linear-gradient(180deg,rgba(255,255,255,.42),rgba(255,255,255,.05))}
+.btn-fill::after{content:"";position:absolute;z-index:-1;left:20%;right:20%;bottom:2px;height:26%;border-radius:999px;pointer-events:none;background:radial-gradient(ellipse at 50% 100%,rgba(255,235,220,.38),rgba(255,235,220,0) 70%)}
+.btn-fill:hover:not(:disabled){filter:brightness(1.12)}
+.btn-outline,.glass{border:1px solid rgba(255,255,255,.8);
+  background:linear-gradient(180deg,rgba(255,255,255,.32) 0%,rgba(255,255,255,.03) 50%,rgba(205,115,76,.05) 100%);
+  box-shadow:inset 0 1.5px 1px rgba(255,255,255,.95),inset 0 -2px 5px rgba(101,59,44,.07),inset 0 0 0 1px rgba(101,59,44,.07),0 10px 18px -12px rgba(101,59,44,.5),0 1px 3px rgba(101,59,44,.1)}
+.btn-outline{color:var(--ink)}
+.btn-outline::before{content:"";position:absolute;z-index:-1;left:8%;right:8%;top:2px;height:42%;border-radius:999px;pointer-events:none;background:linear-gradient(180deg,rgba(255,255,255,.55),rgba(255,255,255,0))}
+.btn-outline:hover:not(:disabled){filter:brightness(1.03)}
+.btn-text{color:var(--label)}
+.btn-text:hover{color:var(--brown)}
+.icon-btn{flex:none;width:52px;padding:0}
+
+/* Step 1 pickers */
+.picks{display:flex;flex-wrap:wrap;gap:14px;align-items:flex-end}
+.pick{display:flex;flex-direction:column;gap:8px;flex:1 1 260px;min-width:0;max-width:380px}
+.pick-row{display:flex;gap:10px}
+select{flex:1;min-width:0;min-height:46px;border-radius:999px;color:var(--ink);font:500 17px var(--body);padding:0 48px 0 22px;appearance:none;-webkit-appearance:none;cursor:pointer;
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%23653B2C' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") no-repeat right 20px center,linear-gradient(180deg,#FFFFFF 0%,#FBFCF7 60%,#F7F1E9 100%);
+  border:1px solid rgba(101,59,44,.18);box-shadow:inset 0 1.5px 1px #fff,0 8px 16px -12px rgba(101,59,44,.5),0 1px 2px rgba(101,59,44,.08)}
+
+/* Step 2 */
+.groups{display:grid;grid-template-columns:minmax(0,1fr);gap:14px}
+fieldset{border:0;margin:0;padding:0;display:flex;flex-direction:column;gap:8px;min-width:0}
+legend{padding:0;margin-bottom:4px}
+.sr{position:absolute;opacity:0;width:1px;height:1px;pointer-events:none}
+
+/* Therapist preference: the timers' sliding segmented control */
+.segs{--n:3;--sel:2;position:relative;display:grid;grid-template-columns:repeat(var(--n),minmax(0,1fr));gap:4px;padding:6px;border-radius:999px;border:1px solid rgba(255,255,255,.55);background:linear-gradient(180deg,rgba(101,59,44,.13),rgba(101,59,44,.06));box-shadow:inset 0 2px 5px rgba(101,59,44,.16),inset 0 -1px 1px rgba(255,255,255,.8);max-width:460px}
+.thumb{position:absolute;top:6px;bottom:6px;left:6px;width:calc((100% - 12px - (var(--n) - 1) * 4px) / var(--n));border-radius:999px;overflow:hidden;border:1px solid rgba(255,255,255,.3);background:linear-gradient(180deg,rgba(226,146,110,.96) 0%,rgba(205,115,76,.95) 52%,rgba(184,95,58,.96) 100%);box-shadow:inset 0 1.5px 1px rgba(255,255,255,.55),inset 0 -3px 6px rgba(255,235,220,.16),0 10px 18px -10px rgba(160,80,45,.9);transform:translateX(calc(var(--sel) * (100% + 4px)));transition:transform .38s cubic-bezier(.65,0,.35,1)}
+.thumb::before,.pill input:checked+span::before{content:"";position:absolute;left:8%;right:8%;top:2px;height:44%;border-radius:999px;pointer-events:none;background:linear-gradient(180deg,rgba(255,255,255,.38),rgba(255,255,255,.03))}
+.seg{position:relative;z-index:1;display:grid;place-items:center;min-height:42px;border-radius:999px;font-size:16px;font-weight:500;color:var(--brown);cursor:pointer;user-select:none;white-space:nowrap;transition:color .38s cubic-bezier(.65,0,.35,1)}
+.seg:has(input:checked){color:var(--cream);text-shadow:0 1px 1px rgba(90,38,18,.45);font-weight:600}
+.seg:has(input:focus-visible){outline:3px solid var(--clay);outline-offset:2px}
+
+/* Massage: glass pills that fill brown when picked */
+.pills{display:flex;flex-wrap:wrap;gap:8px}
+.pill{position:relative}
+.pill span{position:relative;isolation:isolate;overflow:hidden;display:inline-flex;align-items:center;gap:9px;min-height:42px;padding:0 16px 0 12px;border-radius:999px;font-size:16px;font-weight:500;color:var(--brown);cursor:pointer;user-select:none;transition:transform .22s var(--ease),filter .12s ease}
+.pill span:hover{filter:brightness(1.03)}
+.pill span:active{transform:scale(.95);transition-duration:.08s}
+.pill i{flex:none;width:18px;height:18px;border-radius:50%;border:1.5px solid currentColor;display:grid;place-items:center;font-style:normal}
+.pill i svg{opacity:0}
+.pill input:checked+span{color:var(--cream);font-weight:600;text-shadow:0 1px 1px rgba(90,38,18,.45);border-color:rgba(255,255,255,.3);background:linear-gradient(180deg,rgba(226,146,110,.96) 0%,rgba(205,115,76,.95) 52%,rgba(184,95,58,.96) 100%);box-shadow:inset 0 1.5px 1px rgba(255,255,255,.55),inset 0 -3px 6px rgba(255,235,220,.16),0 10px 18px -10px rgba(160,80,45,.9)}
+.pill input:checked+span i{background:var(--cream);border-color:var(--cream);color:var(--clay)}
+.pill input:checked+span i svg{opacity:1}
+.pill input:focus-visible+span{outline:3px solid var(--clay);outline-offset:3px}
+
+/* Master Therapist switch: glass track, coral when on */
+.switch{display:inline-flex;align-items:center;gap:12px;cursor:pointer;user-select:none;font-size:16px;font-weight:500;color:var(--brown);align-self:flex-start;min-height:40px}
+.track{position:relative;flex:none;width:56px;height:32px;border-radius:999px;border:1px solid rgba(255,255,255,.55);background:linear-gradient(180deg,rgba(101,59,44,.13),rgba(101,59,44,.06));box-shadow:inset 0 2px 5px rgba(101,59,44,.16),inset 0 -1px 1px rgba(255,255,255,.8);transition:background .2s ease}
+.knob{position:absolute;top:3px;left:3px;width:24px;height:24px;border-radius:50%;background:linear-gradient(180deg,#fff 0%,#FBFCF7 50%,#EFE6DB 100%);box-shadow:inset 0 1.5px 1px #fff,0 4px 8px -3px rgba(101,59,44,.6);transition:transform .3s cubic-bezier(.65,0,.35,1)}
+.switch input:checked+.track{border-color:rgba(255,255,255,.3);background:linear-gradient(180deg,rgba(226,146,110,.96) 0%,rgba(205,115,76,.95) 52%,rgba(184,95,58,.96) 100%);box-shadow:inset 0 1.5px 1px rgba(255,255,255,.55),0 8px 14px -8px rgba(160,80,45,.9)}
+.switch input:checked+.track .knob{transform:translateX(24px)}
+.switch input:focus-visible+.track{outline:3px solid var(--clay);outline-offset:3px}
+.badge.mt{color:var(--brown)}
+.actions{display:flex;flex-wrap:wrap;gap:12px;align-items:center;padding-top:4px}
+.actions .btn{min-height:52px;padding:0 30px;font-size:17px}
+
+/* Two columns: form on the left, results on the right; stacked on narrow screens */
+.layout{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px;align-items:start}
+@media (max-width:900px){.layout{grid-template-columns:minmax(0,1fr)}}
+/* Side by side, the form stays put while the results column scrolls */
+@media (min-width:901px){
+  .layout > .folder{position:sticky;top:calc(env(safe-area-inset-top,0px) + 16px);max-height:calc(100dvh - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px) - 32px);overflow-y:auto;overscroll-behavior:contain}
+}
+
+/* Results */
+.results{display:grid;grid-template-columns:minmax(0,1fr);gap:28px;align-items:start;min-width:0}
+.col{display:flex;flex-direction:column;gap:12px;min-width:0;scroll-margin-top:calc(env(safe-area-inset-top,0px) + 76px)}
+/* Sticky Guest 1 / Guest 2 jump bar above stacked couples results */
+.jump{position:sticky;top:calc(env(safe-area-inset-top,0px) + 12px);z-index:6;justify-self:end;display:flex;gap:4px;padding:5px;border-radius:999px;border:1px solid rgba(255,255,255,.65);background:linear-gradient(180deg,rgba(255,255,255,.55) 0%,rgba(255,255,255,.22) 55%,rgba(244,239,231,.32) 100%);-webkit-backdrop-filter:blur(18px) saturate(1.8) brightness(1.04);backdrop-filter:blur(18px) saturate(1.8) brightness(1.04);box-shadow:inset 0 1.5px 1px rgba(255,255,255,.95),inset 0 -2px 6px rgba(255,255,255,.35),inset 0 0 0 1px rgba(255,255,255,.18),0 12px 28px -14px rgba(101,59,44,.55),0 0 0 1px rgba(101,59,44,.06)}
+.jump::before{content:"";position:absolute;left:10%;right:10%;top:2px;height:45%;border-radius:999px;pointer-events:none;background:linear-gradient(180deg,rgba(255,255,255,.6),rgba(255,255,255,0))}
+.jump button{position:relative;z-index:1;display:inline-flex;align-items:center;gap:8px;min-height:40px;padding:0 16px;border:0;border-radius:999px;background:transparent;font:600 15px var(--body);color:var(--brown);transition:background .15s ease,color .15s ease}
+.jump button:hover{background:rgba(101,59,44,.08)}
+.jump button[aria-current]{color:var(--cream);text-shadow:0 1px 1px rgba(90,38,18,.4);background:transparent}
+.jump-n{min-width:22px;padding:1px 7px;border-radius:999px;font-size:12px;font-variant-numeric:tabular-nums;background:rgba(101,59,44,.1)}
+.jump button[aria-current] .jump-n{background:rgba(255,255,255,.25)}
+.col-h{display:flex;flex-direction:column;gap:4px;padding:4px 4px 2px}
+.col-h .ot{font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--clay)}
+.col-h h3{margin:0;font-family:var(--head);font-size:clamp(24px,2.6vw,30px);font-weight:600;line-height:1.1;letter-spacing:-.012em}
+.col-h p{margin:0;font-size:14px;color:var(--muted)}
+.count{margin-top:6px;font-size:20px;line-height:1.25;font-weight:500;color:var(--brown);font-variant-numeric:tabular-nums}
+.count b{font-weight:inherit}
+.sub-h{padding:10px 4px 0}
+.card{position:relative;background:#FFFFFF;border:1px solid var(--line);border-radius:20px;padding:18px 20px 18px;display:flex;flex-direction:column;gap:12px}
+.card.top{background:linear-gradient(180deg,#FFF1E9 0%,#FFF8F4 45%,#FFFFFF 100%);border-color:var(--clay);box-shadow:0 0 0 1px var(--clay),0 16px 30px -18px rgba(205,115,76,.7)}
+.card-h{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.card-h h4{margin:0;font-family:var(--head);font-size:22px;font-weight:600;line-height:1.15;letter-spacing:-.012em}
+.rank{flex:none;white-space:nowrap;font-size:12px;font-weight:600;letter-spacing:.11em;text-transform:uppercase;color:var(--label)}
+.card.top .rank{display:inline-flex;align-items:center;gap:6px;letter-spacing:.03em;padding:5px 12px 5px 10px;border-radius:999px;color:var(--cream);text-shadow:0 1px 1px rgba(90,38,18,.4);border:1px solid rgba(255,255,255,.3);background:linear-gradient(180deg,rgba(226,146,110,.96) 0%,rgba(205,115,76,.95) 52%,rgba(184,95,58,.96) 100%);box-shadow:inset 0 1.5px 1px rgba(255,255,255,.5),0 6px 12px -8px rgba(160,80,45,.9)}
+.badges{display:flex;flex-direction:column;align-items:flex-end;gap:4px;text-align:right}
+.badge{font-size:12px;font-weight:600;letter-spacing:.11em;text-transform:uppercase;color:var(--label);white-space:nowrap}
+.badge.cp{color:var(--clay)}
+.why{display:grid;grid-template-columns:max-content minmax(0,1fr);gap:9px 16px;align-items:start;margin:0;padding:12px 0 0;border-top:1px solid var(--line);list-style:none;font-size:15px;line-height:1.4}
+.why li{display:contents}
+@media (max-width:420px){.why{grid-template-columns:minmax(0,1fr);gap:3px}.why li > span{margin-bottom:8px}}
+.why b{font-size:14px;font-weight:600;color:var(--label);white-space:nowrap;padding-top:2px}
+.tags{display:flex;flex-wrap:wrap;gap:5px}
+.tag{padding:3px 10px;border-radius:999px;font-size:13px;font-weight:500;background:rgba(101,59,44,.08);color:var(--brown)}
+/* Tooltip on the Master Therapist pill: shows on hover, and on tap/focus for touch screens */
+.tip{position:relative;display:inline-flex;border-radius:999px;cursor:help;outline:none}
+.tip:focus-visible{outline:3px solid var(--clay);outline-offset:2px}
+/* Tooltips: cream with dark text, matching the hwr-timers tooltips */
+.tip::after{content:attr(data-tip);position:absolute;z-index:20;left:0;top:calc(100% + 10px);width:max-content;max-width:min(260px,70vw);padding:8px 14px;border-radius:14px;background:var(--cream);color:var(--ink);font:400 13px/1.35 var(--body);letter-spacing:.01em;text-align:left;white-space:normal;box-shadow:0 8px 20px -8px rgba(0,0,0,.5);opacity:0;transform:translateY(-4px);pointer-events:none;transition:opacity .14s ease,transform .14s ease}
+.tip::before{content:"";position:absolute;z-index:21;left:18px;top:calc(100% + 5px);width:10px;height:10px;border-radius:2px;background:var(--cream);opacity:0;transform:translateY(-4px) rotate(45deg);pointer-events:none;transition:opacity .14s ease,transform .14s ease}
+/* Massage-type pills: the description shows on hover or when the pill has keyboard focus */
+.pill.tip{cursor:pointer}
+.pill.tip:has(input:focus-visible)::after{opacity:1;transform:none;transition-delay:.15s}
+.pill.tip:has(input:focus-visible)::before{opacity:1;transform:rotate(45deg);transition-delay:.15s}
+.tip:hover::after,.tip:focus::after{opacity:1;transform:none;transition-delay:.15s}
+.tip:hover::before,.tip:focus::before{opacity:1;transform:rotate(45deg);transition-delay:.15s}
+.card.top .rank::before{content:"";flex:none;width:14px;height:14px;background:currentColor;-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9H4.5a2.5 2.5 0 0 1 0-5H6'/%3E%3Cpath d='M18 9h1.5a2.5 2.5 0 0 0 0-5H18'/%3E%3Cpath d='M4 22h16'/%3E%3Cpath d='M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22'/%3E%3Cpath d='M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22'/%3E%3Cpath d='M18 2H6v7a6 6 0 0 0 12 0V2Z'/%3E%3C/svg%3E") no-repeat center/contain;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9H4.5a2.5 2.5 0 0 1 0-5H6'/%3E%3Cpath d='M18 9h1.5a2.5 2.5 0 0 0 0-5H18'/%3E%3Cpath d='M4 22h16'/%3E%3Cpath d='M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22'/%3E%3Cpath d='M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22'/%3E%3Cpath d='M18 2H6v7a6 6 0 0 0 12 0V2Z'/%3E%3C/svg%3E") no-repeat center/contain}
+/* Service animal chip: blue with an info icon */
+.tag.info{background:#EEE6F8;color:#5B3A8E;display:inline-flex;align-items:center;gap:5px;padding-left:8px}
+.tag.info::before{content:"";flex:none;width:13px;height:13px;background:currentColor;-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='10'/%3E%3Cpath d='M12 16v-4'/%3E%3Cpath d='M12 8h.01'/%3E%3C/svg%3E") no-repeat center/contain;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='10'/%3E%3Cpath d='M12 16v-4'/%3E%3Cpath d='M12 8h.01'/%3E%3C/svg%3E") no-repeat center/contain}
+/* Tabs: file-folder style along the top edge of the form card */
+.folder{display:flex;flex-direction:column;min-width:0}
+.folder > .panel{border-top-left-radius:0}
+/* Side by side, the form always fills the window from its top to the bottom margin (before and after a search,
+   on both tabs) and spreads its groups evenly; it only grows past that if a short window can't fit it.
+   Before a search, the start card stretches to the same height. */
+@media (min-width:901px){
+  .layout > .folder{min-height:calc(100dvh - var(--layout-top,96px) - 40px);margin-bottom:0}
+  .layout .panel{flex:1}
+  .layout .panes{flex:1}
+  #pane-r{justify-content:space-evenly}
+  .layout:has(.results .start){min-height:calc(100dvh - var(--layout-top,96px) - 40px)}
+  .layout:has(.results .start) > .folder{align-self:stretch}
+}
+.tabs{position:relative;z-index:1;display:flex;align-items:flex-end;gap:4px}
+.tabs .thumb{display:none}
+/* Tabs share column 1 equally: two tabs are half width each; more tabs later shrink to fit (long labels trim with …) */
+.tabs > .tab{flex:1 1 0;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.folder > .panel{border-top-right-radius:0}
+.tab{position:relative;flex:0 1 auto;min-height:40px;padding:0 18px;border:1px solid var(--line);border-bottom:0;border-radius:12px 12px 0 0;background:transparent;font:600 15px var(--body);color:var(--label);transition:background .15s ease,color .15s ease}
+.tab:hover{color:var(--brown);background:rgba(101,59,44,.06)}
+/* The open tab takes the card's color and covers the card's top border beneath it, so the two read as one folder */
+.tab[aria-selected="true"]{background:var(--card);color:var(--brown);margin-bottom:-1px;padding-bottom:1px}
+@media (max-width:520px){.tab{flex:1 1 0;padding:0 8px;font-size:14px}}
+.pane{display:flex;flex-direction:column;gap:16px}
+/* Side by side, both tabs keep the same panel height: the panes share one grid cell, the hidden one keeps
+   its space (invisible and unclickable), and the shorter one spreads its content to fill it */
+@media (min-width:901px){
+  .panes{display:grid}
+  .panes > .pane{grid-area:1/1}
+  .panes > .pane[hidden]{display:flex!important;visibility:hidden}
+  .pane{justify-content:space-between}
+  /* Couples: the guest cards keep their natural height; the spare room goes evenly above and below them,
+     separating the heading, the two cards and the Find button */
+  #pane-c .step{flex:1}
+  #pane-c .guests{flex:none;margin-block:auto}
+}
+.guest{display:flex;flex-direction:column;gap:14px;min-width:0;padding:14px 18px 14px;border-radius:18px;background:#FFFFFF;border:1px solid var(--line)}
+.guests{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(250px,100%),1fr));gap:12px}
+.guest-h{margin:0;font-family:var(--head);font-size:19px;font-weight:600;letter-spacing:-.01em}
+.guest-booked{margin:0;font-size:15px;color:var(--muted)}
+/* Info tab and Design Credits popup, copied from hwr-timers */
+.fab{position:fixed;left:0;top:50%;z-index:90;display:flex;align-items:center;gap:8px;width:32px;padding:14px 0 12px;justify-content:center;border-radius:14px 0 0 14px;color:var(--brown);cursor:pointer;
+  writing-mode:vertical-rl;transform:translateY(-50%) rotate(180deg);transform-origin:50% 50%;
+  font:600 11.5px/1 var(--body);letter-spacing:.14em;text-transform:uppercase;
+  background:linear-gradient(90deg,#FFFFFF,#F7F1E9);border:1px solid rgba(101,59,44,.2);border-right:0;
+  box-shadow:inset 1.5px 0 1px #fff,-8px 0 16px -8px rgba(39,39,39,.3),-1px 0 3px rgba(39,39,39,.08);
+  transition:transform .22s cubic-bezier(.2,.8,.2,1),width .18s ease,filter .12s ease}
+.fab:hover{width:36px;filter:brightness(1.02)}
+.fab:active{transform:translateY(-50%) rotate(180deg) scale(.95);transition-duration:.08s}
+.fab svg{flex:none;transform:rotate(-90deg);transition:transform .18s ease}
+.fab:hover svg{transform:rotate(-90deg) translateY(-2px)}
+/* Credits popup */
+.modal{position:fixed;inset:0;z-index:100;display:grid;place-items:center;padding:20px;background:rgba(39,39,39,.38);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);animation:fadein .18s ease}
+.modal[hidden]{display:none}
+.modal-card{position:relative;width:min(440px,100%);max-height:calc(100dvh - 40px);overflow:auto;padding:28px 28px 26px;border-radius:24px;background:var(--cream);color:var(--ink);border:1px solid rgba(255,255,255,.8);box-shadow:0 30px 60px -20px rgba(39,39,39,.55),inset 0 1px 1px #fff;animation:popin .22s cubic-bezier(.2,.8,.2,1)}
+.modal-card h2{margin:0 0 4px;font-size:24px;font-weight:600;line-height:1.15;letter-spacing:-.01em}
+.modal-card .eb{font-size:11.5px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#7A5C4F;margin:0 0 18px}
+.modal-card h3{margin:18px 0 6px;font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#7A5C4F}
+.modal-card p,.modal-card li{margin:0;font-size:15px;line-height:1.5;color:var(--ink)}
+.modal-card ul{margin:0;padding:0;list-style:none;display:grid;gap:8px}
+.modal-card li{padding:10px 14px;border-radius:14px;background:#F4EFE7;border:1px solid rgba(101,59,44,.1)}
+.modal-card li span{display:block;font-size:13px;color:var(--muted,#6B5148)}
+.modal-card li a{font-weight:500}
+.modal-card ul.two{grid-template-columns:1fr 1fr}
+.modal-card ul.two li:first-child{grid-column:1/-1}
+.modal-card a{color:var(--brown);text-underline-offset:3px}
+.modal-x{position:absolute;top:14px;right:14px;width:34px;height:34px;display:grid;place-items:center;border-radius:999px;border:1px solid rgba(101,59,44,.18);background:rgba(255,255,255,.6);color:var(--brown);cursor:pointer;transition:transform .22s cubic-bezier(.2,.8,.2,1),filter .12s ease}
+.modal-x:hover{filter:brightness(.96)}
+/* Copy-a-message button on each result card, and its popup */
+.card-act{display:flex;align-items:center;gap:10px;flex:none}
+.copy-btn{display:grid;place-items:center;width:38px;height:38px;border-radius:999px;cursor:pointer;color:var(--brown);border:1px solid rgba(101,59,44,.18);background:linear-gradient(180deg,#FFFFFF 0%,#FBFCF7 60%,#F7F1E9 100%);box-shadow:inset 0 1.5px 1px #fff,0 6px 12px -9px rgba(101,59,44,.6);transition:transform .22s cubic-bezier(.2,.8,.2,1),filter .12s ease}
+.copy-btn:hover{filter:brightness(.97)}
+.copy-btn:active{transform:scale(.92)}
+/* Info button next to each therapist's name, and the details popup */
+.nm{display:flex;align-items:center;gap:8px;min-width:0}
+.info-btn{flex:none;display:grid;place-items:center;width:30px;height:30px;padding:0;border:0;border-radius:999px;background:transparent;color:var(--label);cursor:pointer;transition:background .15s ease,color .15s ease}
+.info-btn:hover{background:#F4EFE7;color:var(--brown)}
+#infoModal .modal-card{width:min(520px,100%)}  /* same width as the directory, so it covers it exactly when opened from there */
+/* Long details scroll inside the popup; the close button stays pinned to the top corner */
+#infoModal .modal-x{position:sticky;top:-14px;right:auto;float:right;z-index:3;margin:-14px -14px 0 12px;background:rgba(255,255,255,.88);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+#infoModal .info-list{gap:6px}
+#infoModal .info-list li{display:grid;grid-template-columns:9.5em minmax(0,1fr);gap:12px;align-items:baseline;padding:8px 14px}
+#infoModal .info-list li span{display:flex;align-items:center;gap:6px}
+#infoModal .info-ic{flex:none;color:var(--clay)}
+/* Name and chips stay pinned at the top while the details scroll; a cream fade hides the rows passing underneath */
+/* Message button left of the X: opens the same date/time message popup as the result cards */
+#infoModal .info-act{position:sticky;top:-14px;float:right;z-index:4;margin:-14px 0 0 0}
+#infoModal .info-msg-btn{position:relative;top:auto;right:auto;float:none;margin:0}
+#infoModal .info-head{position:sticky;top:-28px;z-index:2;margin:-28px -28px 0;padding:28px 76px 10px 28px;background:var(--cream)}
+#infoModal .info-head::after{content:"";position:absolute;left:0;right:0;top:100%;height:20px;pointer-events:none;background:linear-gradient(180deg,var(--cream) 0%,rgba(251,252,247,0) 100%)}
+#infoModal .info-head .eb{margin-bottom:0}
+#infoModal #infoList{margin-top:20px}
+#infoSub{display:flex;flex-wrap:wrap;gap:6px;text-transform:none;letter-spacing:0;margin-top:8px}
+#infoSub .g-chip{display:inline-flex;align-items:center;gap:5px;padding-left:8px}
+#infoModal li.info-alert{background:#EEE6F8;border-color:rgba(91,58,142,.22);color:#5B3A8E;font-weight:500}
+#infoModal li.info-alert span,#infoModal li.info-alert .info-ic{color:#5B3A8E}
+#infoModal .info-tags{display:flex;flex-wrap:wrap;gap:6px}
+#infoModal .info-tags i{font-style:normal;white-space:nowrap;font-size:13px;padding:3px 10px;border-radius:999px;background:#FFFFFF;border:1px solid rgba(101,59,44,.14)}
+@media (max-width:480px){#infoModal .info-list li{grid-template-columns:1fr;gap:2px}}
+/* Couples: add a therapist to the booking; checked = picked for that guest */
+.add-btn .i-on{display:none}
+.add-btn[aria-pressed="true"]{color:var(--cream);border-color:rgba(255,255,255,.3);background:linear-gradient(180deg,rgba(226,146,110,.96) 0%,rgba(205,115,76,.95) 52%,rgba(184,95,58,.96) 100%);box-shadow:inset 0 1.5px 1px rgba(255,255,255,.5),0 6px 12px -8px rgba(160,80,45,.9)}
+.add-btn[aria-pressed="true"] .i-add{display:none}
+.add-btn[aria-pressed="true"] .i-on{display:block}
+.add-btn:disabled{opacity:.35;cursor:not-allowed;transform:none;filter:none}
+.card.picked{border-color:var(--clay);box-shadow:0 0 0 1px var(--clay)}
+.jump .jump-pick{display:block;max-width:9em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-left:-2px}
+.jump .jump-pick[hidden],.jump .jump-n[hidden]{display:none}
+/* Message button: the same glossy brown glass as Find therapists */
+.jump button.jump-msg{isolation:isolate;overflow:hidden;color:var(--cream);border:1px solid rgba(255,255,255,.22);text-shadow:0 1px 1px rgba(40,20,12,.45);background:linear-gradient(180deg,rgba(128,78,60,.97) 0%,rgba(101,59,44,.96) 55%,rgba(88,50,37,.97) 100%);box-shadow:inset 0 1.5px 1px rgba(255,255,255,.45),inset 0 -2px 4px rgba(255,255,255,.1),0 8px 16px -10px rgba(101,59,44,.9)}
+.jump button.jump-msg:hover{background:linear-gradient(180deg,rgba(128,78,60,.97) 0%,rgba(101,59,44,.96) 55%,rgba(88,50,37,.97) 100%);filter:brightness(1.12)}
+/* Sliding coral thumb behind the active guest, like the Therapist Preference toggle */
+.jthumb{position:absolute;z-index:0;top:5px;bottom:5px;left:0;width:0;border-radius:999px;overflow:hidden;pointer-events:none;border:1px solid rgba(255,255,255,.3);background:linear-gradient(180deg,rgba(226,146,110,.96) 0%,rgba(205,115,76,.95) 52%,rgba(184,95,58,.96) 100%);box-shadow:inset 0 1.5px 1px rgba(255,255,255,.55),inset 0 -3px 6px rgba(255,235,220,.16),0 10px 18px -10px rgba(160,80,45,.9);transition:transform .38s cubic-bezier(.65,0,.35,1),width .38s cubic-bezier(.65,0,.35,1)}
+.jthumb::before{content:"";position:absolute;left:8%;right:8%;top:2px;height:44%;border-radius:999px;background:linear-gradient(180deg,rgba(255,255,255,.38),rgba(255,255,255,.03))}
+.jthumb.no-anim{transition:none}
+@media (prefers-reduced-motion:reduce){.jthumb{transition:none}}
+.msg-fields{display:grid;grid-template-columns:1.25fr 1fr;gap:12px;margin-top:6px}
+.msg-fields .full{grid-column:1/-1}
+.fld{display:flex;flex-direction:column;gap:6px;min-width:0}
+.fld input,.fld textarea{width:100%;min-width:0;box-sizing:border-box;color:var(--ink);font:500 16px var(--body);border:1px solid rgba(101,59,44,.18);background:linear-gradient(180deg,#FFFFFF 0%,#FBFCF7 100%);box-shadow:inset 0 1.5px 1px #fff,0 1px 2px rgba(101,59,44,.08)}
+.fld input{min-height:46px;border-radius:999px;padding:0 18px}
+.fld textarea{min-height:150px;border-radius:16px;padding:12px 16px;line-height:1.5;resize:vertical}
+.fld input:focus-visible,.fld textarea:focus-visible{outline:2px solid var(--clay);outline-offset:1px}
+/* Time field: up/down carets move it 15 minutes; typing still works */
+.stepper{position:relative}
+.stepper input{padding-right:52px}
+.stepper input::-webkit-calendar-picker-indicator{display:none}
+.stepper.has-cal input{padding-right:94px}
+.cal-btn{position:absolute;top:5px;bottom:5px;right:46px;width:40px;display:grid;place-items:center;padding:0;border-radius:12px;border:1px solid rgba(101,59,44,.14);background:#F7F1E9;color:var(--brown);cursor:pointer;transition:filter .12s ease,transform .15s ease}
+.cal-btn:hover{filter:brightness(.96)}
+.cal-btn:active{transform:scale(.94)}
+.cal-btn[aria-expanded="true"]{color:var(--cream);background:linear-gradient(180deg,rgba(226,146,110,.96) 0%,rgba(205,115,76,.95) 52%,rgba(184,95,58,.96) 100%);border-color:rgba(255,255,255,.3)}
+/* Month calendar popover under the Date field */
+.cal-pop{position:absolute;z-index:5;top:calc(100% + 8px);left:0;width:292px;max-width:calc(100vw - 72px);padding:12px 12px 10px;border-radius:18px;background:#FFFFFF;border:1px solid rgba(101,59,44,.16);box-shadow:0 22px 40px -18px rgba(39,39,39,.45),0 2px 6px rgba(101,59,44,.08)}
+.cal-h{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px}
+.cal-h b{font-family:var(--head);font-size:17px;font-weight:600;color:var(--ink)}
+.cal-h button{width:34px;height:34px;display:grid;place-items:center;padding:0;border-radius:999px;border:1px solid rgba(101,59,44,.14);background:#F7F1E9;color:var(--brown);cursor:pointer}
+.cal-h button:disabled{opacity:.35;cursor:default}
+.cal-g{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;text-align:center}
+.cal-g .wd{padding:4px 0;font-size:11px;font-weight:600;letter-spacing:.08em;color:var(--label)}
+.cal-g button{aspect-ratio:1;padding:0;border:0;border-radius:999px;background:transparent;font:500 14px var(--body);color:var(--ink);cursor:pointer;font-variant-numeric:tabular-nums}
+.cal-g button:hover:not(:disabled){background:#F4EFE7}
+.cal-g button:disabled{color:rgba(39,39,39,.28);cursor:default}
+.cal-g button.today{box-shadow:inset 0 0 0 1.5px var(--clay);color:var(--brown);font-weight:600}
+.cal-g button[aria-pressed="true"]{color:var(--cream);font-weight:600;box-shadow:none;background:linear-gradient(180deg,rgba(226,146,110,.96) 0%,rgba(205,115,76,.95) 52%,rgba(184,95,58,.96) 100%)}
+/* The message popup is always tall enough for the open calendar, so it never changes size; on a short screen the backdrop scrolls */
+#msgModal{overflow-y:auto;place-items:safe center}
+#msgModal .modal-card{width:min(520px,100%);max-height:none;overflow:visible}
+/* Spread the fields evenly through the extra height and keep the Copy button near the bottom edge */
+#msgModal .modal-card{display:flex;flex-direction:column}
+#msgModal .msg-fields{row-gap:22px;margin-top:14px}
+#msgModal .msg-actions{margin-top:auto;padding-top:26px}
+.steps{position:absolute;top:5px;bottom:5px;right:6px;display:flex;flex-direction:column;gap:2px}
+.steps button{flex:1;display:grid;place-items:center;width:34px;padding:0;border:1px solid rgba(101,59,44,.14);background:#F7F1E9;color:var(--brown);cursor:pointer;transition:filter .12s ease,transform .15s ease}
+.steps button:first-child{border-radius:12px 12px 4px 4px}
+.steps button:last-child{border-radius:4px 4px 12px 12px}
+.steps button:hover{filter:brightness(.96)}
+.steps button:active{transform:scale(.94)}
+.steps button:disabled{opacity:.35;cursor:default;filter:none;transform:none}
+.msg-actions{display:flex;align-items:center;gap:12px;margin-top:18px}
+.msg-actions .btn{flex:none;min-height:48px;padding:0 26px;white-space:nowrap}
+.msg-note{font-size:13px;color:var(--muted)}
+@media (max-width:420px){.msg-fields{grid-template-columns:1fr}}
+.modal-x:active{transform:scale(.92)}
+/* Leave room on the left for the Info tab so it never sits on top of the form */
+@media (min-width:601px){.wrap{padding-left:max(44px,env(safe-area-inset-left,0px))}}
+@keyframes fadein{from{opacity:0}to{opacity:1}}
+@keyframes popin{from{opacity:0;transform:translateY(8px) scale(.97)}to{opacity:1;transform:none}}
+@media (max-width:600px){
+  .fab{left:50%;top:auto;bottom:0;writing-mode:horizontal-tb;flex-direction:row;width:auto;height:44px;padding:2px 24px 0;gap:8px;font-size:12.5px;border-radius:16px 16px 0 0;
+    transform:translateX(-50%);border:1px solid rgba(101,59,44,.2);border-bottom:0;background:linear-gradient(180deg,#FFFFFF,#F7F1E9);
+    box-shadow:inset 0 1.5px 1px #fff,0 -8px 16px -8px rgba(39,39,39,.3),0 -1px 3px rgba(39,39,39,.08)}
+  .fab:hover{width:auto;height:44px}
+  .fab:active{transform:translateX(-50%) scale(.96)}
+  .fab svg,.fab:hover svg{transform:none}
+}
+@media (prefers-reduced-motion:reduce){.modal,.modal-card{animation:none}}
+/* Empty state in the results column */
+.start{display:flex;flex-direction:column;align-items:center;text-align:center;gap:12px;padding:44px 28px 40px;border-radius:20px;border:1.5px dashed rgba(101,59,44,.25);background:#FFFFFF}
+.start-stack{display:grid}
+.start-in{grid-area:1/1;display:flex;flex-direction:column;align-items:center;gap:12px}
+.start-in[data-ghost]{visibility:hidden}
+.start-ic{display:grid;place-items:center;width:60px;height:60px;border-radius:50%;color:var(--cream);background:linear-gradient(180deg,rgba(226,146,110,.96) 0%,rgba(205,115,76,.95) 52%,rgba(184,95,58,.96) 100%);box-shadow:inset 0 1.5px 1px rgba(255,255,255,.5),0 10px 18px -10px rgba(160,80,45,.9)}
+.start h3{margin:4px 0 0;font-family:var(--head);font-size:26px;font-weight:600;letter-spacing:-.012em;text-wrap:balance}
+.start p{margin:0;max-width:34ch;font-size:16px;line-height:1.5;color:var(--muted)}
+.start p b{color:var(--brown);font-weight:600}
+.start ul{margin:6px 0 0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px;text-align:left;max-width:36ch}
+.start li{position:relative;padding-left:22px;font-size:15px;line-height:1.45;color:var(--brown)}
+.start li::before{content:"";position:absolute;left:4px;top:.55em;width:8px;height:8px;border-radius:50%;background:var(--clay)}
+/* Side by side, the start card fills the column so it matches the form's height */
+@media (min-width:901px){
+  .results:has(.start){align-self:stretch;grid-template-rows:1fr}
+  .results .start{justify-content:center;box-sizing:border-box;height:100%}
+}
+.dir-u{display:none}
+@media (max-width:900px){.dir-l{display:none}.dir-u{display:inline}}
+/* Couples heads-up: who a therapist won't share a couples room with */
+.tag.pair{background:var(--warn-bg);color:var(--warn)}
+.col-h p.left{color:var(--warn);font-weight:500}
+.tag.alert{background:var(--warn-bg);color:var(--warn)}
+.tag.dim{background:transparent;color:var(--muted);box-shadow:inset 0 0 0 1px rgba(101,59,44,.18)}
+.tag.ok{background:var(--good-bg);color:var(--good);display:inline-flex;align-items:center;gap:5px;padding-left:8px}
+.tag.ok::before{content:"";flex:none;width:12px;height:12px;background:currentColor;-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E") no-repeat center/contain;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E") no-repeat center/contain}
+/* Master Therapist pill: coin icon before the text flags the added fee (after the checkmark when it matches) */
+.tag.fee{display:inline-flex;align-items:center;gap:5px;padding-left:8px}
+/* Master Therapist: soft gold as a heads-up about the upcharge (same softness as the clay Female chip, just yellower) (cards, info popup, directory), whether or not the guest asked for one */
+.tag.fee,.tag.fee.alert{background:rgba(212,168,42,.2);color:#7A5C08}
+/* Guest asked for a Master Therapist: green, like the other matched needs */
+.tag.fee.ok{background:var(--good-bg);color:var(--good)}
+.tag.fee::before{order:-2}
+.tag.fee::after{order:-1;content:"";flex:none;width:14px;height:14px;background:currentColor;-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='10'/%3E%3Cpath d='M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8'/%3E%3Cpath d='M12 18V6'/%3E%3C/svg%3E") no-repeat center/contain;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='10'/%3E%3Cpath d='M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8'/%3E%3Cpath d='M12 18V6'/%3E%3C/svg%3E") no-repeat center/contain}
+.sr-text{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.tag.miss{background:#FBE3DF;color:#A3271F;display:inline-flex;align-items:center;gap:5px;padding-left:8px}
+.tag.miss::before{content:"";flex:none;width:11px;height:11px;background:currentColor;-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3.5' stroke-linecap='round'%3E%3Cpath d='M6 6l12 12M18 6 6 18'/%3E%3C/svg%3E") no-repeat center/contain;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3.5' stroke-linecap='round'%3E%3Cpath d='M6 6l12 12M18 6 6 18'/%3E%3C/svg%3E") no-repeat center/contain}
+.empty{padding:20px;border-radius:20px;border:1.5px dashed rgba(101,59,44,.25);color:var(--muted);font-size:15px}
+.dup{font-size:13px;color:var(--muted);font-style:italic}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap nav">
+    <h1 class="head">Therapist Match</h1>
+    <div class="nav-right">
+      <div class="clock">
+        <div class="time-now" id="clock"></div>
+        <div class="date-now" id="dateLine"></div>
+      </div>
+      <div class="nav-btns">
+        <button class="btn-ghost icon-ghost" id="dirBtn" type="button" aria-haspopup="dialog" aria-label="Therapist directory" data-tip="Therapist directory"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H19a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H6.5a1 1 0 0 1 0-5H20"/><circle cx="12" cy="8" r="2.2"/><path d="M15.5 13.5a3.5 3.5 0 0 0-7 0"/></svg></button>
+      </div>
+    </div>
+  </div>
+  <div class="strip-h"></div>
+</header>
+
+<main>
+  <div class="wrap">
+    <div class="notice" id="sampleNote">
+      <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+      <span id="sampleNoteText">Gender isn't set for some therapists yet.</span>
+    </div>
+
+    <div class="layout">
+    <form class="folder" id="form" autocomplete="off">
+
+      <div class="tabs" role="tablist" aria-label="What are you booking?" id="tabs">
+        <span class="thumb" aria-hidden="true"></span>
+        <button type="button" role="tab" class="tab" id="tab-r" aria-selected="true" aria-controls="pane-r">Replacement Therapist</button>
+        <button type="button" role="tab" class="tab" id="tab-c" aria-selected="false" aria-controls="pane-c">Couples Booking</button>
+      </div>
+
+      <div class="panel">
+      <div class="panes">
+
+      <!-- Replacement Therapist -->
+      <div class="pane" id="pane-r" role="tabpanel" aria-labelledby="tab-r">
+        <section class="step">
+          <div class="step-h"><span class="step-n">Step 1</span><h2>Which therapist is unavailable?</h2></div>
+          <p class="hint">Leave it blank to see everyone who fits their needs.</p>
+          <div class="picks">
+            <div class="pick">
+              <label class="lbl" for="t1">Therapist</label>
+              <div class="pick-row"><select id="t1"></select></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="step">
+          <div class="step-h"><span class="step-n">Step 2</span><h2>What does the guest need?</h2></div>
+          <p class="hint">Pick one massage, or none to match on style alone. Tap it again to unpick.</p>
+          <div class="groups" id="r-crit"></div>
+        </section>
+      </div>
+
+      <!-- Couples Booking -->
+      <div class="pane" id="pane-c" role="tabpanel" aria-labelledby="tab-c" hidden>
+        <section class="step">
+          <div class="step-h"><h2>What does each guest need?</h2></div>
+          <p class="hint">Only therapists who do couples massage show up, and pairs who won't work together are flagged.</p>
+          <div class="guests">
+          <div class="guest" id="guestA">
+            <h3 class="guest-h">Guest 1</h3>
+            <div class="groups" id="a-crit"></div>
+          </div>
+          <div class="guest">
+            <h3 class="guest-h">Guest 2</h3>
+            <div class="groups" id="b-crit"></div>
+          </div>
+          </div>
+        </section>
+      </div>
+      </div>
+
+      <div class="actions">
+        <button type="submit" class="btn btn-fill" id="run">Find therapists</button>
+        <button type="button" class="btn btn-outline" id="clear">Clear</button>
+      </div>
+      </div>
+    </form>
+
+    <section class="results" id="results" aria-live="polite"></section>
+    </div>
+  </div>
+</main>
+
+<button class="fab" id="infoFab" type="button" aria-haspopup="dialog" aria-expanded="false" aria-label="Info and credits">Info<svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"/></svg></button>
+<div class="modal" id="creditsModal" role="dialog" aria-modal="true" aria-labelledby="creditsTitle" hidden>
+  <div class="modal-card">
+    <button class="modal-x" id="creditsClose" type="button" aria-label="Close credits"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
+        <h2 class="head" id="creditsTitle">Design Credits</h2>
+    <h3>Design &amp; build</h3>
+    <ul class="two">
+      <li><span>Designed by</span><a href="https://dub.sh/hld-referral" target="_blank" rel="noopener">Hannah Lambert Design</a></li>
+      <li><span>Built with</span>Claude</li>
+      <li><span>Hosted on</span>Netlify</li>
+    </ul>
+    <h3>Typography</h3>
+    <ul>
+      <li><span>Headings &middot; Adobe Fonts</span>Gravesend Sans</li>
+      <li><span>Body text &middot; Google Fonts</span>Work Sans</li>
+    </ul>
+  </div>
+</div>
+
+<div class="modal" id="dirModal" role="dialog" aria-modal="true" aria-labelledby="dirTitle" hidden>
+  <div class="modal-card">
+    <button class="modal-x" id="dirClose" type="button" aria-label="Close directory"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
+    <div class="dir-filter">
+      <button class="modal-x dir-filter-btn" id="dirFilterBtn" type="button" aria-label="Filter therapists" aria-expanded="false" aria-controls="dirFilterMenu"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5h18l-7 8.5V19l-4 2v-7.5z"/></svg></button>
+      <div class="dir-filter-menu" id="dirFilterMenu" role="group" aria-label="Filter therapists" hidden>
+        <button type="button" data-f="F" aria-pressed="false"><svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9" r="6"/><path d="M12 15v7M9 19h6"/></svg>Female</button>
+        <button type="button" data-f="M" aria-pressed="false"><svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="m21 3-6.5 6.5"/><circle cx="10" cy="14" r="6"/></svg>Male</button>
+        <button type="button" data-f="master" aria-pressed="false"><svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/><path d="M12 18V6"/></svg>Master Therapist</button>
+        <button type="button" data-f="all" class="dir-filter-all">Show everyone</button>
+      </div>
+    </div>
+    <div class="info-head">
+      <h2 class="head" id="dirTitle">Therapist Directory</h2>
+      <p class="eb" id="dirSub"></p>
+    </div>
+    <ul class="dir-list" id="dirList"></ul>
+  </div>
+</div>
+<div class="modal" id="infoModal" role="dialog" aria-modal="true" aria-labelledby="infoTitle" hidden>
+  <div class="modal-card">
+    <button class="modal-x" id="infoClose" type="button" aria-label="Close details"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
+    <div class="info-act">
+      <button class="modal-x info-msg-btn" id="infoMsg" type="button" aria-label="Write a message offering this therapist" data-tip="Message"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 9a2 2 0 0 1-2 2H6l-4 4V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2z"/><path d="M18 9h2a2 2 0 0 1 2 2v11l-4-4h-6a2 2 0 0 1-2-2v-1"/></svg></button>
+    </div>
+    <div class="info-head">
+      <h2 class="head" id="infoTitle"></h2>
+      <p class="eb" id="infoSub"></p>
+    </div>
+    <ul class="info-list" id="infoList"></ul>
+  </div>
+</div>
+<div class="modal" id="msgModal" role="dialog" aria-modal="true" aria-labelledby="msgTitle" hidden>
+  <div class="modal-card">
+    <button class="modal-x" id="msgClose" type="button" aria-label="Close message"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
+    <h2 class="head" id="msgTitle">Offer a new time</h2>
+    <p class="eb">Message for the guest</p>
+    <div class="msg-fields">
+      <label class="fld full"><span class="lbl">Guest name (optional)</span><input id="msgGuest" type="text" autocomplete="off" placeholder="e.g. Sarah"></label>
+      <div class="fld"><label class="lbl" for="msgDate">Date</label>
+        <div class="stepper has-cal">
+          <input id="msgDate" type="date">
+          <button type="button" class="cal-btn" id="calBtn" aria-label="Open calendar" aria-haspopup="dialog" aria-expanded="false" aria-controls="calPop"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4.5" width="18" height="16.5" rx="3"/><path d="M3 9.5h18M8 2.5v4M16 2.5v4"/></svg></button>
+          <div class="cal-pop" id="calPop" role="dialog" aria-label="Choose a date" hidden></div>
+          <div class="steps">
+            <button type="button" data-day="1" aria-label="Next day"><svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 15 6-6 6 6"/></svg></button>
+            <button type="button" data-day="-1" aria-label="Previous day"><svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
+          </div>
+        </div>
+      </div>
+      <div class="fld"><label class="lbl" for="msgTime">Time</label>
+        <div class="stepper">
+          <input id="msgTime" type="time" step="900" min="09:00" max="20:00">
+          <div class="steps">
+            <button type="button" data-step="15" aria-label="15 minutes later"><svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 15 6-6 6 6"/></svg></button>
+            <button type="button" data-step="-15" aria-label="15 minutes earlier"><svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
+          </div>
+        </div>
+      </div>
+      <label class="fld full"><span class="lbl">Message</span><textarea id="msgText" rows="6"></textarea></label>
+    </div>
+    <div class="msg-actions">
+      <button type="button" class="btn btn-fill" id="msgCopy">Copy message</button>
+      <span class="msg-note" id="msgNote" aria-live="polite">You can edit the text before copying.</span>
+    </div>
+  </div>
+</div>
+<script>
+/* ---- Roster, from the team's Therapist Modalities sheet (cleaned 2026-11-01) ----
+   gender: "F" or "M" (from the Gender column)
+   master: Master Therapist (additional fee)
+   mods: prenatal / swedish / light / deep / sports; notes: limits on a modality
+   similar: the company's "similar therapists" picks, made mutual both ways */
+const ROSTER = [
+  {"name": "Adrian", "gender": "M", "master": false, "mods": ["prenatal", "swedish", "light", "deep", "sports"], "notes": {}, "similar": ["Dawn"]},
+  {"name": "Alice", "gender": "F", "master": false, "mods": ["swedish", "light", "deep"], "notes": {}, "similar": ["Amy", "Dewaine", "Samaji", "Sol", "Eszter", "Marlen", "Kayo"]},
+  {"name": "Almir", "gender": "M", "master": false, "mods": ["swedish", "light", "deep"], "notes": {}, "similar": ["Samaji"]},
+  {"name": "Amy", "gender": "F", "master": true, "mods": ["prenatal", "swedish", "light", "deep", "sports"], "notes": {}, "similar": ["Samaji", "Dewaine", "Shireen", "Chi", "Eszter", "Alice", "Dawn", "Jennifer", "Joseph", "Kayo", "Lauren", "Lisa", "Marlen", "Michelle", "Rachel", "Sol"]},
+  {"name": "Chi", "gender": "F", "master": false, "mods": ["swedish", "deep", "sports"], "notes": {}, "similar": ["Lisa", "Lauren", "Olga", "Samaji", "Amy", "Dewaine", "Rachel", "Michelle"]},
+  {"name": "Dawn", "gender": "F", "master": false, "mods": ["prenatal", "swedish", "light"], "notes": {}, "similar": ["Kayo", "Rachel", "Olga", "Lisa", "Lauren", "Samaji", "Adrian", "Amy"]},
+  {"name": "Dewaine", "gender": "M", "master": false, "mods": ["swedish", "deep", "sports"], "notes": {}, "similar": ["Samaji", "Sol", "Joseph", "Lauren", "Marlen", "Olga", "Alice", "Amy", "Chi", "Eszter", "Jennifer", "Michelle"]},
+  {"name": "Elizabeth", "gender": "F", "master": false, "mods": ["prenatal", "swedish", "light", "sports"], "notes": {}, "similar": []},
+  {"name": "Eszter", "gender": "F", "master": true, "mods": ["swedish", "light", "deep", "sports"], "notes": {}, "similar": ["Samaji", "Dewaine", "Michelle", "Amy", "Rachel", "Marlen", "Alice", "Jennifer", "Sol"]},
+  {"name": "Jennifer", "gender": "F", "master": false, "serviceAnimal": true, "notWith": ["Shireen"], "mods": ["swedish", "deep", "sports"], "notes": {}, "similar": ["Amy", "Dewaine", "Samaji", "Sol", "Eszter", "Marlen"]},
+  {"name": "Joseph", "gender": "M", "master": true, "mods": ["prenatal", "swedish", "deep", "sports"], "notes": {"prenatal": "side-lying only"}, "similar": ["Samaji", "Sol", "Dewaine", "Amy", "Rachel", "Matt"]},
+  {"name": "Kayo", "gender": "F", "master": false, "mods": ["swedish", "light", "deep", "sports"], "notes": {"deep": "certain areas only"}, "similar": ["Rachel", "Dawn", "Amy", "Alice", "Shireen"]},
+  {"name": "Lauren", "gender": "F", "master": true, "mods": ["swedish", "light", "deep", "sports"], "notes": {}, "similar": ["Rachel", "Dawn", "Amy", "Chi", "Dewaine", "Lisa", "Marlen", "Michelle"]},
+  {"name": "Lisa", "gender": "F", "master": true, "mods": ["swedish", "light", "sports"], "notes": {}, "similar": ["Amy", "Marlen", "Rachel", "Lauren", "Samaji", "Sol", "Olga", "Chi", "Dawn"]},
+  {"name": "Marlen", "gender": "F", "master": false, "mods": ["swedish", "light"], "notes": {}, "similar": ["Amy", "Rachel", "Lauren", "Samaji", "Sol", "Olga", "Alice", "Dewaine", "Eszter", "Jennifer", "Lisa", "Shireen"]},
+  {"name": "Matt", "gender": "M", "master": false, "mods": ["swedish", "deep", "sports"], "notes": {}, "similar": ["Samaji", "Sol", "Joseph"]},
+  {"name": "Michelle", "gender": "F", "master": true, "mods": ["prenatal", "swedish", "light", "deep", "sports"], "notes": {}, "similar": ["Shireen", "Lauren", "Amy", "Samaji", "Dewaine", "Chi", "Eszter"]},
+  {"name": "Olga", "gender": "F", "master": false, "mods": ["prenatal", "swedish", "light"], "notes": {}, "similar": ["Chi", "Dawn", "Dewaine", "Lisa", "Marlen", "Rachel"]},
+  {"name": "Rachel", "gender": "F", "master": false, "mods": ["swedish", "light", "deep"], "notes": {}, "similar": ["Amy", "Marlen", "Lauren", "Samaji", "Sol", "Olga", "Chi", "Dawn", "Eszter", "Joseph", "Kayo", "Lisa", "Shireen"]},
+  {"name": "Samaji", "gender": "M", "master": true, "mods": ["prenatal", "swedish", "light", "deep", "sports"], "notes": {}, "similar": ["Chi", "Dewaine", "Michelle", "Lisa", "Alice", "Amy", "Dawn", "Eszter", "Jennifer", "Joseph", "Marlen", "Matt", "Rachel", "Sol", "Almir"]},
+  {"name": "Shireen", "gender": "F", "master": true, "notWith": ["Jennifer"], "mods": ["prenatal", "swedish", "light", "deep", "sports"], "notes": {}, "similar": ["Marlen", "Rachel", "Kayo", "Amy", "Michelle"]},
+  {"name": "Sol", "gender": "M", "master": true, "couples": false, "mods": ["swedish", "deep", "sports"], "notes": {}, "similar": ["Amy", "Dewaine", "Samaji", "Eszter", "Marlen", "Alice", "Jennifer", "Joseph", "Lisa", "Matt", "Rachel"]}
+];
+
+/* Extra details for the info popup, from the cleaned roster sheet */
+const INFO = {"Adrian": {"lang": "None listed", "spec": "All MH Elevations are good to go except Vita D and Gua Sha", "more": ["MH Cupping", "Craniosacral", "Lymph Drainage", "Reflexology", "Acupressure", "Injury Rehab", "Trigger Point", "Shiatsu", "Fibromyalgia", "Myofascial (MFR)", "Migraine", "Multiple Sclerosis (MS)", "Lomi Lomi", "Neuromuscular", "Reiki"], "notes": "None", "room": "No preference", "callout": "90 min", "maxhrs": "3.5", "twohr": "No", "minors": "Yes"}, "Alice": {"lang": "English, Thai", "spec": "None listed", "more": ["VitaD Glow", "MH Cupping", "Gua Sha", "Reflexology", "Trigger Point", "Myofascial (MFR)"], "notes": "None", "room": "Prefers 1", "callout": "60 min", "maxhrs": "3", "twohr": "Yes", "minors": "Yes"}, "Almir": {"lang": "None listed", "spec": "None listed", "more": [], "notes": "None", "room": "No preference", "callout": "90 min", "maxhrs": "3", "twohr": "No", "minors": "No"}, "Amy": {"lang": "English, Chinese", "spec": "Stretching, Hot Stones, Gua Sha, Cupping", "more": ["VitaD Glow", "MH Cupping", "Gua Sha", "Craniosacral", "Reflexology", "Acupressure", "Trigger Point", "Shiatsu", "Fibromyalgia", "Myofascial (MFR)", "Migraine", "Neuromuscular"], "notes": "None", "room": "Always 2", "callout": "60 min", "maxhrs": "3.5", "twohr": "Yes", "minors": "Yes"}, "Chi": {"lang": "Chinese, Vietnamese", "spec": "Mix of Swedish and Deep Tissue", "more": ["VitaD Glow", "MH Cupping", "Gua Sha", "Reflexology", "Trigger Point"], "notes": "None", "room": "Prefers 2 or 3, any is OK", "callout": "90 min", "maxhrs": "2.5", "twohr": "No", "minors": "Yes"}, "Dawn": {"lang": "None listed", "spec": "Can do deep work, but only for 60-min sessions. Level 2 Reiki practitioner. Specializes in relaxing Swedish work. Cupping", "more": ["VitaD Glow", "MH Cupping", "Gua Sha", "Lymph Drainage", "Trigger Point", "Reiki"], "notes": "None", "room": "6 or 11, not 5", "callout": "120 min", "maxhrs": "3 (4 guests max per day)", "twohr": "Yes", "minors": "A to Z Concrete daughters are OK"}, "Dewaine": {"lang": "English", "spec": "Tui Na, neck, feet", "more": ["VitaD Glow", "Gua Sha", "Reflexology", "Trigger Point", "Migraine"], "notes": "None", "room": "10 or 11, not 7", "callout": "60 min", "maxhrs": "3", "twohr": "Yes", "minors": "Yes"}, "Elizabeth": {"lang": "ASL, Mandarin, Chinese, Japanese", "spec": "Pain management, intraoral TMJ, orthopedic, Cupping, abdominal, chronic issues, Thai", "more": ["VitaD Glow", "MH Cupping", "Gua Sha", "Craniosacral", "Lymph Drainage", "Reflexology", "Acupressure", "Injury Rehab", "Trigger Point", "Fibromyalgia", "Myofascial (MFR)", "Migraine", "Multiple Sclerosis (MS)", "Neuromuscular"], "notes": "None", "room": "Likes 6, any is OK", "callout": "120 min", "maxhrs": "Break between each appointment", "twohr": "Yes", "minors": "Ask"}, "Eszter": {"lang": "Hungarian, German", "spec": "Gua Sha, Myofascial Release, TMJ, pain management, amazing neck work", "more": ["VitaD Glow", "MH Cupping", "Gua Sha", "Craniosacral", "Lymph Drainage", "Reflexology", "Acupressure", "Injury Rehab", "Trigger Point", "Fibromyalgia", "Myofascial (MFR)", "Migraine", "Lomi Lomi", "Neuromuscular"], "notes": "None", "room": "8", "callout": "120 min", "maxhrs": "3.5", "twohr": "No", "minors": "No"}, "Jennifer": {"lang": "None listed", "spec": "Deep pressure, Gua Sha, Cupping, Lymphatic", "more": ["VitaD Glow", "MH Cupping", "Gua Sha", "Craniosacral", "Lymph Drainage", "Reflexology", "Acupressure", "Injury Rehab", "Trigger Point", "Shiatsu", "Fibromyalgia", "Myofascial (MFR)", "Migraine", "Multiple Sclerosis (MS)", "Lomi Lomi", "Neuromuscular", "Reiki"], "notes": "None", "room": "Always 5", "callout": "120 min", "maxhrs": "2 (two 90-min a day)", "twohr": "No", "minors": "No"}, "Joseph": {"lang": "Some Spanish", "spec": "Deep Tissue, orthopedic, Hot Stones. 2–3 hours", "more": ["VitaD Glow", "MH Cupping", "Lymph Drainage", "Reflexology", "Acupressure", "Injury Rehab", "Trigger Point", "Fibromyalgia", "Myofascial (MFR)", "Migraine", "Multiple Sclerosis (MS)", "Neuromuscular"], "notes": "Prenatal: side-lying only; Lomi Lomi: ask first", "room": "Always 12 or 7", "callout": "60 min", "maxhrs": "Break between each appointment", "twohr": "Yes, up to 3 hours", "minors": "Ask first. A parent must be present during the service"}, "Kayo": {"lang": "Japanese", "spec": "Neck and shoulder work, relaxation and therapeutic", "more": ["VitaD Glow", "MH Cupping", "Gua Sha", "Migraine"], "notes": "Deep Tissue: certain areas only, not full body", "room": "10, 11 or 12, not 7", "callout": "90 min", "maxhrs": "3.5", "twohr": "Yes", "minors": "Yes, 16 and up"}, "Lauren": {"lang": "None listed", "spec": "Neck work, good mix of deep and relaxing", "more": ["VitaD Glow", "MH Cupping", "Gua Sha", "Craniosacral", "Lymph Drainage", "Reflexology", "Acupressure", "Injury Rehab", "Trigger Point", "Fibromyalgia", "Myofascial (MFR)", "Migraine", "Neuromuscular"], "notes": "None", "room": "8 or 9", "callout": "120 min", "maxhrs": "2.5", "twohr": "Yes", "minors": "Yes"}, "Lisa": {"lang": "None listed", "spec": "Likes Swedish, Trigger Point and Deep Tissue", "more": ["VitaD Glow", "MH Cupping", "Gua Sha", "Lymph Drainage", "Acupressure", "Trigger Point", "Migraine", "Neuromuscular"], "notes": "None", "room": "8 or 9", "callout": "90 min", "maxhrs": "3 (4 guests max per day)", "twohr": "Ask for approval (Julie Boshaw is one)", "minors": "No"}, "Marlen": {"lang": "Spanish", "spec": "Light to medium pressure", "more": ["VitaD Glow", "MH Cupping", "Gua Sha", "Shiatsu"], "notes": "None", "room": "6 or 9", "callout": "90 min", "maxhrs": "3.5", "twohr": "Yes", "minors": "Yes"}, "Matt": {"lang": "None listed", "spec": "Lomi Lomi, Tui Na", "more": ["VitaD Glow", "MH Cupping", "Gua Sha", "Lymph Drainage", "Acupressure", "Injury Rehab", "Trigger Point", "Fibromyalgia", "Myofascial (MFR)", "Neuromuscular"], "notes": "None", "room": "11 or 12", "callout": "120 min", "maxhrs": "2.5", "twohr": "Yes", "minors": "No"}, "Michelle": {"lang": "English, limited Spanish, Mandarin, a little French", "spec": "Lomi Lomi, Tui Na, TMJ", "more": ["VitaD Glow", "MH Cupping", "Gua Sha", "Acupressure", "Trigger Point", "Shiatsu", "Myofascial (MFR)", "Migraine", "Lomi Lomi", "Neuromuscular", "Reiki"], "notes": "None", "room": "5, 10, 11 or 12", "callout": "120 min", "maxhrs": "2 appointments", "twohr": "Yes", "minors": "Yes"}, "Olga": {"lang": "Spanish", "spec": "None listed", "more": ["MH Cupping", "Gua Sha", "Acupressure", "Injury Rehab", "Fibromyalgia", "Migraine", "Lomi Lomi", "Neuromuscular"], "notes": "None", "room": "Any room", "callout": "Night before if possible", "maxhrs": "3", "twohr": "No", "minors": "Yes"}, "Rachel": {"lang": "None listed", "spec": "None listed", "more": ["VitaD Glow", "MH Cupping", "Gua Sha", "Craniosacral", "Acupressure", "Trigger Point", "Migraine"], "notes": "None", "room": "2, 5, 6 or 12", "callout": "120 min", "maxhrs": "3", "twohr": "No", "minors": "Yes, 60-min only, 16 and up, no parent in the room"}, "Samaji": {"lang": "None listed", "spec": "Tui Na, orthopedic assessment, amazing with joint work (knee, ankle, etc.)", "more": ["VitaD Glow", "MH Cupping", "Gua Sha", "Craniosacral", "Lymph Drainage", "Reflexology", "Acupressure", "Injury Rehab", "Trigger Point", "Shiatsu", "Myofascial (MFR)", "Migraine", "Multiple Sclerosis (MS)"], "notes": "Swedish: enjoys doing it; Lomi Lomi: ask first", "room": "8", "callout": "11:00 AM", "maxhrs": "3", "twohr": "Yes", "minors": "Yes"}, "Shireen": {"lang": "Aramaic", "spec": "None listed", "more": ["VitaD Glow", "MH Cupping", "Gua Sha", "Reflexology", "Acupressure", "Trigger Point", "Fibromyalgia", "Myofascial (MFR)", "Migraine"], "notes": "None", "room": "Any but 3 or 10", "callout": "90 min", "maxhrs": "3.5", "twohr": "Regulars only", "minors": "Yes"}, "Sol": {"lang": "Amharic", "spec": "Specializes in Deep Tissue, Trigger Point, Tui Na", "more": ["MH Cupping", "Craniosacral", "Lymph Drainage", "Reflexology", "Acupressure", "Injury Rehab", "Trigger Point", "Shiatsu", "Fibromyalgia", "Migraine", "Neuromuscular"], "notes": "None", "room": "Always 10", "callout": "120 min", "maxhrs": "3.5", "twohr": "Yes", "minors": "Yes"}};
+
+/* desc: short, guest-friendly descriptions, adapted from the ABMP massage glossary (massagetherapy.com/glossary).
+   Light pressure has no glossary entry, so its line is our own. */
+const MODS = [
+  { key:"prenatal", label:"Prenatal",    desc:"Massage adapted for pregnancy to ease common aches and support the well-being of mom and baby, given by a therapist trained in prenatal care." },
+  { key:"swedish",  label:"Swedish",     desc:"The classic full-body massage: long, flowing strokes, kneading and gentle tapping with oil to relax the body and boost circulation." },
+  { key:"light",    label:"Light",       desc:"Soft, soothing pressure for guests who want to relax and unwind rather than work out knots." },
+  { key:"deep",     label:"Deep tissue", desc:"Slower, firmer pressure that reaches the deeper layers of muscle and fascia to ease long-held tension, chronic pain and injuries." },
+  { key:"sports",   label:"Sports",      desc:"Focused work to warm up muscles before activity, speed recovery after, and help athletic injuries heal." }
+];
+/* Only modalities on the menu count toward matching */
+ROSTER.forEach(t => { t.mods = t.mods.filter(k => MODS.some(m => m.key === k)); });
+const GENDERS = [
+  { key:"F",   label:"Female" },
+  { key:"M",   label:"Male" },
+  { key:"any", label:"Any" }
+];
+const GLABEL = { F:"Female", M:"Male" };
+const modLabel = k => (MODS.find(m => m.key === k) || {label:k}).label;
+const esc = s => String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const byName = n => ROSTER.find(t => t.name === n);
+
+const $ = id => document.getElementById(id);
+const t1 = $("t1");
+/* Heads-up until genders are filled in */
+const noGender = ROSTER.filter(t => !t.gender).length;
+$("sampleNote").hidden = noGender === 0;
+$("sampleNoteText").textContent = noGender === ROSTER.length
+  ? "Gender isn't set for any therapist yet, so Female and Male searches will come back empty. Use Any for now."
+  : `Gender isn't set for ${noGender} ${noGender === 1 ? "therapist" : "therapists"} yet, so Female and Male searches leave them out.`;
+
+function fillSelect(sel, placeholder){
+  const names = ROSTER.map(t => t.name).sort((a,b)=>a.localeCompare(b));
+  sel.innerHTML = `<option value="">${placeholder}</option>` + names.map(n => `<option>${esc(n)}</option>`).join("");
+}
+fillSelect(t1, "No one, show everyone");
+
+const TICK = `<svg aria-hidden="true" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>`;
+
+/* ---- Guest needs block (used once on Replacement, once per guest on Couples) ---- */
+function buildCriteria(px){
+  $(px + "-crit").innerHTML = `
+    <fieldset>
+      <legend class="lbl">Therapist preference</legend>
+      <div class="segs" id="${px}-segs"><span class="thumb" aria-hidden="true"></span>${GENDERS.map(g =>
+        `<label class="seg"><input class="sr" type="radio" id="${px}-g-${g.key}" name="${px}-g" value="${g.key}"${g.key === "any" ? " checked" : ""}>${esc(g.label)}</label>`).join("")}</div>
+      <label class="switch" for="${px}-mt"><input class="sr" type="checkbox" id="${px}-mt"><span class="track" aria-hidden="true"><span class="knob"></span></span>Master Therapist only</label>
+    </fieldset>
+    <fieldset>
+      <legend class="lbl">Massage modality</legend>
+      <div class="pills" id="${px}-mods">${MODS.map(m =>
+        `<label class="pill tip" data-tip="${esc(m.desc)}"><input class="sr" type="checkbox" id="${px}-m-${m.key}" name="${px}-m" value="${m.key}" aria-description="${esc(m.desc)}"><span class="glass"><i>${TICK}</i>${esc(m.label)}</span></label>`).join("")}</div>
+    </fieldset>`;
+  $(px + "-segs").addEventListener("change", () => syncSegs(px));
+  /* One massage at a time: picking one clears the rest. Tap the picked one again to unpick it. */
+  $(px + "-mods").addEventListener("change", e => {
+    const t = e.target;
+    if (t.checked) MODS.forEach(m => { if (m.key !== t.value) $(`${px}-m-${m.key}`).checked = false; });
+  });
+}
+/* Slide the thumb under the picked preference */
+function syncSegs(px){
+  const i = GENDERS.findIndex(g => $(`${px}-g-${g.key}`).checked);
+  $(px + "-segs").style.setProperty("--sel", Math.max(0, i));
+}
+function readCriteria(px){
+  return {
+    wantGenders: [...document.querySelectorAll(`input[name="${px}-g"]:checked`)].map(i => i.value).filter(v => v !== "any"),
+    wantMods: [...document.querySelectorAll(`input[name="${px}-m"]:checked`)].map(i => i.value),
+    mt: $(px + "-mt").checked
+  };
+}
+function resetCriteria(px){
+  $(`${px}-g-any`).checked = true;
+  $(px + "-mt").checked = false;
+  document.querySelectorAll(`input[name="${px}-m"]`).forEach(i => i.checked = false);
+  syncSegs(px);
+}
+["r", "a", "b"].forEach(buildCriteria);
+
+/* Header clock, as on the timers */
+function tickClock(){
+  const d = new Date();
+  $("clock").textContent = d.toLocaleTimeString([], { hour:"numeric", minute:"2-digit" });
+  $("dateLine").textContent = d.toLocaleDateString([], { weekday:"long", month:"short", day:"numeric" });
+}
+tickClock(); setInterval(tickClock, 15000);
+
+/* ---- Couples data: who can do couples, and who won't share a couples room ---- */
+ROSTER.forEach(t => { if (t.couples === undefined) t.couples = true; t.notWith = t.notWith || []; });
+const wontPair = (a, b) => a.notWith.includes(b.name) || b.notWith.includes(a.name);
+
+
+/* ---- Tabs ---- */
+let mode = "r";
+function setMode(m){
+  mode = m;
+  $("tab-r").setAttribute("aria-selected", m === "r");
+  $("tab-c").setAttribute("aria-selected", m === "c");
+  $("pane-r").hidden = m !== "r";
+  $("pane-c").hidden = m !== "c";
+  $("tabs").style.setProperty("--sel", m === "r" ? 0 : 1);
+  syncRun(); showStart();
+}
+$("tab-r").addEventListener("click", () => setMode("r"));
+$("tab-c").addEventListener("click", () => setMode("c"));
+/* Arrow keys move between tabs */
+$("tabs").addEventListener("keydown", e => {
+  if (e.key !== "ArrowLeft" && e.key !== "ArrowRight") return;
+  const next = mode === "r" ? "c" : "r";
+  setMode(next); $("tab-" + next).focus();
+});
+
+
+
+function syncRun(){
+  if (mode === "c"){ $("run").textContent = "Find couples therapists"; return; }
+  const anyOut = t1.value;
+  $("run").textContent = anyOut ? "Find replacements" : "Find therapists";
+}
+t1.addEventListener("change", syncRun);
+
+$("clear").addEventListener("click", () => {
+  if (mode === "r"){
+    t1.value = "";
+    resetCriteria("r");
+  } else {
+    resetCriteria("a"); resetCriteria("b");
+  }
+  showStart(); syncRun();
+});
+
+/* Empty results: point people to the form */
+function showStart(){
+  /* Both tabs' start messages share one spot; the other tab's is laid out invisibly so the visible one
+     sits at exactly the same height whichever tab is open */
+  const label = m => m === "c" ? "Find couples therapists" : (t1.value ? "Find replacements" : "Find therapists");
+  const tips = {
+    r: `<li>Pick who's unavailable to see their best replacements.</li>
+       <li>Leave it blank to see everyone who fits the guest's needs.</li>
+       <li>Switch to Couples Booking to plan a couples massage.</li>`,
+    c: `<li>Set what each guest needs to see who can take each table.</li>
+       <li>If the same person fits both guests, the cards tell you.</li>
+       <li>Pairs who won't work together are flagged.</li>` };
+  const block = m => `<div class="start-in"${m === mode ? "" : ' aria-hidden="true" data-ghost'}>
+    <span class="start-ic" aria-hidden="true"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${m === "r"
+      ? '<path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/><path d="M8 16H3v5"/>'
+      : '<path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>'}</svg></span>
+    <h3>${m === "r" ? "Find the right therapist" : "Plan a couples booking"}</h3>
+    <p>Set up the search <span class="dir-l">on the left</span><span class="dir-u">above</span>, then tap <b>${esc(label(m))}</b> to see who fits.</p>
+    <ul>${tips[m]}</ul>
+  </div>`;
+  $("results").innerHTML = `<div class="start"><div class="start-stack">${block("r")}${block("c")}</div></div>`;
+}
+
+/* ---- Matching ---- */
+function isCompanyPick(out, cand){
+  return (out.similar || []).includes(cand.name) || (cand.similar || []).includes(out.name);
+}
+
+/* out = the unavailable therapist, or null when browsing with no one to replace */
+function match(out, excluded, crit, ctx){
+  const list = [], leftOut = [];
+  for (const c of ROSTER){
+    if (excluded.includes(c.name)) continue;
+    if (ctx.partner && c.name === ctx.partner.name) continue;
+    if (crit.wantGenders.length && !(c.gender && crit.wantGenders.includes(c.gender))) continue;
+    if (crit.mt && !c.master) continue;
+    if (ctx.couples && !c.couples) continue;
+    if (ctx.couples && ctx.partner && wontPair(c, ctx.partner)){ leftOut.push(c.name); continue; }
+    const shared = out ? c.mods.filter(m => out.mods.includes(m)) : [];
+    const pick = out ? isCompanyPick(out, c) : false;
+    const meets = crit.wantMods.filter(m => c.mods.includes(m));
+    const missing = crit.wantMods.filter(m => !c.mods.includes(m));
+    if (out && !pick && shared.length === 0) continue;
+    const pickDirect = out ? (out.similar || []).includes(c.name) : false;
+    list.push({ c, shared, pick, pickDirect, meets, missing,
+      score: (pick ? 100 : 0) + (pickDirect ? 5 : 0) + shared.length * 10 - missing.length * 30 + (out && c.gender && c.gender === out.gender ? 2 : 0)
+        /* Tie-breakers: no surprise Master upcharge, no limits on the asked-for massage, no couples conflicts */
+        - (c.master && !crit.mt ? 3 : 0)
+        - (crit.wantMods.some(k => c.notes && c.notes[k]) ? 2 : 0)
+        - (ctx.couples && c.notWith.length ? 1 : 0) });
+  }
+  list.sort((a,b) => b.score - a.score || a.c.name.localeCompare(b.c.name));
+  return { full: list.filter(r => r.missing.length === 0), close: list.filter(r => r.missing.length > 0), leftOut };
+}
+
+function card(r, out, i, crit, note, ctx){
+  const c = r.c;
+  const rows = [];
+  /* Team's pick: listed as similar to the unavailable therapist in the roster sheet */
+  if (out && r.pick) rows.push(`<li><b>Style Match</b><span class="tags"><span class="tag ok">Similar to ${esc(out.name)}</span></span></li>`);
+  /* Gender always shows; green with a checkmark only when the guest picked Female or Male, neutral when "Any" */
+  rows.push(`<li><b>Therapist Preference</b><span class="tags">${c.gender ? `<span class="tag ${crit.wantGenders.length ? "ok" : "dim"}">${GLABEL[c.gender]}</span>` : `<span class="tag dim">Gender not set</span>`}</span></li>`);
+  const desig = [];
+  if (c.master){
+    const tip = crit.mt
+      ? "Master Therapists have an additional upcharge."
+      : "Master Therapists have an additional upcharge. The guest didn't ask for one, so let them know before booking.";
+    desig.push(`<span class="tip" tabindex="0" data-tip="${tip}"><span class="tag fee${crit.mt ? " ok" : " alert"}">Master Therapist<span class="sr-text">. ${tip}</span></span></span>`);
+  }
+  if (c.serviceAnimal){
+    const tip = `${c.name} has a service dog in the room. Let the guest know before booking.`;
+    desig.push(`<span class="tip" tabindex="0" data-tip="${esc(tip)}"><span class="tag info">Service animal<span class="sr-text">. ${esc(tip)}</span></span></span>`);
+  }
+  if (desig.length) rows.push(`<li><b>Designation</b><span class="tags">${desig.join("")}</span></li>`);
+  /* Couples: green when they can work the booking; a heads-up for anyone they won't share a room with */
+  if (ctx.couples){
+    const pills = [`<span class="tag ok">Couples</span>`];
+    const nw = ROSTER.filter(o => o !== c && wontPair(c, o)).map(o => o.name);
+    if (nw.length){
+      const tip = `${c.name} won't work a couples massage with ${nw.join(" or ")}. Don't book them together.`;
+      pills.push(`<span class="tip" tabindex="0" data-tip="${esc(tip)}"><span class="tag pair">Not with ${esc(nw.join(", "))}<span class="sr-text">. ${esc(tip)}</span></span></span>`);
+    }
+    rows.push(`<li><b>Couples</b><span class="tags">${pills.join("")}</span></li>`);
+  }
+  /* Every modality this therapist does; the one searched for comes first and is highlighted (green if they do it, red if they don't), the rest follow in menu order */
+  const modPills = [...MODS].sort((a, b) => crit.wantMods.includes(b.key) - crit.wantMods.includes(a.key)).filter(m => c.mods.includes(m.key) || r.missing.includes(m.key)).map(m => {
+    if (r.missing.includes(m.key)) return `<span class="tag miss">No ${esc(m.label.toLowerCase())}</span>`;
+    const n = c.notes && c.notes[m.key] ? ` (${esc(c.notes[m.key])})` : "";
+    return `<span class="tag${r.meets.includes(m.key) ? " ok" : " dim"}">${esc(m.label)}${n}</span>`;
+  });
+  if (modPills.length) rows.push(`<li><b>Massage Modality</b><span class="tags">${modPills.join("")}</span></li>`);
+    const best = i === 0 && r.missing.length === 0;
+  return `<article class="card${best ? " top" : ""}">
+    <div class="card-h">
+      <div class="nm"><h4>${esc(c.name)}</h4><button type="button" class="info-btn" data-name="${esc(c.name)}" aria-label="More about ${esc(c.name)}" title="More about ${esc(c.name)}"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9.5"/><path d="M12 16.5v-5"/><circle cx="12" cy="7.8" r=".6" fill="currentColor"/></svg></button></div>
+      <div class="card-act">
+        <div class="rank">${best ? "Best match" : "Option " + (i+1)}</div>
+        ${ctx.couples
+          ? `<button type="button" class="copy-btn add-btn" data-name="${esc(c.name)}" aria-pressed="false" aria-label="Add ${esc(c.name)} to the couples booking">
+              <svg class="i-add" aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+              <svg class="i-on" aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>
+            </button>`
+          : `<button type="button" class="copy-btn" data-name="${esc(c.name)}" data-out="${out ? esc(out.name) : ""}" data-sim="${out && r.pick ? 1 : ""}" aria-label="Write a message offering ${esc(c.name)} to the guest" title="Copy a message for the guest">
+              <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 9a2 2 0 0 1-2 2H6l-4 4V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2z"/><path d="M18 9h2a2 2 0 0 1 2 2v11l-4-4h-6a2 2 0 0 1-2-2v-1"/></svg>
+            </button>`}
+      </div>
+    </div>
+    ${rows.length ? `<ul class="why">${rows.join("")}</ul>` : ""}
+    ${note ? `<div class="dup">${esc(note)}</div>` : ""}
+  </article>`;
+}
+
+/* Build result columns. cols: [{ out, label, crit, head, ctx }] */
+function renderColumns(cols){
+  const mats = cols.map(col => match(col.out, col.excluded, col.crit, col.ctx));
+  /* Couples: Guest 2's best match shouldn't be Guest 1's best match, or someone who won't work with them */
+  if (cols.length === 2 && cols[0].ctx.couples && mats[0].full.length){
+    const first = mats[0].full[0].c;
+    const clash = r => r.c.name === first.name || wontPair(r.c, first);
+    mats[1].full = [...mats[1].full.filter(r => !clash(r)), ...mats[1].full.filter(clash)];
+  }
+  const tops = mats.map(m => new Set(m.full.slice(0, 3).map(r => r.c.name)));
+  /* Two columns stack in the results area, so a sticky bar jumps between them */
+  const jump = cols.length === 2
+    ? `<nav class="jump" aria-label="Jump to a guest's recommendations"><span class="jthumb" aria-hidden="true"></span>${cols.map((col, idx) =>
+        `<button type="button" data-to="col-${idx}"${idx === 0 ? ' aria-current="true"' : ""}>${esc(col.label)}<span class="jump-n">${mats[idx].full.length + mats[idx].close.length}</span></button>`).join("")}${cols[0].ctx.couples ? `<button type="button" class="jump-msg btn-fill" hidden aria-label="Write the couples message">Message</button>` : ""}</nav>`
+    : "";
+  $("results").innerHTML = jump + cols.map((col, idx) => {
+    const m = mats[idx];
+    const two = cols.length === 2;
+    const otherTop = two ? tops[1 - idx] : new Set();
+    const otherLabel = two ? cols[1 - idx].label : "";
+    /* With two columns, flag top picks that overlap, and for couples, top picks that won't share a room */
+    const noteFor = (r, i) => {
+      if (!two || i >= 3) return null;
+      if (otherTop.has(r.c.name)) return col.ctx.couples
+        ? `Also a top pick for ${otherLabel}. One therapist can't take both tables.`
+        : `Also suggested for ${otherLabel}. Pick someone different for each if both are needed at once.`;
+      if (col.ctx.couples){
+        const clash = [...otherTop].map(byName).filter(x => wontPair(r.c, x)).map(x => x.name);
+        if (clash.length) return `Won't work a couples massage with ${clash.join(" or ")}, a top pick for ${otherLabel}. Don't book them together.`;
+      }
+      return null;
+    };
+    /* Replacing someone: the team's similar picks come first, then everyone else who fits, then close options */
+    const simN = m.full.filter(r => r.pick).length;
+    const cardsSim = m.full.slice(0, simN).map((r,i) => card(r, col.out, i, col.crit, noteFor(r, i), col.ctx)).join("");
+    const cardsFull = m.full.slice(simN).map((r,i) => card(r, col.out, simN + i, col.crit, noteFor(r, simN + i), col.ctx)).join("");
+    const cardsClose = m.close.map((r,i) => card(r, col.out, m.full.length + i, col.crit, null, col.ctx)).join("");
+    const total = m.full.length + m.close.length;
+    const noSim = col.out && !(col.out.similar || []).length;
+    const leftLine = m.leftOut.length ? `<p class="left">Left out: ${esc(m.leftOut.join(", "))}, who won't work a couples massage with ${esc(col.ctx.partner.name)}.</p>` : "";
+    return `<div class="col" id="col-${idx}">
+      <div class="col-h">
+        ${col.head}
+        <div class="count"><b>${total}</b> ${total === 1 ? "therapist" : "therapists"} found${m.close.length ? ` · ${m.full.length} full ${m.full.length === 1 ? "match" : "matches"}, ${m.close.length} close` : ""}</div>
+        ${leftLine}
+      </div>
+      ${cardsSim ? `<div class="sub-h lbl">Similar style to ${esc(col.out.name)}, meets every guest need</div>${cardsSim}` : ""}
+      ${noSim && total ? `<div class="empty">${esc(col.out.name)} has no similar therapists listed yet, so these are everyone who shares a massage style.</div>` : ""}
+      ${cardsFull ? `<div class="sub-h lbl">${cardsSim ? "Other therapists who meet every guest need" : "Full match, meets every guest need"}</div>${cardsFull}` : (total && !cardsSim ? `<div class="empty">No one matches every guest need. Closest options are below.</div>` : "")}
+      ${cardsClose ? `<div class="sub-h lbl">Close, but missing a guest need</div>${cardsClose}` : ""}
+      ${!total ? `<div class="empty">${col.out ? `No therapists share a style with ${esc(col.out.name)} under these preferences.` : "No therapists meet all of these needs."} Try turning off a filter.</div>` : ""}
+    </div>`;
+  }).join("");
+  couplesPicks = [null, null]; syncCouplesPicks();
+  syncJump();
+}
+
+/* Jump bar: scroll to a guest's heading, and light up whichever guest is on screen */
+$("results").addEventListener("click", e => {
+  const b = e.target.closest(".jump button");
+  if (!b) return;
+  const target = $(b.dataset.to);
+  if (target) target.scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" });
+});
+function syncJump(){
+  const btns = document.querySelectorAll(".jump button[data-to]");
+  if (!btns.length) return;
+  let current = "col-0";
+  /* A guest counts as on screen once their heading passes the middle of the window (so the last one still lights up at the bottom of the page) */
+  document.querySelectorAll("#results .col").forEach(c => { if (c.getBoundingClientRect().top < innerHeight * 0.5) current = c.id; });
+  btns.forEach(b => b.toggleAttribute("aria-current", b.dataset.to === current));
+  /* Slide the thumb under the active guest (no animation the first time it's placed) */
+  const t = document.querySelector(".jthumb"), on = document.querySelector(".jump button[aria-current]");
+  if (t && on){
+    const first = !t.style.width;
+    if (first) t.classList.add("no-anim");
+    t.style.width = on.offsetWidth + "px";
+    t.style.transform = `translateX(${on.offsetLeft}px)`;
+    if (first) requestAnimationFrame(() => requestAnimationFrame(() => t.classList.remove("no-anim")));
+  }
+}
+window.addEventListener("scroll", syncJump, { passive: true });
+
+function render(){
+  if (mode === "c"){
+    const ctx = { couples: true, partner: null };
+    const guests = [["a", "Guest 1"], ["b", "Guest 2"]];
+    renderColumns(guests.map(([px, label]) => ({
+      out: null, label, excluded: [], ctx, crit: readCriteria(px),
+      head: `<h3>Therapist Recommendation for ${label}</h3>`
+    })));
+    return;
+  }
+  const outs = t1.value ? [byName(t1.value)] : [];
+  const crit = readCriteria("r");
+  const ctx = { couples: false, partner: null };
+  const excluded = outs.map(o => o.name);
+  const cols = outs.length
+    ? outs.map(o => ({ out: o, label: o.name, excluded, crit, ctx,
+        head: `<h3>Therapists Replacing ${esc(o.name)}</h3>
+          <p>${[o.gender ? GLABEL[o.gender] : "", o.master ? "Master Therapist" : "", o.mods.map(modLabel).join(", ")].filter(Boolean).join(" · ")}</p>` }))
+    : [{ out: null, label: "", excluded, crit, ctx,
+        head: `<h3>Therapists who fit</h3><p>Everyone on the roster who meets the guest's needs.</p>` }];
+  renderColumns(cols);
+}
+
+$("form").addEventListener("submit", e => { e.preventDefault(); render(); if (matchMedia("(max-width: 900px)").matches) $("results").scrollIntoView({behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block:"start"}); });
+
+/* Touch screens: a tap on the Master Therapist pill focuses it (showing the tooltip); a tap anywhere else closes it */
+document.addEventListener("pointerdown", e => {
+  const a = document.activeElement;
+  if (a && a.classList && a.classList.contains("tip") && !a.contains(e.target)) a.blur();
+  const t = e.target.closest && e.target.closest(".tip");
+  if (t && e.pointerType !== "mouse") setTimeout(() => t.focus(), 0);
+});
+
+/* Info tab: Design Credits popup, as on hwr-timers */
+(function () {
+  // Credits popup
+  var modal = document.getElementById('creditsModal'), creditsBtn = document.getElementById('infoFab');
+  function openCredits() { modal.hidden = false; creditsBtn.setAttribute('aria-expanded', 'true'); document.getElementById('creditsClose').focus({ preventScroll: true }); }
+  function closeCredits() { if (modal.hidden) return; modal.hidden = true; creditsBtn.setAttribute('aria-expanded', 'false'); creditsBtn.focus(); }
+  creditsBtn.addEventListener('click', openCredits);
+  document.getElementById('creditsClose').addEventListener('click', closeCredits);
+  modal.addEventListener('click', function (e) { if (e.target === modal) closeCredits(); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeCredits(); });
+})();
+
+/* Info popup: everything else the roster sheet says about a therapist */
+(function () {
+  const modal = $("infoModal"); let opener = null, current = null;
+  $("infoMsg").addEventListener("click", e => openMsg({ name: current }, e.currentTarget));
+  function open(btn){
+    opener = btn;
+    const t = byName(btn.dataset.name), d = INFO[t.name] || {};
+    current = t.name;
+    $("infoMsg").setAttribute("aria-label", `Write a message offering ${t.name}`);
+    $("infoTitle").textContent = t.name;
+    /* Chips under the name: gender (with its symbol), Master Therapist and service animal, styled like the card tags */
+    const gIcon = t.gender === "M"
+      ? '<path d="M15 3h6v6"/><path d="m21 3-6.5 6.5"/><circle cx="10" cy="14" r="6"/>'
+      : '<circle cx="12" cy="9" r="6"/><path d="M12 15v7M9 19h6"/>';
+    $("infoSub").innerHTML = [
+      t.gender ? `<span class="tag g-chip${t.gender === "F" ? " g-F" : " g-M"}"><svg aria-hidden="true" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">${gIcon}</svg>${GLABEL[t.gender]}</span>` : "",
+      t.master ? `<span class="tip" tabindex="0" data-tip="Master Therapists have an additional upcharge. Let the guest know before booking."><span class="tag fee alert">Master Therapist<span class="sr-text">. Master Therapists have an additional upcharge. Let the guest know before booking.</span></span></span>` : "",
+      t.serviceAnimal ? `<span class="tag info">Service animal</span>` : ""
+    ].join("");
+    const pair = ROSTER.filter(o => o !== t && wontPair(t, o)).map(o => o.name);
+    const rows = [
+      [`<svg class="info-ic" aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 8 6 6"/><path d="m4 14 6-6 2-3"/><path d="M2 5h12"/><path d="M7 2h1"/><path d="m22 22-5-10-5 10"/><path d="M14 18h6"/></svg>Languages`, esc(d.lang || "None listed")],
+      [`<svg class="info-ic" aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.5l2.9 5.9 6.5.9-4.7 4.6 1.1 6.5L12 17.3l-5.8 3.1 1.1-6.5L2.6 9.3l6.5-.9L12 2.5z"/></svg>Specialties`, esc(d.spec || "None listed")],
+      [`<svg class="info-ic" aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>Also offers`, d.more && d.more.length ? `<div class="info-tags">${d.more.map(m => `<i>${esc(m)}</i>`).join("")}</div>` : "None listed"],
+      [`<svg class="info-ic" aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2.5H7a2 2 0 0 0-2 2v15a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7z"/><path d="M14 2.5V7.5h5"/><path d="M9 13h6M9 17h4"/></svg>Modality notes`, esc(d.notes || "None")],
+      [`<svg class="info-ic" aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 20V6a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v14"/><path d="M3 20h18"/><path d="M14 12v.01"/></svg>Room preference`, esc(d.room || "No preference")],
+      [`<svg class="info-ic" aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>Couples`, t.couples === false ? "No" : pair.length ? `Yes, but not with ${esc(pair.join(", "))}` : "Yes"],
+      [`<svg class="info-ic" aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9.5"/><path d="M12 6.5V12l3.5 2"/></svg>2-hour sessions`, esc(d.twohr || "Not listed")],
+      [`<svg class="info-ic" aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4.5"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>Minors`, esc(d.minors || "Not listed")],
+      [`<svg class="info-ic" aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4.5" width="18" height="16.5" rx="3"/><path d="M3 9.5h18M8 2.5v4M16 2.5v4"/></svg>Max hours in a row`, esc(d.maxhrs || "Not listed")],
+      [`<svg class="info-ic" aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>Call-out notice`, esc(d.callout || "Not listed")]
+    ];
+    /* Service animal: called out at the top so it can't be missed */
+    const alert = t.serviceAnimal
+      ? `<li class="info-alert"><span><svg class="info-ic" aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="4" r="2"/><circle cx="18" cy="8" r="2"/><circle cx="20" cy="16" r="2"/><path d="M9 10a5 5 0 0 1 5 5v3.5a3.5 3.5 0 0 1-6.84 1.045Q6.52 17.48 4.46 16.84A3.5 3.5 0 0 1 5.5 10Z"/></svg>Service animal</span><div>${esc(t.name)} has a service dog in the room. Make sure the guest knows before booking.</div></li>`
+      : "";
+    $("infoList").innerHTML = alert + rows.map(([k, v]) => `<li><span>${k}</span><div>${v}</div></li>`).join("");
+    modal.hidden = false; $("infoClose").focus({ preventScroll: true });
+  }
+  function close(){ if (modal.hidden) return; modal.hidden = true; if (opener) opener.focus(); }
+  document.addEventListener("click", e => { const b = e.target.closest(".info-btn, .dir-row"); if (b) open(b); });
+  $("infoClose").addEventListener("click", close);
+  modal.addEventListener("click", e => { if (e.target === modal) close(); });
+  /* Escape closes only this popup when it sits on top of the directory */
+  document.addEventListener("keydown", e => { if (e.key === "Escape" && !modal.hidden && $("msgModal").hidden){ close(); e.stopImmediatePropagation(); } });
+})();
+
+/* Therapist directory: everyone on the roster, tap a name for their details */
+(function () {
+  const modal = $("dirModal"), btn = $("dirBtn"), menu = $("dirFilterMenu"), fBtn = $("dirFilterBtn");
+  /* Filters: one gender at a time, Master Therapist on top of either */
+  const filt = { g: null, master: false };
+  const closeMenu = () => { menu.hidden = true; fBtn.setAttribute("aria-expanded", "false"); };
+  fBtn.addEventListener("click", () => { menu.hidden = !menu.hidden; fBtn.setAttribute("aria-expanded", String(!menu.hidden)); });
+  menu.addEventListener("click", e => {
+    const b = e.target.closest("[data-f]"); if (!b) return;
+    const f = b.dataset.f;
+    if (f === "all"){ filt.g = null; filt.master = false; closeMenu(); }
+    else if (f === "master") filt.master = !filt.master;
+    else filt.g = filt.g === f ? null : f;
+    render();
+  });
+  modal.addEventListener("pointerdown", e => { if (!menu.hidden && !menu.contains(e.target) && !fBtn.contains(e.target)) closeMenu(); });
+  const gIcon = g => g === "M"
+    ? '<path d="M15 3h6v6"/><path d="m21 3-6.5 6.5"/><circle cx="10" cy="14" r="6"/>'
+    : '<circle cx="12" cy="9" r="6"/><path d="M12 15v7M9 19h6"/>';
+  function render(){
+    const all = [...ROSTER].sort((a, b) => a.name.localeCompare(b.name));
+    const list = all.filter(t => (!filt.g || t.gender === filt.g) && (!filt.master || t.master));
+    const on = !!(filt.g || filt.master);
+    $("dirSub").textContent = on
+      ? `${list.length} of ${all.length} therapists · ${[filt.g ? GLABEL[filt.g] : "", filt.master ? "Master Therapist" : ""].filter(Boolean).join(" · ")}`
+      : `${all.length} therapists · tap a name for details`;
+    $("dirFilterBtn").classList.toggle("on", on);
+    menu.querySelectorAll("[data-f]").forEach(b => { if (b.dataset.f !== "all") b.setAttribute("aria-pressed", b.dataset.f === "master" ? filt.master : filt.g === b.dataset.f); });
+    $("dirList").innerHTML = list.map(t => `<li><button type="button" class="dir-row" data-name="${esc(t.name)}" aria-label="${esc(t.name)} details">
+      <b>${esc(t.name)}</b>
+      <span class="dir-tags">
+        ${t.gender ? `<span class="tag g-chip${t.gender === "F" ? " g-F" : " g-M"}"><svg aria-hidden="true" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">${gIcon(t.gender)}</svg>${GLABEL[t.gender]}</span>` : ""}
+        ${t.master ? `<span class="tag fee alert">Master</span>` : ""}
+        ${t.serviceAnimal ? `<span class="tag info">Service animal</span>` : ""}
+      </span>
+      <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+    </button></li>`).join("");
+  }
+  /* Lock the popup to the height of the full, unfiltered list (or the screen, if that's shorter),
+     so changing filters never resizes or moves it and the filter button stays put */
+  function lockSize(){
+    const card = modal.querySelector(".modal-card"), keep = { ...filt };
+    card.style.height = ""; filt.g = null; filt.master = false; render();
+    card.style.height = card.getBoundingClientRect().height + "px";
+    Object.assign(filt, keep); render();
+  }
+  function open(){ modal.hidden = false; lockSize(); btn.setAttribute("aria-expanded", "true"); $("dirClose").focus({ preventScroll: true }); }
+  window.addEventListener("resize", () => { if (!modal.hidden) lockSize(); });
+  function close(){ if (modal.hidden) return; closeMenu(); modal.hidden = true; btn.setAttribute("aria-expanded", "false"); btn.focus(); }
+  btn.addEventListener("click", open);
+  $("dirClose").addEventListener("click", close);
+  modal.addEventListener("click", e => { if (e.target === modal) close(); });
+  /* Escape closes the filter menu first, then the directory */
+  document.addEventListener("keydown", e => { if (e.key !== "Escape" || !$("msgModal").hidden || !$("infoModal").hidden) return; if (!menu.hidden) closeMenu(); else close(); });
+})();
+
+/* Couples: tap + on one therapist per guest; once both tables have someone, the message popup opens */
+let couplesPicks = [null, null];
+function syncCouplesPicks(){
+  document.querySelectorAll("#results .col").forEach((col, idx) => {
+    const other = couplesPicks[1 - idx], otherT = other ? byName(other) : null;
+    col.querySelectorAll(".add-btn").forEach(b => {
+      const n = b.dataset.name, on = couplesPicks[idx] === n;
+      const clash = otherT && (n === other || wontPair(byName(n), otherT));
+      b.setAttribute("aria-pressed", on);
+      b.disabled = !on && !!clash;
+      b.title = on ? `Picked for Guest ${idx + 1}. Tap to remove.`
+        : clash ? (n === other ? `Already picked for Guest ${2 - idx}` : `Won't work a couples massage with ${other}`)
+        : `Add ${n} for Guest ${idx + 1}`;
+      b.closest(".card").classList.toggle("picked", on);
+    });
+  });
+  /* The jump bar shows each guest's pick, plus a Message button once both are chosen */
+  document.querySelectorAll(".jump [data-to]").forEach((b, idx) => {
+    let s = b.querySelector(".jump-pick");
+    if (!s){ s = document.createElement("span"); s.className = "jump-pick"; b.appendChild(s); }
+    /* Once a guest has a pick, it replaces their result count: "Guest 1 · Jennifer" */
+    s.textContent = couplesPicks[idx] ? "· " + couplesPicks[idx] : ""; s.hidden = !couplesPicks[idx];
+    const n = b.querySelector(".jump-n"); if (n) n.hidden = !!couplesPicks[idx];
+  });
+  const mb = document.querySelector(".jump .jump-msg");
+  if (mb) mb.hidden = !(couplesPicks[0] && couplesPicks[1]);
+  syncJump();
+}
+function openCouplesMsg(from){ openMsg({ couples: true, pair: [couplesPicks[0], couplesPicks[1]] }, from); }
+$("results").addEventListener("click", e => {
+  const m = e.target.closest(".jump-msg"); if (m){ openCouplesMsg(m); return; }
+  const b = e.target.closest(".add-btn"); if (!b || b.disabled) return;
+  const idx = +b.closest(".col").id.split("-")[1];
+  couplesPicks[idx] = couplesPicks[idx] === b.dataset.name ? null : b.dataset.name;
+  syncCouplesPicks();
+  if (couplesPicks[0] && couplesPicks[1]) openCouplesMsg(b);
+  /* Just picked for one guest and the other still needs someone: scroll to the other guest's list */
+  else if (couplesPicks[idx] && !couplesPicks[1 - idx]){
+    const other = $(`col-${1 - idx}`);
+    if (other) other.scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" });
+  }
+});
+
+/* Copy-a-message popup: pick a date and time, get a text for the guest, copy it */
+(function () {
+  const modal = $("msgModal"), txt = $("msgText"), note = $("msgNote");
+  let ctx = null, opener = null;
+  const OPEN_FIRST = 9 * 60, OPEN_LAST = 20 * 60;
+  const iso = d => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+  const todayISO = () => iso(new Date());
+  const pad = n => String(n).padStart(2, "0");
+  /* 1st, 2nd, 3rd, 4th … 11th, 12th, 13th … 21st, 22nd, 23rd */
+  const ord = n => n + ((n % 100 >= 11 && n % 100 <= 13) ? "th" : ({ 1: "st", 2: "nd", 3: "rd" }[n % 10] || "th"));
+  const dayText = v => { if (!v) return "[day]"; const [y, m, d] = v.split("-").map(Number); const dt = new Date(y, m - 1, d); return `${dt.toLocaleDateString("en-US", { weekday: "long" })}, ${dt.toLocaleDateString("en-US", { month: "long" })} ${ord(d)}`; };
+  /* Round a typed time to the nearest quarter hour (2:07 → 2:00, 2:08 → 2:15),
+     then pull it into booking hours: anything before 9:00 AM becomes 9:00 AM, anything after 8:00 PM becomes 8:00 PM */
+  const snap15 = v => { if (!v) return v; const [h, m] = v.split(":").map(Number); const t = Math.min(OPEN_LAST, Math.max(OPEN_FIRST, Math.round((h * 60 + m) / 15) * 15)); return `${pad(Math.floor(t / 60))}:${pad(t % 60)}`; };
+  const timeText = v => { if (!v) return "[time]"; let [h, m] = snap15(v).split(":").map(Number); const ap = h >= 12 ? "PM" : "AM"; h = h % 12 || 12; return `${h}:${pad(m)} ${ap}`; };
+  /* Arrows stop at the first and last bookable times; a typed time outside them gets a heads-up */
+  function syncTimeSteps(){
+    const v = snap15($("msgTime").value);
+    const mins = v ? v.split(":").map(Number).reduce((h, m) => h * 60 + m) : null;
+    modal.querySelector('[data-step="15"]').disabled = mins !== null && mins >= OPEN_LAST;
+    modal.querySelector('[data-step="-15"]').disabled = mins !== null && mins <= OPEN_FIRST;
+    /* Dates can't go before today */
+    const dv = $("msgDate").value, past = !!dv && dv < todayISO();
+    $("msgDate").min = todayISO();
+    modal.querySelector('[data-day="-1"]').disabled = !dv || dv <= todayISO();
+    note.textContent = past ? "That date has already passed."
+      : mins !== null && (mins < OPEN_FIRST || mins > OPEN_LAST) ? "That's outside booking hours (9:00 AM to 8:00 PM)."
+      : "You can edit the text before copying.";
+  }
+  function compose(){
+    syncTimeSteps();
+    const g = $("msgGuest").value.trim();
+    const when = `${dayText($("msgDate").value)} at ${timeText($("msgTime").value)}`;
+    const hi = `Hi${g ? " " + g : ""}, this is Heights Wellness Retreat in Rancho Peñasquitos.`;
+    let body;
+    if (ctx.out) body = `Unfortunately ${ctx.out} is no longer available for your appointment. ${ctx.name} ${ctx.sim ? `is similar in style to ${ctx.out} and` : ""} is available on ${when}.`.replace("  ", " ");
+    else if (ctx.pair) body = `For your couples massage, ${ctx.pair[0]} and ${ctx.pair[1]} are available on ${when}.`;
+    else if (ctx.couples) body = `For your couples massage, ${ctx.name} is available on ${when}.`;
+    else body = `${ctx.name} is available on ${when}.`;
+    /* Let the guest know up front if their therapist works with a service dog */
+    const dogs = (ctx.pair || [ctx.name]).filter(n => { const t = byName(n); return t && t.serviceAnimal; });
+    const dogLine = dogs.length ? ` Just so you know, ${dogs.join(" and ")} works with a service dog in the room.` : "";
+    txt.value = `${hi} ${body}${dogLine} Would you like us to book that for you?`;
+  }
+  function open(btn){ openWith({ name: btn.dataset.name, out: btn.dataset.out, sim: !!btn.dataset.sim }, btn); }
+  function openWith(c, from){
+    opener = from; ctx = c;
+    $("msgTitle").textContent = ctx.pair ? `Offer ${ctx.pair[0]} & ${ctx.pair[1]}` : `Offer ${ctx.name}`;
+    /* Start at today, and never reopen on a day that has passed (e.g. the page was left open overnight) */
+    if (!$("msgDate").value || $("msgDate").value < todayISO()) $("msgDate").value = todayISO();
+    if (!$("msgTime").value) $("msgTime").value = "10:00";
+    compose(); note.textContent = "You can edit the text before copying."; $("msgCopy").textContent = "Copy message";
+    modal.hidden = false; sizeForCalendar(); $("msgDate").focus({ preventScroll: true });
+  }
+  function close(){ if (modal.hidden) return; closeCal(false); modal.hidden = true; if (opener) opener.focus(); }
+  $("results").addEventListener("click", e => { const b = e.target.closest(".copy-btn:not(.add-btn)"); if (b) open(b); });
+  window.openMsg = openWith;
+  ["msgGuest", "msgDate", "msgTime"].forEach(id => $(id).addEventListener("input", compose));
+  /* Carets: snap to the next 15-minute mark up or down, wrapping around midnight */
+  /* Date carets: one day forward or back */
+  modal.querySelectorAll(".steps button[data-day]").forEach(b => b.addEventListener("click", () => {
+    const el = $("msgDate"), t = new Date();
+    const [y, m, d] = el.value ? el.value.split("-").map(Number) : [t.getFullYear(), t.getMonth() + 1, t.getDate()];
+    const dt = new Date(y, m - 1, d + +b.dataset.day);
+    el.value = iso(dt) < todayISO() ? todayISO() : iso(dt);
+    compose();
+  }));
+  modal.querySelectorAll(".steps button[data-step]").forEach(b => b.addEventListener("click", () => {
+    const step = +b.dataset.step, el = $("msgTime");
+    const [h, m] = (el.value || "10:00").split(":").map(Number);
+    let mins = h * 60 + m;
+    mins = step > 0 ? Math.floor(mins / 15) * 15 + 15 : Math.ceil(mins / 15) * 15 - 15;
+    /* Bookable hours: first appointment 9:00 AM, last 8:00 PM (the spa closes at 9) */
+    mins = Math.min(OPEN_LAST, Math.max(OPEN_FIRST, mins));
+    el.value = `${pad(Math.floor(mins / 60))}:${pad(mins % 60)}`;
+    compose();
+  }));
+  $("msgTime").addEventListener("input", syncTimeSteps);
+  /* The field itself snaps once you're done typing (leaving it), so it doesn't jump mid-entry; the message always uses the rounded time */
+  $("msgTime").addEventListener("blur", () => { const el = $("msgTime"), v = snap15(el.value); if (v !== el.value){ el.value = v; compose(); } });
+  $("msgClose").addEventListener("click", close);
+  modal.addEventListener("click", e => { if (e.target === modal) close(); });
+  document.addEventListener("keydown", e => { if (e.key !== "Escape") return; if (!$("calPop").hidden) closeCal(true); else close(); });
+
+  /* Calendar popover: a month view; days before today are greyed out */
+  const pop = $("calPop"), calBtn = $("calBtn");
+  let view = null;
+  function renderCal(){
+    const t = todayISO(), sel = $("msgDate").value;
+    const first = new Date(view.y, view.m, 1), days = new Date(view.y, view.m + 1, 0).getDate();
+    const atStart = view.y === new Date().getFullYear() && view.m === new Date().getMonth();
+    let cells = "";
+    for (let i = 0; i < first.getDay(); i++) cells += "<span></span>";
+    for (let d = 1; d <= days; d++){
+      const v = iso(new Date(view.y, view.m, d));
+      cells += `<button type="button" data-date="${v}"${v < t ? " disabled" : ""}${v === t ? ' class="today"' : ""} aria-pressed="${v === sel}" aria-label="${dayText(v)}">${d}</button>`;
+    }
+    pop.innerHTML = `<div class="cal-h">
+        <button type="button" data-nav="-1" aria-label="Previous month"${atStart ? " disabled" : ""}><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg></button>
+        <b>${first.toLocaleDateString("en-US", { month: "long", year: "numeric" })}</b>
+        <button type="button" data-nav="1" aria-label="Next month"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></button>
+      </div>
+      <div class="cal-g">${["S","M","T","W","T","F","S"].map(w => `<span class="wd" aria-hidden="true">${w}</span>`).join("")}${cells}</div>`;
+  }
+  /* Lay out a six-week month invisibly, measure where it ends, and make the popup that tall for good */
+  function sizeForCalendar(){
+    const card = modal.querySelector(".modal-card");
+    card.style.minHeight = "";
+    const keep = view; view = { y: 2026, m: 7 };   /* August 2026 spans six weeks */
+    renderCal(); pop.style.visibility = "hidden"; pop.hidden = false;
+    const need = Math.ceil(pop.getBoundingClientRect().bottom - card.getBoundingClientRect().top + 28);
+    pop.hidden = true; pop.style.visibility = ""; view = keep;
+    card.style.minHeight = Math.max(need, card.getBoundingClientRect().height) + "px";
+  }
+  function openCal(){
+    const v = $("msgDate").value || todayISO(); const [y, m] = v.split("-").map(Number);
+    view = { y, m: m - 1 }; renderCal();
+    pop.hidden = false; calBtn.setAttribute("aria-expanded", "true");
+    (pop.querySelector('[aria-pressed="true"]') || pop.querySelector(".cal-g button:not(:disabled)")).focus({ preventScroll: true });
+  }
+  function closeCal(refocus){ if (pop.hidden) return; pop.hidden = true; calBtn.setAttribute("aria-expanded", "false"); if (refocus) calBtn.focus(); }
+  calBtn.addEventListener("click", () => pop.hidden ? openCal() : closeCal(true));
+  pop.addEventListener("click", e => {
+    const nav = e.target.closest("[data-nav]");
+    if (nav){ view.m += +nav.dataset.nav; if (view.m < 0){ view.m = 11; view.y--; } if (view.m > 11){ view.m = 0; view.y++; } renderCal(); return; }
+    const day = e.target.closest("[data-date]");
+    if (day && !day.disabled){ $("msgDate").value = day.dataset.date; compose(); closeCal(true); }
+  });
+  /* Clicking anywhere else in the popup closes the calendar */
+  modal.addEventListener("pointerdown", e => { if (!pop.hidden && !pop.contains(e.target) && !calBtn.contains(e.target)) closeCal(false); });
+  $("msgCopy").addEventListener("click", async () => {
+    { const el = $("msgTime"), v = snap15(el.value); if (v !== el.value){ el.value = v; compose(); } }
+    let ok = false;
+    try { await navigator.clipboard.writeText(txt.value); ok = true; } catch (_) {
+      txt.focus(); txt.select(); try { ok = document.execCommand("copy"); } catch (_) {}
+    }
+    $("msgCopy").textContent = ok ? "Copied" : "Copy message";
+    note.textContent = ok ? "Paste it into your text to the guest." : "Couldn't copy automatically. The text is selected, so press Ctrl/Cmd+C.";
+    if (ok) setTimeout(() => { $("msgCopy").textContent = "Copy message"; }, 1800);
+  });
+})();
+
+/* Where the two columns start on the page, so the start state can fill exactly to the bottom of the window */
+function syncLayoutTop(){ const l = document.querySelector(".layout"); if (l) document.documentElement.style.setProperty("--layout-top", (l.getBoundingClientRect().top + scrollY) + "px"); }
+window.addEventListener("resize", syncLayoutTop);
+syncLayoutTop();
+
+/* Open in a working state with an example search */
+t1.value = "Amy";
+syncRun(); render();
+</script>
+</body>
+</html>
