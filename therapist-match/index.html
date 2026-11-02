@@ -240,17 +240,6 @@ legend{padding:0;margin-bottom:4px}
 /* Tabs: file-folder style along the top edge of the form card */
 .folder{display:flex;flex-direction:column;min-width:0}
 .folder > .panel{border-top-left-radius:0}
-/* Side by side, the form always fills the window from its top to the bottom margin (before and after a search,
-   on both tabs) and spreads its groups evenly; it only grows past that if a short window can't fit it.
-   Before a search, the start card stretches to the same height. */
-@media (min-width:901px){
-  .layout > .folder{min-height:calc(100dvh - var(--layout-top,96px) - 40px);margin-bottom:0}
-  .layout .panel{flex:1}
-  .layout .panes{flex:1}
-  #pane-r{justify-content:space-evenly}
-  .layout:has(.results .start){min-height:calc(100dvh - var(--layout-top,96px) - 40px)}
-  .layout:has(.results .start) > .folder{align-self:stretch}
-}
 .tabs{position:relative;z-index:1;display:flex;align-items:flex-end;gap:4px}
 .tabs .thumb{display:none}
 /* Tabs share column 1 equally: two tabs are half width each; more tabs later shrink to fit (long labels trim with …) */
