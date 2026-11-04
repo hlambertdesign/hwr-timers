@@ -827,6 +827,9 @@ function match(out, excluded, crit, ctx){
     const meets = crit.wantMods.filter(m => c.mods.includes(m));
     const missing = crit.wantMods.filter(m => !c.mods.includes(m));
     if (out && !pick && shared.length === 0) continue;
+    /* Only a therapist picked (no gender, Master or massage filters): show just the team's similar picks for them.
+       Therapists with no similar list yet still fall back to everyone who shares a style. */
+    if (out && !pick && (out.similar || []).length && !crit.wantGenders.length && !crit.mt && !crit.wantMods.length) continue;
     const pickDirect = out ? (out.similar || []).includes(c.name) : false;
     list.push({ c, shared, pick, pickDirect, meets, missing,
       score: (pick ? 100 : 0) + (pickDirect ? 5 : 0) + shared.length * 10 - missing.length * 30 + (out && c.gender && c.gender === out.gender ? 2 : 0)
