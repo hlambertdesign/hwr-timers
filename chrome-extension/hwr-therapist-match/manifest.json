@@ -1,0 +1,14 @@
+{
+  "manifest_version": 3,
+  "name": "HWR Therapist Match",
+  "version": "1.0.0",
+  "description": "Find replacement therapists and plan couples bookings in a side panel next to Zenoti.",
+  "action": {
+    "default_title": "Open Therapist Match",
+    "default_icon": { "16": "icons/icon16.png", "32": "icons/icon32.png", "48": "icons/icon48.png" }
+  },
+  "side_panel": { "default_path": "sidepanel.html" },
+  "permissions": ["sidePanel"],
+  "background": { "service_worker": "background.js" },
+  "icons": { "16": "icons/icon16.png", "32": "icons/icon32.png", "48": "icons/icon48.png", "128": "icons/icon128.png" }
+}
