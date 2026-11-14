@@ -309,7 +309,6 @@ body.simple .step[data-step="3"], body.simple .step[data-step="5"], body.simple 
 body.simple .step .step-body{display:flex!important}
 body.simple .step-sum, body.simple .chev, body.simple .obj-rules{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;font-size:14.5px;line-height:1.45}
 .obj-rules b{color:var(--brown)}
-.promo-card{gap:0}
 .obj-list{display:flex;flex-direction:column;gap:14px}
 .obj{border-radius:14px;background:#fff;box-shadow:0 0 0 1px var(--line);overflow:hidden}
 .obj summary{list-style:none;cursor:pointer;display:flex;flex-direction:column;gap:2px;padding:12px 40px 12px 14px;position:relative}
@@ -419,20 +418,65 @@ body.simple .step.done .step-n::after{content:''}
 .step-next{display:flex;justify-content:flex-end;padding-top:4px}
 .step-next .btn{min-height:46px;padding:0 28px}
 @media (max-width:520px){.step-sum{display:none}}
+
+
+/* Site menu: hamburger left of the title, links between the HWR tools */
+.nav-left{display:flex;align-items:center;gap:14px}
+.site-menu{position:relative;flex:none}
+.menu-btn{position:relative;display:grid;place-items:center;width:44px;height:44px;padding:0;color:#FBFCF7;cursor:pointer;border:1px solid rgba(251,252,247,.5);background:linear-gradient(180deg,rgba(255,255,255,.26) 0%,rgba(255,255,255,.05) 50%,rgba(255,255,255,.1) 100%);-webkit-backdrop-filter:blur(10px) saturate(1.5);backdrop-filter:blur(10px) saturate(1.5);box-shadow:inset 0 1.5px 1px rgba(255,255,255,.5),inset 0 -2px 5px rgba(255,255,255,.08),0 6px 12px -8px rgba(0,0,0,.5);border-radius:999px}
+.menu-btn:hover{filter:brightness(1.22)}
+.menu-btn:focus-visible{outline:3px solid #CD734C;outline-offset:3px}
+.menu-btn .bars{display:grid;gap:4px;width:18px}
+.menu-btn .bars i{display:block;height:2px;border-radius:2px;background:currentColor;transition:transform .2s ease,opacity .2s ease}
+.site-menu.open .bars i:nth-child(1){transform:translateY(6px) rotate(45deg)}
+.site-menu.open .bars i:nth-child(2){opacity:0}
+.site-menu.open .bars i:nth-child(3){transform:translateY(-6px) rotate(-45deg)}
+.site-nav{position:absolute;top:calc(100% + 10px);left:0;z-index:200;width:264px;padding:6px;display:grid;gap:2px;border-radius:18px;background:#FBFCF7;border:1px solid rgba(101,59,44,.14);box-shadow:0 18px 36px -16px rgba(39,39,39,.55);opacity:0;transform:translateY(-4px);pointer-events:none;visibility:hidden;transition:opacity .14s ease,transform .14s ease,visibility 0s linear .14s}
+.site-menu.open .site-nav{opacity:1;transform:none;pointer-events:auto;visibility:visible;transition:opacity .14s ease,transform .14s ease}
+.site-nav a{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:12px;color:#272727;text-decoration:none;font:500 15px/1.25 'Work Sans',system-ui,sans-serif;text-align:left}
+.site-nav a svg{flex:none;color:#CD734C}
+.site-nav a small{display:block;font-size:12.5px;font-weight:400;color:#6B5148;margin-top:1px}
+.site-nav a:hover{background:#F4EFE7}
+.site-nav a[aria-current="page"]{background:#F4EFE7;font-weight:600}
+.site-nav a:focus-visible{outline:3px solid #CD734C;outline-offset:1px}
+
+/* Promo details popup (same pattern as Therapist Match) */
+@keyframes fadein{from{opacity:0}to{opacity:1}}
+@keyframes popin{from{opacity:0;transform:translateY(8px) scale(.98)}to{opacity:1;transform:none}}
+.modal{position:fixed;inset:0;z-index:100;display:grid;place-items:center;padding:20px;background:rgba(39,39,39,.38);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);animation:fadein .18s ease}
+.modal[hidden]{display:none}
+.modal-card{position:relative;width:min(640px,100%);max-height:calc(100dvh - 40px);overflow:auto;padding:28px 28px 26px;border-radius:24px;background:var(--cream);color:var(--ink);border:1px solid rgba(255,255,255,.8);box-shadow:0 30px 60px -20px rgba(39,39,39,.55),inset 0 1px 1px #fff;animation:popin .22s cubic-bezier(.2,.8,.2,1)}
+.modal-card > h2{margin:0 0 4px;font-size:24px;font-weight:600;line-height:1.15;letter-spacing:-.01em}
+.modal-card > .eb{font-size:11.5px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#7A5C4F;margin:0 0 18px}
+.modal-x{position:absolute;top:14px;right:14px;width:34px;height:34px;display:grid;place-items:center;border-radius:999px;border:1px solid rgba(101,59,44,.18);background:rgba(255,255,255,.6);color:var(--brown);cursor:pointer;transition:filter .12s ease}
+.modal-x:hover{filter:brightness(.96)}
+.promo-modal .info + .info{border-top:1px solid var(--line);margin-top:20px;padding-top:20px}
+@media (max-width:560px){.modal-card{padding:24px 16px 20px}}
 </style>
 </head>
 <body>
 <header>
   <div class="wrap nav">
-    <div>
-      <h1>Gift Card Pitch</h1>
-      <p class="sub-title">Holiday promo · Heights Wellness Retreat</p>
+    <div class="nav-left">
+      <div class="site-menu" id="siteMenu">
+        <button class="menu-btn" id="menuBtn" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="siteNav"><span class="bars" aria-hidden="true"><i></i><i></i><i></i></span></button>
+        <nav class="site-nav" id="siteNav" aria-label="HWR tools">
+          <a data-path="/" href="/"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5M9 2h6"/></svg><span>Technology Timers<small>Session timers</small></span></a>
+          <a data-path="/therapist-match/" href="/therapist-match/"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0M16 4.5a3.5 3.5 0 0 1 0 7M21.5 20a6.5 6.5 0 0 0-4-6"/></svg><span>Therapist Match<small>Pair guests with therapists</small></span></a>
+          <a data-path="/gift-card-pitch/" href="/gift-card-pitch/" aria-current="page"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="13" rx="2"/><path d="M3 12h18M12 8v13M12 8c-1.5-3-6-3.5-6-1s4 1 6 1c2 0 6 1.5 6-1s-4.5-2-6 1"/></svg><span>Gift Card Pitch<small>Holiday promo calculator</small></span></a>
+        </nav>
+      </div>
+      <div>
+        <h1>Gift Card Pitch</h1>
+        <p class="sub-title">Holiday promo · Heights Wellness Retreat</p>
+      </div>
     </div>
     <div class="nav-right">
+      <div class="clock" aria-hidden="true"><span class="time-now" id="tNow">--:--</span><span class="date-now" id="dNow"></span></div>
       <div class="nav-btns">
+        <button class="btn-ghost icon-ghost" id="promoBtn" type="button" aria-haspopup="dialog" aria-expanded="false" aria-controls="promoModal" aria-label="Promo details" data-tip="Promo details"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="4" rx="1"/><path d="M12 8v13M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7"/><path d="M7.5 8a2.5 2.5 0 0 1 0-5C10 3 12 8 12 8s2-5 4.5-5a2.5 2.5 0 0 1 0 5"/></svg></button>
         <button class="btn-ghost icon-ghost" id="reset" type="button" aria-label="Reset all fields" data-tip="Reset for next guest"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/></svg></button>
       </div>
-      <div class="clock" aria-hidden="true"><span class="time-now" id="tNow">--:--</span><span class="date-now" id="dNow"></span></div>
     </div>
   </div>
 </header>
@@ -445,11 +489,9 @@ body.simple .step.done .step-n::after{content:''}
       <div class="folder">
         <div class="tabs" role="tablist" aria-label="Left column">
           <button class="tab" role="tab" type="button" id="tab-calc" aria-selected="true" aria-controls="pane-calc">Calculator</button>
-          <button class="tab" role="tab" type="button" id="tab-promo" aria-selected="false" aria-controls="pane-promo">Promo details</button>
           <button class="tab" role="tab" type="button" id="tab-obj" aria-selected="false" aria-controls="pane-obj">Objections</button>
         </div>
       <section class="panel" aria-label="Guest details">
-        <div class="strip"></div>
         <div class="pane" id="pane-calc" role="tabpanel" aria-labelledby="tab-calc">
 
         <div class="step" data-step="2">
@@ -585,23 +627,6 @@ body.simple .step.done .step-n::after{content:''}
         </div>
 
         </div>
-        <div class="pane" id="pane-promo" role="tabpanel" aria-labelledby="tab-promo" hidden>
-          <div class="info">
-            <span class="step-n">Holiday promo</span><h2>Gift card offers</h2>
-            <table class="itab offers"><thead><tr><th>Buy</th><th>GC</th><th>Passes</th><th>Bonus</th><th>Overall value</th></tr></thead><tbody>
-              <tr><td>$250</td><td>$250</td><td>1</td><td>$75</td><td><strong>$325</strong></td></tr>
-              <tr><td>$450</td><td>$500 <small>+$50</small></td><td>1</td><td>$125</td><td><strong>$575</strong></td></tr>
-              <tr><td>$900</td><td>$1,000 <small>+$100</small></td><td>2</td><td>$250</td><td><strong>$1,150</strong></td></tr>
-              <tr class="itab-sub"><td colspan="5">Combos</td></tr>
-              <tr><td>$700<small>$450 + $250</small></td><td>$750 <small>+$50</small></td><td>2</td><td>$200</td><td><strong>$900</strong></td></tr>
-              <tr><td>$1,150<small>$900 + $250</small></td><td>$1,250 <small>+$100</small></td><td>3</td><td>$325</td><td><strong>$1,475</strong></td></tr>
-              <tr><td>$1,350<small>$900 + $450</small></td><td>$1,500 <small>+$150</small></td><td>3</td><td>$375</td><td><strong>$1,725</strong></td></tr>
-              <tr><td>$1,800<small>$900 + $900</small></td><td>$2,000 <small>+$200</small></td><td>4</td><td>$500</td><td><strong>$2,300</strong></td></tr>
-              <tr><td>$2,250<small>$900 + $900 + $450</small></td><td>$2,500 <small>+$250</small></td><td>5</td><td>$625</td><td><strong>$2,875</strong></td></tr>
-            </tbody></table>
-            <p class="hint">Day Pass value: $75. Bonus = extra card value + Day Passes. Overall value = gift card + Day Passes. Gift cards can pay for memberships and PIFs.</p>
-          </div>
-        </div>
         <div class="pane" id="pane-obj" role="tabpanel" aria-labelledby="tab-obj" hidden>
           <div class="info">
             <span class="step-n">Quick guide</span><h2>Objection handling</h2>
@@ -628,30 +653,6 @@ body.simple .step.done .step-n::after{content:''}
       <!-- Results -->
       <div class="right-col">
       <section class="results" id="results" aria-live="polite"></section>
-      <section class="results" id="promoResults" hidden aria-label="Membership terms and service prices">
-        <article class="card promo-card">
-          <div class="info">
-            <span class="step-n">Memberships</span><h2>Terms</h2>
-            <table class="itab"><thead><tr><th>Term</th><th>Cost</th><th>Best card</th></tr></thead><tbody>
-              <tr><td>3M PIF</td><td>$300 + $99 setup</td><td>$450</td></tr>
-              <tr><td>6M PIF</td><td>$600 + $99 setup</td><td>$900</td></tr>
-              <tr><td>12M</td><td>$1,200 total, setup waived</td><td>Combo</td></tr>
-            </tbody></table>
-            <p class="hint">Membership includes one 60 min massage or facial a month. 1 credit = 30 min (60 min = 2, 90 min = 3). The $250 card is never pitched toward a membership.</p>
-          </div>
-          <div class="info">
-            <span class="step-n">Menu</span><h2>Service prices</h2>
-            <table class="itab"><thead><tr><th>Service</th><th>Member</th><th>Non-member</th></tr></thead><tbody>
-              <tr><td>60 min massage</td><td>$100</td><td>$180</td></tr>
-              <tr><td>90 min massage</td><td>$150</td><td>$270</td></tr>
-              <tr><td>60 min facial</td><td>$120</td><td>$220</td></tr>
-              <tr><td>HydraFacial Deluxe</td><td>$249</td><td>$299</td></tr>
-              <tr><td>Couples 2 × 60</td><td>$200</td><td>$360</td></tr>
-              <tr><td>Couples 2 × 90</td><td>$300</td><td>$540</td></tr>
-            </tbody></table>
-          </div>
-        </article>
-      </section>
       <section class="results" id="objResults" hidden aria-label="Common objections">
         <div class="col-h"><span class="ot">Common objections</span><h3>What they say</h3><p>Tap one for what to say back.</p></div>
           <div class="obj-list">
@@ -724,6 +725,47 @@ body.simple .step.done .step-n::after{content:''}
     </div>
   </div>
 </main>
+<div class="modal" id="promoModal" role="dialog" aria-modal="true" aria-labelledby="promoTitle" hidden>
+  <div class="modal-card promo-modal">
+    <button class="modal-x" id="promoClose" type="button" aria-label="Close promo details"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+    <h2 id="promoTitle" class="sr">Promo details</h2>
+          <div class="info">
+            <span class="step-n">Holiday promo</span><h2>Gift card offers</h2>
+            <table class="itab offers"><thead><tr><th>Buy</th><th>GC</th><th>Passes</th><th>Bonus</th><th>Overall value</th></tr></thead><tbody>
+              <tr><td>$250</td><td>$250</td><td>1</td><td>$75</td><td><strong>$325</strong></td></tr>
+              <tr><td>$450</td><td>$500 <small>+$50</small></td><td>1</td><td>$125</td><td><strong>$575</strong></td></tr>
+              <tr><td>$900</td><td>$1,000 <small>+$100</small></td><td>2</td><td>$250</td><td><strong>$1,150</strong></td></tr>
+              <tr class="itab-sub"><td colspan="5">Combos</td></tr>
+              <tr><td>$700<small>$450 + $250</small></td><td>$750 <small>+$50</small></td><td>2</td><td>$200</td><td><strong>$900</strong></td></tr>
+              <tr><td>$1,150<small>$900 + $250</small></td><td>$1,250 <small>+$100</small></td><td>3</td><td>$325</td><td><strong>$1,475</strong></td></tr>
+              <tr><td>$1,350<small>$900 + $450</small></td><td>$1,500 <small>+$150</small></td><td>3</td><td>$375</td><td><strong>$1,725</strong></td></tr>
+              <tr><td>$1,800<small>$900 + $900</small></td><td>$2,000 <small>+$200</small></td><td>4</td><td>$500</td><td><strong>$2,300</strong></td></tr>
+              <tr><td>$2,250<small>$900 + $900 + $450</small></td><td>$2,500 <small>+$250</small></td><td>5</td><td>$625</td><td><strong>$2,875</strong></td></tr>
+            </tbody></table>
+            <p class="hint">Day Pass value: $75. Bonus = extra card value + Day Passes. Overall value = gift card + Day Passes. Gift cards can pay for memberships and PIFs.</p>
+          </div>
+          <div class="info">
+            <span class="step-n">Memberships</span><h2>Terms</h2>
+            <table class="itab"><thead><tr><th>Term</th><th>Cost</th><th>Best card</th></tr></thead><tbody>
+              <tr><td>3M PIF</td><td>$300 + $99 setup</td><td>$450</td></tr>
+              <tr><td>6M PIF</td><td>$600 + $99 setup</td><td>$900</td></tr>
+              <tr><td>12M</td><td>$1,200 total, setup waived</td><td>Combo</td></tr>
+            </tbody></table>
+            <p class="hint">Membership includes one 60 min massage or facial a month. 1 credit = 30 min (60 min = 2, 90 min = 3). The $250 card is never pitched toward a membership.</p>
+          </div>
+          <div class="info">
+            <span class="step-n">Menu</span><h2>Service prices</h2>
+            <table class="itab"><thead><tr><th>Service</th><th>Member</th><th>Non-member</th></tr></thead><tbody>
+              <tr><td>60 min massage</td><td>$100</td><td>$180</td></tr>
+              <tr><td>90 min massage</td><td>$150</td><td>$270</td></tr>
+              <tr><td>60 min facial</td><td>$120</td><td>$220</td></tr>
+              <tr><td>HydraFacial Deluxe</td><td>$249</td><td>$299</td></tr>
+              <tr><td>Couples 2 × 60</td><td>$200</td><td>$360</td></tr>
+              <tr><td>Couples 2 × 90</td><td>$300</td><td>$540</td></tr>
+            </tbody></table>
+          </div>
+  </div>
+</div>
 <div class="toast" id="toast">Copied</div>
 
 <script>
@@ -1570,12 +1612,27 @@ document.querySelectorAll('.tabs .tab').forEach(t => t.addEventListener('click',
   document.querySelectorAll('.tabs .tab').forEach(x => x.setAttribute('aria-selected', String(x === t)));
   document.querySelectorAll('.tabs .tab').forEach(x => { document.getElementById(x.getAttribute('aria-controls')).hidden = x !== t; });
   // Objections tab: the right column swaps the pitch for the common objections list
-  // Promo details and Objections tabs swap the pitch for their own reference content
   document.getElementById('results').hidden = t.id !== 'tab-calc';
-  document.getElementById('promoResults').hidden = t.id !== 'tab-promo';
   document.getElementById('objResults').hidden = t.id !== 'tab-obj';
   document.querySelector('.folder > .panel').scrollTop = 0;
 }));
+
+
+/* ===== Promo details popup ===== */
+(function(){
+  const modal = document.getElementById('promoModal'), btn = document.getElementById('promoBtn');
+  function open(){ modal.hidden = false; btn.setAttribute('aria-expanded', 'true'); modal.querySelector('.modal-card').scrollTop = 0; document.getElementById('promoClose').focus({ preventScroll: true }); }
+  function close(){ if (modal.hidden) return; modal.hidden = true; btn.setAttribute('aria-expanded', 'false'); btn.focus(); }
+  btn.addEventListener('click', open);
+  document.getElementById('promoClose').addEventListener('click', close);
+  modal.addEventListener('click', e => { if (e.target === modal) close(); });
+  // While the popup is open, Esc closes it and the calculator's quick keys stay off
+  document.addEventListener('keydown', e => {
+    if (modal.hidden) return;
+    if (e.key === 'Escape') close();
+    e.stopImmediatePropagation();
+  }, true);
+})();
 
 /* ===== Step flow ===== */
 let openStep = 1, reached = 1;
@@ -1623,6 +1680,23 @@ document.querySelectorAll('input[name=status]').forEach(i => i.addEventListener(
 document.querySelectorAll('input[name=term]').forEach(i => i.addEventListener('click', () => setTimeout(() => goStep(2))));
 tick(); setInterval(tick, 15000);
 update();
+
+</script>
+<script>
+// Site menu. On the live site (or a Netlify preview) links stay in the same tab; anywhere else they open the live pages in a new tab.
+(function(){
+  const SITE = 'https://hwr-timers.netlify.app';
+  const onSite = /(^|\.|--)hwr-timers\.netlify\.app$/.test(location.hostname);
+  const menu = document.getElementById('siteMenu'), btn = document.getElementById('menuBtn');
+  if (!menu || !btn) return;
+  menu.querySelectorAll('a[data-path]').forEach(a => {
+    if (!onSite) { a.href = SITE + a.dataset.path; a.target = '_blank'; a.rel = 'noopener'; }
+  });
+  const setOpen = open => { menu.classList.toggle('open', open); btn.setAttribute('aria-expanded', open); btn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu'); };
+  btn.addEventListener('click', e => { e.stopPropagation(); setOpen(!menu.classList.contains('open')); });
+  document.addEventListener('click', e => { if (!menu.contains(e.target)) setOpen(false); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && menu.classList.contains('open')) { e.stopPropagation(); setOpen(false); btn.focus(); } }, true);
+})();
 </script>
 </body>
 </html>
