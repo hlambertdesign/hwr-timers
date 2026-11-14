@@ -1,0 +1,1628 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Gift Card Pitch</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700&display=swap">
+<!-- Gravesend Sans (Adobe Fonts, same kit as hwr-timers) for headings. Falls back to Work Sans where Adobe can't load. -->
+<link rel="stylesheet" href="https://use.typekit.net/gul6fro.css">
+<style>
+:root{
+  --brown:#653B2C; --clay:#CD734C; --cream:#FBFCF7; --ink:#272727;
+  --card:#F4EFE7; --muted:#6B5148; --label:#7A5C4F; --peach:#E9C2A9;
+  --line:rgba(101,59,44,.14);
+  --good:#2F6B4F; --good-bg:#E2EFE7; --warn:#8A4B12; --warn-bg:#F7E6D3;
+  --grad:linear-gradient(90deg, rgb(104,57,44) 0%, rgb(113,65,51) 3.67%, rgb(142,85,67) 5.09%, rgb(142,85,67) 6.43%, rgb(122,69,57) 8.24%, rgb(122,69,57) 9.82%, rgb(136,81,67) 11.87%, rgb(144,91,76) 18.18%, rgb(170,117,99) 21.65%, rgb(203,156,130) 23.78%, rgb(203,156,130) 25.52%, rgb(191,133,115) 28.83%, rgb(211,168,147) 31.35%, rgb(210,168,146) 40.82%, rgb(178,123,104) 44.05%, rgb(131,84,68) 54.31%, rgb(108,62,49) 62.43%, rgb(100,57,44) 66.77%, rgb(105,61,46) 73.56%, rgb(114,68,59) 76.24%, rgb(139,82,64) 77.74%, rgb(169,101,81) 83.97%, rgb(221,180,152) 87.44%, rgb(221,180,152) 89.25%, rgb(146,93,77) 92.96%, rgb(114,68,59) 96.83%, rgb(102,65,57) 100%);
+  --coral:linear-gradient(180deg,rgba(226,146,110,.96) 0%,rgba(205,115,76,.95) 52%,rgba(184,95,58,.96) 100%);
+  --head:"gravesend-sans","Gravesend Sans","Work Sans",system-ui,sans-serif;
+  --body:'Work Sans',system-ui,sans-serif;
+  --ease:cubic-bezier(.2,.8,.2,1);
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--cream);color:var(--ink);font-family:var(--body);font-size:16px;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--brown)}
+h1,h2,h3,h4{font-family:var(--head)}
+.wrap{max-width:1640px;margin:0 auto;padding-left:max(24px,env(safe-area-inset-left,0px));padding-right:max(24px,env(safe-area-inset-right,0px))}
+@media (max-width:520px){.wrap{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}}
+button{font-family:var(--body);cursor:pointer;-webkit-tap-highlight-color:transparent}
+button:focus-visible{outline:3px solid var(--clay);outline-offset:3px}
+
+/* Header, as in hwr-timers */
+header{background:var(--brown);color:var(--cream);padding-top:env(safe-area-inset-top,0px)}
+.nav{padding-block:14px 16px;display:flex;flex-wrap:wrap;gap:12px 24px;align-items:flex-end;justify-content:space-between}
+h1{margin:0;font-size:clamp(22px,2.3vw,32px);line-height:1.05;font-weight:600;letter-spacing:.01em}
+.sub-title{margin:4px 0 0;font-size:13px;color:var(--peach)}
+.nav-right{display:flex;flex-wrap:wrap;gap:12px 24px;align-items:center;justify-content:flex-end}
+.nav-btns{display:flex;gap:10px}
+.btn-ghost{position:relative;display:inline-grid;place-items:center;color:var(--cream);cursor:pointer;border:1px solid rgba(251,252,247,.5);background:linear-gradient(180deg,rgba(255,255,255,.26) 0%,rgba(255,255,255,.05) 50%,rgba(255,255,255,.1) 100%);-webkit-backdrop-filter:blur(10px) saturate(1.5);backdrop-filter:blur(10px) saturate(1.5);box-shadow:inset 0 1.5px 1px rgba(255,255,255,.5),inset 0 -2px 5px rgba(255,255,255,.08),0 6px 12px -8px rgba(0,0,0,.5);border-radius:999px;min-height:44px;padding:0 18px;font-size:15px;font-weight:600;letter-spacing:.02em;transition:transform .22s cubic-bezier(.2,.8,.2,1),background .12s ease}
+.btn-ghost:hover{filter:brightness(1.22)}
+.btn-ghost:active{transform:scale(.94);transition-duration:.08s}
+.icon-ghost{width:48px;padding:0}
+header [data-tip]::after{content:attr(data-tip);position:absolute;top:calc(100% + 10px);right:0;transform:translateY(-4px);padding:6px 13px;border-radius:999px;background:var(--cream);color:var(--ink);font:400 13px/1.25 var(--body);letter-spacing:.01em;white-space:nowrap;box-shadow:0 8px 20px -8px rgba(0,0,0,.5);opacity:0;pointer-events:none;z-index:60;transition:opacity .14s ease,transform .14s ease}
+header [data-tip]::before{content:"";position:absolute;top:calc(100% + 6px);right:19px;width:10px;height:10px;background:var(--cream);border-radius:2px;transform:translateY(-4px) rotate(45deg);opacity:0;pointer-events:none;z-index:61;transition:opacity .14s ease,transform .14s ease}
+@media (hover:hover){
+  header [data-tip]:hover::after,header [data-tip]:focus-visible::after{opacity:1;transform:none;transition-delay:.3s}
+  header [data-tip]:hover::before,header [data-tip]:focus-visible::before{opacity:1;transform:rotate(45deg);transition-delay:.3s}
+}
+.clock{display:flex;flex-direction:column;gap:2px;align-items:flex-end}
+.clock .time-now{font-size:26px;font-weight:500;line-height:1;font-variant-numeric:tabular-nums}
+.clock .date-now{font-size:13px;color:var(--peach)}
+.strip-h{height:6px;background:var(--grad)}
+
+main .wrap{padding-block:16px 48px}
+.layout{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px;align-items:start}
+@media (max-width:900px){.layout{grid-template-columns:minmax(0,1fr)}}
+@media (min-width:901px){
+  /* Left column grows with its content and scrolls with the page */
+  /* Right column (checkout + pitch) stays in view while you fill out the left column */
+  /* The whole right column (checkout, toggle, pitch) stays pinned while you fill out the left column */
+  .layout > .right-col{position:sticky;top:calc(env(safe-area-inset-top,0px) + 16px);max-height:calc(100dvh - env(safe-area-inset-top,0px) - 16px);overflow-y:auto;overscroll-behavior:contain;
+    /* breathing room so rings and shadows on the toggle and cards aren't clipped by the scroll box */
+    padding:4px 8px 24px;margin:-4px -8px 0}
+}
+
+/* Panel: timer-card surface with the gradient strip */
+.panel{position:relative;overflow:hidden;background:var(--card);border:1px solid var(--line);border-radius:20px;padding:26px 26px 22px;display:flex;flex-direction:column;gap:22px}
+.strip{position:absolute;top:0;left:0;right:0;height:5px;background:var(--grad)}
+@media (max-width:520px){.panel{padding:26px 16px 20px}}
+.step{display:flex;flex-direction:column;gap:10px;min-width:0}
+.step-h{display:flex;flex-direction:column;gap:4px}
+.step-n{font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--clay)}
+h2{margin:0;font-size:clamp(19px,1.7vw,23px);font-weight:600;line-height:1.15;letter-spacing:-.012em}
+.hint{font-size:13.5px;color:var(--muted);margin:0}
+.lbl{font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--label)}
+.sub{display:flex;flex-direction:column;gap:8px}
+
+/* Sliding segmented control */
+.segs{--n:3;--sel:0;position:relative;display:grid;grid-template-columns:repeat(var(--n),minmax(0,1fr));gap:4px;padding:6px;border-radius:999px;border:1px solid rgba(255,255,255,.55);background:linear-gradient(180deg,rgba(101,59,44,.13),rgba(101,59,44,.06));box-shadow:inset 0 2px 5px rgba(101,59,44,.16),inset 0 -1px 1px rgba(255,255,255,.8);max-width:520px}
+.thumb{position:absolute;top:6px;bottom:6px;left:6px;width:calc((100% - 12px - (var(--n) - 1) * 4px) / var(--n));border-radius:999px;overflow:hidden;border:1px solid rgba(255,255,255,.3);background:var(--coral);box-shadow:inset 0 1.5px 1px rgba(255,255,255,.55),inset 0 -3px 6px rgba(255,235,220,.16),0 10px 18px -10px rgba(160,80,45,.9);transform:translateX(calc(var(--sel) * (100% + 4px)));transition:transform .38s cubic-bezier(.65,0,.35,1)}
+.thumb::before,.pill input:checked+span::before{content:"";position:absolute;left:8%;right:8%;top:2px;height:44%;border-radius:999px;pointer-events:none;background:linear-gradient(180deg,rgba(255,255,255,.38),rgba(255,255,255,.03))}
+.seg{position:relative;z-index:1;display:grid;place-items:center;min-height:42px;padding:0 6px;border-radius:999px;font-size:15px;font-weight:500;color:var(--brown);cursor:pointer;user-select:none;white-space:nowrap;text-align:center;transition:color .38s cubic-bezier(.65,0,.35,1)}
+.seg:has(input:checked){color:var(--cream);text-shadow:0 1px 1px rgba(90,38,18,.45);font-weight:600}
+.seg:has(input:focus-visible){outline:3px solid var(--clay);outline-offset:2px}
+.seg:has(input:disabled){opacity:.35;cursor:not-allowed}
+.sr{position:absolute;opacity:0;width:1px;height:1px;pointer-events:none}
+@media (max-width:520px){.seg{font-size:13.5px}}
+
+/* Pills */
+.pills{display:flex;flex-wrap:wrap;gap:8px}
+.pill{position:relative}
+.pill span{position:relative;isolation:isolate;overflow:hidden;display:inline-flex;align-items:center;gap:9px;min-height:42px;padding:0 16px 0 12px;border-radius:999px;font-size:15.5px;font-weight:500;color:var(--brown);cursor:pointer;user-select:none;transition:transform .22s var(--ease),filter .12s ease;
+  border:1px solid rgba(255,255,255,.8);background:linear-gradient(180deg,rgba(255,255,255,.32) 0%,rgba(255,255,255,.03) 50%,rgba(205,115,76,.05) 100%);box-shadow:inset 0 1.5px 1px rgba(255,255,255,.95),inset 0 -2px 5px rgba(101,59,44,.07),inset 0 0 0 1px rgba(101,59,44,.07),0 10px 18px -12px rgba(101,59,44,.5),0 1px 3px rgba(101,59,44,.1)}
+.pill span:hover{filter:brightness(1.03)}
+.pill span:active{transform:scale(.95);transition-duration:.08s}
+.pill i{flex:none;width:18px;height:18px;border-radius:50%;border:1.5px solid currentColor;display:grid;place-items:center;font-style:normal}
+.pill i svg{opacity:0}
+.pill em{font-style:normal;font-size:13.5px;opacity:.75;font-variant-numeric:tabular-nums}
+.pill input:checked+span{color:var(--cream);font-weight:600;text-shadow:0 1px 1px rgba(90,38,18,.45);border-color:rgba(255,255,255,.3);background:var(--coral);box-shadow:inset 0 1.5px 1px rgba(255,255,255,.55),inset 0 -3px 6px rgba(255,235,220,.16),0 10px 18px -10px rgba(160,80,45,.9)}
+.pill input:checked+span em{opacity:.9}
+.pill input:checked+span i{background:var(--cream);border-color:var(--cream);color:var(--clay)}
+.pill input:checked+span i svg{opacity:1}
+.pill input:focus-visible+span{outline:3px solid var(--clay);outline-offset:3px}
+.pill input:disabled+span{opacity:.35;cursor:not-allowed}
+
+/* Service tiles */
+/* Services read down each column: 1–3 on the left, 4–6 on the right */
+.svc{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(3,auto);grid-auto-flow:column;gap:8px}
+.svc .pill span b{white-space:nowrap}
+@media (max-width:360px){.svc{grid-template-columns:minmax(0,1fr);grid-template-rows:none;grid-auto-flow:row}}
+.svc .pill span{width:100%;flex-direction:column;align-items:flex-start;gap:2px;padding:10px 14px;border-radius:16px;min-height:62px}
+.svc .pill span b{font-weight:600;font-size:15.5px}
+.svc .pill span em{font-size:13px}
+/* Service tiles are rounded rectangles, so the glass reflection spans the full width and follows the corners */
+.svc .pill input:checked+span::before{left:3px;right:3px;top:2px;height:48%;border-radius:13px 13px 6px 6px;z-index:-1;background:linear-gradient(180deg,rgba(255,255,255,.4),rgba(255,255,255,.04))}
+
+/* Switch */
+.switch{display:inline-flex;align-items:center;gap:12px;cursor:pointer;user-select:none;font-size:15.5px;font-weight:500;color:var(--brown);align-self:flex-start;min-height:40px}
+.track{position:relative;flex:none;width:56px;height:32px;border-radius:999px;border:1px solid rgba(255,255,255,.55);background:linear-gradient(180deg,rgba(101,59,44,.13),rgba(101,59,44,.06));box-shadow:inset 0 2px 5px rgba(101,59,44,.16),inset 0 -1px 1px rgba(255,255,255,.8)}
+.knob{position:absolute;top:3px;left:3px;width:24px;height:24px;border-radius:50%;background:linear-gradient(180deg,#fff 0%,#FBFCF7 50%,#EFE6DB 100%);box-shadow:inset 0 1.5px 1px #fff,0 4px 8px -3px rgba(101,59,44,.6);transition:transform .3s cubic-bezier(.65,0,.35,1)}
+.switch input:checked+.track{border-color:rgba(255,255,255,.3);background:var(--coral);box-shadow:inset 0 1.5px 1px rgba(255,255,255,.55),0 8px 14px -8px rgba(160,80,45,.9)}
+.switch input:checked+.track .knob{transform:translateX(24px)}
+.switch input:focus-visible+.track{outline:3px solid var(--clay);outline-offset:3px}
+
+/* Number fields */
+.money-row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.money{position:relative;width:150px}
+.money::before{content:"$";position:absolute;left:18px;top:50%;transform:translateY(-50%);font-weight:600;color:var(--label)}
+.money input{width:100%;min-height:46px;border-radius:999px;padding:0 16px 0 34px;color:var(--ink);font:500 17px var(--body);font-variant-numeric:tabular-nums;border:1px solid rgba(101,59,44,.18);background:linear-gradient(180deg,#FFFFFF 0%,#FBFCF7 60%,#F7F1E9 100%);box-shadow:inset 0 1.5px 1px #fff,0 8px 16px -12px rgba(101,59,44,.5),0 1px 2px rgba(101,59,44,.08)}
+.money input:focus-visible{outline:2px solid var(--clay);outline-offset:1px}
+.chip-btn{min-height:40px;padding:0 14px;border-radius:999px;font:600 14px var(--body);color:var(--brown);border:1px solid rgba(101,59,44,.16);background:#FBFCF7;transition:transform .15s var(--ease)}
+.chip-btn:hover{background:#fff}
+.chip-btn:active{transform:scale(.95)}
+.chip-btn[aria-pressed="true"]{color:var(--cream);border-color:rgba(255,255,255,.3);background:var(--coral);text-shadow:0 1px 1px rgba(90,38,18,.4)}
+.counter{display:inline-flex;align-items:center;gap:6px;padding:5px;border-radius:999px;align-self:flex-start;border:1px solid rgba(255,255,255,.55);background:linear-gradient(180deg,rgba(101,59,44,.13),rgba(101,59,44,.06));box-shadow:inset 0 2px 5px rgba(101,59,44,.16),inset 0 -1px 1px rgba(255,255,255,.8)}
+.counter output{min-width:40px;text-align:center;font:600 20px var(--body);color:var(--brown);font-variant-numeric:tabular-nums}
+.cnt-btn{width:40px;height:40px;display:grid;place-items:center;padding:0;border-radius:999px;color:var(--brown);border:1px solid rgba(255,255,255,.8);background:linear-gradient(180deg,#FFFFFF 0%,#FBFCF7 60%,#F7F1E9 100%);box-shadow:inset 0 1.5px 1px #fff,0 6px 12px -8px rgba(101,59,44,.6);transition:transform .15s var(--ease)}
+.cnt-btn:active:not(:disabled){transform:scale(.92)}
+.cnt-btn:disabled{opacity:.35;cursor:default}
+.credit-row{display:flex;flex-wrap:wrap;align-items:center;gap:12px}
+.credit-min{font-size:14.5px;color:var(--muted);font-variant-numeric:tabular-nums}
+.credit-min b{color:var(--brown);font-weight:600}
+.divider{height:1px;background:var(--line);margin:0 -2px}
+
+/* Glass buttons */
+.btn{position:relative;isolation:isolate;overflow:hidden;border-radius:999px;min-height:46px;padding:0 22px;font-size:15px;font-weight:600;letter-spacing:.02em;display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:transform .22s var(--ease),filter .12s ease}
+.btn:active:not(:disabled){transform:scale(.94);transition-duration:.08s}
+.btn:disabled{opacity:.4;cursor:default;filter:none}
+.btn-fill{color:var(--cream);border:1px solid rgba(255,255,255,.22);background:linear-gradient(180deg,rgba(128,78,60,.97) 0%,rgba(101,59,44,.96) 55%,rgba(88,50,37,.97) 100%);text-shadow:0 1px 1px rgba(40,20,12,.45);box-shadow:inset 0 1.5px 1px rgba(255,255,255,.45),inset 0 -2px 4px rgba(255,255,255,.1),0 12px 22px -12px rgba(101,59,44,.9),0 2px 4px rgba(101,59,44,.2)}
+.btn-fill::before{content:"";position:absolute;z-index:-1;left:7%;right:7%;top:2px;height:46%;border-radius:999px;pointer-events:none;background:linear-gradient(180deg,rgba(255,255,255,.42),rgba(255,255,255,.05))}
+.btn-fill:hover{filter:brightness(1.12)}
+.btn-text{border:0;background:transparent;color:var(--label);padding:0 6px}
+.btn-outline{color:var(--brown);border:1px solid rgba(255,255,255,.8);background:linear-gradient(180deg,rgba(255,255,255,.32) 0%,rgba(255,255,255,.03) 50%,rgba(205,115,76,.05) 100%);box-shadow:inset 0 1.5px 1px rgba(255,255,255,.95),inset 0 -2px 5px rgba(101,59,44,.07),inset 0 0 0 1px rgba(101,59,44,.07),0 10px 18px -12px rgba(101,59,44,.5),0 1px 3px rgba(101,59,44,.1)}
+.btn-outline::before{content:"";position:absolute;z-index:-1;left:8%;right:8%;top:2px;height:42%;border-radius:999px;pointer-events:none;background:linear-gradient(180deg,rgba(255,255,255,.55),rgba(255,255,255,0))}
+.btn-outline:hover{filter:brightness(1.03)}
+.step-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.btn-reset{flex:none;min-height:42px;padding:0 18px;font-size:14.5px}
+.btn-text:hover{color:var(--brown)}
+
+/* Results */
+.right-col{min-width:0}
+.results{display:flex;flex-direction:column;gap:14px;min-width:0}
+.col-h{display:flex;flex-direction:column;gap:4px;padding:4px 4px 2px}
+.ot{font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--clay)}
+.col-h h3{margin:0;font-size:clamp(26px,2.8vw,34px);font-weight:600;line-height:1.1;letter-spacing:-.012em}
+.col-h h3 .num{font-variant-numeric:tabular-nums}
+.col-h p{margin:0;font-size:14px;color:var(--muted)}
+.card{position:relative;background:#FFFFFF;border:1px solid var(--line);border-radius:20px;padding:18px 20px;display:flex;flex-direction:column;gap:12px}
+.card.top{background:linear-gradient(180deg,#FFF1E9 0%,#FFF8F4 45%,#FFFFFF 100%);border-color:var(--clay);box-shadow:0 0 0 1px var(--clay),0 16px 30px -18px rgba(205,115,76,.7)}
+.card-h{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.card-h h4{margin:0;font-size:22px;font-weight:600;line-height:1.15;letter-spacing:-.012em}
+.rank{flex:none;white-space:nowrap;font-size:12px;font-weight:600;letter-spacing:.11em;text-transform:uppercase;color:var(--label)}
+.card.top .rank{display:inline-flex;align-items:center;gap:6px;letter-spacing:.03em;padding:5px 12px;border-radius:999px;color:var(--cream);text-shadow:0 1px 1px rgba(90,38,18,.4);border:1px solid rgba(255,255,255,.3);background:var(--coral);box-shadow:inset 0 1.5px 1px rgba(255,255,255,.5),0 6px 12px -8px rgba(160,80,45,.9)}
+.why{display:grid;grid-template-columns:max-content minmax(0,1fr);gap:8px 16px;margin:0;padding:12px 0 0;border-top:1px solid var(--line);list-style:none;font-size:15px;line-height:1.4}
+.why li{display:contents}
+.why b{font-size:14px;font-weight:600;color:var(--label);white-space:nowrap;padding-top:1px}
+.why span{font-variant-numeric:tabular-nums}
+.script{position:relative;margin:0;padding:14px 16px;border-radius:14px;background:#F4EFE7;border-left:4px solid var(--clay);font-size:16px;line-height:1.55;color:var(--ink)}
+.script-row{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.copy{min-height:36px;padding:0 14px;border-radius:999px;border:1px solid rgba(101,59,44,.16);background:#FBFCF7;font:600 13px var(--body);color:var(--brown);display:inline-flex;align-items:center;gap:6px}
+.copy:hover{background:#fff}
+.backup{display:flex;flex-direction:column;gap:10px;margin-top:4px;padding:14px 16px;border-radius:16px;border:1px dashed rgba(101,59,44,.28);background:rgba(255,255,255,.7)}
+.backup .why{padding-top:10px}
+.backup .script{border-left-color:var(--label);background:#F7F2EB}
+.tags{display:flex;flex-wrap:wrap;gap:6px}
+.tag{padding:3px 10px;border-radius:999px;font-size:13px;font-weight:500;background:rgba(101,59,44,.08);color:var(--brown)}
+.tag.good{background:var(--good-bg);color:var(--good)}
+.tag.warn{background:var(--warn-bg);color:var(--warn)}
+.extra-line{margin:0;font-size:14.5px;line-height:1.5;color:var(--muted)}
+.extra-line b{color:var(--brown)}
+
+/* Breakdown */
+.lines{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px;font-size:15px}
+.lines li{display:flex;justify-content:space-between;gap:12px;font-variant-numeric:tabular-nums}
+.lines li span:first-child{color:var(--muted)}
+.lines li.cover span{color:var(--good)}
+.lines li.total{padding-top:8px;margin-top:2px;border-top:1px solid var(--line);font-weight:600;font-size:16px}
+.lines li.total span:first-child{color:var(--ink)}
+details.card summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;font-weight:600;color:var(--brown)}
+details.card summary::-webkit-details-marker{display:none}
+details.card summary::after{content:"";width:10px;height:10px;border-right:2px solid var(--label);border-bottom:2px solid var(--label);transform:rotate(45deg);margin-right:4px;transition:transform .2s ease}
+details.card[open] summary::after{transform:rotate(-135deg)}
+details.checkout summary{align-items:flex-start}
+details.checkout summary::after{margin-top:12px}
+details.checkout .col-h{padding:0}
+.checkout .lines{padding-top:12px;border-top:1px solid var(--line)}
+
+/* Gap suggestions */
+.gap-list{display:flex;flex-direction:column;gap:8px}
+.gap-item{width:100%;display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 14px;border-radius:14px;border:1px solid transparent;background:#F4EFE7;font:inherit;font-size:15px;color:var(--ink);text-align:left;cursor:pointer;transition:background .12s ease,transform .15s var(--ease)}
+.gap-item:hover{background:#EFE7DB}
+.gap-item:active{transform:scale(.99)}
+.gap-item.on{background:linear-gradient(180deg,#FFF1E9 0%,#FFF8F4 100%);border-color:var(--clay);box-shadow:0 0 0 1px var(--clay)}
+.gap-item small.val{color:var(--good);font-weight:500;margin-top:2px}
+.gap-item span.short{color:var(--muted)}
+.gap-item span small{display:block;font-size:12px;font-weight:500;text-align:right}
+.gap-item b{font-weight:600}
+.gap-item small{display:block;font-size:13px;font-weight:400;color:var(--muted)}
+.gap-item span{font-variant-numeric:tabular-nums;color:var(--good);font-weight:600;white-space:nowrap}
+
+/* Compare tiers */
+.tiers{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+@media (max-width:560px){.tiers{grid-template-columns:minmax(0,1fr)}}
+.tier{border:1px solid var(--line);border-radius:16px;padding:14px;display:flex;flex-direction:column;gap:6px;background:#FFFFFF}
+.tier.pick{border-color:var(--clay);box-shadow:0 0 0 1px var(--clay)}
+.tier h5{margin:0;font-family:var(--head);font-size:19px;font-weight:600}
+.tier .t-sub{font-size:13px;color:var(--muted)}
+.tier dl{margin:4px 0 0;display:grid;grid-template-columns:1fr auto;gap:4px 8px;font-size:14px}
+.tier dt{color:var(--muted)}
+.tier dd{margin:0;text-align:right;font-weight:600;font-variant-numeric:tabular-nums}
+
+.foot{margin:18px 4px 0;font-size:13px;color:var(--muted);line-height:1.5}
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translateX(-50%) translateY(10px);padding:10px 18px;border-radius:999px;background:var(--brown);color:var(--cream);font-size:14px;font-weight:600;opacity:0;pointer-events:none;transition:opacity .2s ease,transform .2s ease;z-index:50}
+.toast.show{opacity:1;transform:translateX(-50%)}
+@media (prefers-reduced-motion:reduce){.thumb,.knob{transition:none}}
+
+/* Accordion steps: one open at a time, each unlocks after the one before */
+.panel{gap:0}
+.step{gap:0}
+.step + .step{border-top:1px solid var(--line);margin-top:14px;padding-top:14px}
+.step-head{flex:1;min-width:0;display:flex;align-items:center;gap:12px;padding:4px 0;border:0;background:transparent;color:inherit;text-align:left}
+.step-head .step-h{flex:none}
+.step-sum{flex:1;min-width:0;text-align:right;font-size:14.5px;font-weight:500;color:var(--brown);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.chev{flex:none;color:var(--label);transition:transform .25s var(--ease)}
+.step.open .chev{transform:rotate(180deg)}
+.step-body{display:flex;flex-direction:column;gap:12px;padding-top:12px}
+.step:not(.open) .step-body{display:none}
+.step.open .step-sum{display:none}
+.step.locked .step-head{cursor:default;opacity:.45}
+.step.locked .chev{visibility:hidden}
+.step.done .step-n::after{content:" ✓";color:var(--good)}
+.step-top{align-items:center}
+.mt-grid{display:flex;flex-direction:column;gap:10px}
+.mt-guest{display:flex;align-items:center;gap:12px}
+.mt-guest .segs{flex:1}
+.mt-who{flex:none;width:64px;font-size:14px;font-weight:600;color:var(--brown)}
+.quick{display:flex;flex-wrap:wrap;gap:4px;padding:5px;border-radius:999px;border:1px solid rgba(255,255,255,.65);background:linear-gradient(180deg,rgba(255,255,255,.55) 0%,rgba(255,255,255,.22) 55%,rgba(244,239,231,.32) 100%);box-shadow:inset 0 1.5px 1px rgba(255,255,255,.95),inset 0 -2px 6px rgba(255,255,255,.35),0 12px 28px -14px rgba(101,59,44,.55),0 0 0 1px rgba(101,59,44,.06)}
+.qtab{position:relative;isolation:isolate;overflow:hidden;flex:1 1 auto;min-height:40px;padding:0 14px;border:0;border-radius:999px;background:transparent;font:600 14.5px var(--body);color:var(--brown);white-space:nowrap;transition:background .15s ease,color .15s ease}
+.qtab:hover{background:rgba(101,59,44,.08)}
+.qtab[aria-pressed="true"]{color:var(--cream);text-shadow:0 1px 1px rgba(90,38,18,.4);background:var(--coral);box-shadow:inset 0 1.5px 1px rgba(255,255,255,.55),0 8px 16px -10px rgba(160,80,45,.9)}
+.qtab[aria-pressed="true"]::before{content:"";position:absolute;z-index:-1;left:8%;right:8%;top:2px;height:44%;border-radius:999px;background:linear-gradient(180deg,rgba(255,255,255,.38),rgba(255,255,255,.03))}
+@media (max-width:520px){.quick{border-radius:20px}.qtab{flex:1 1 30%}}
+.combo{display:flex;flex-direction:column;gap:8px;padding-top:4px}
+.combo-row{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:8px 8px 8px 14px;border-radius:14px;background:#F4EFE7}
+.combo-row small{display:block;font-size:13px;color:var(--muted)}
+.combo-row output{min-width:32px;text-align:center;font:600 18px var(--body);color:var(--brown);font-variant-numeric:tabular-nums}
+.term-tabs{display:flex;gap:6px}
+.ttab{min-height:36px;padding:0 16px;border-radius:999px;border:1px solid rgba(101,59,44,.16);background:#FBFCF7;font:600 14px var(--body);color:var(--brown)}
+.ttab:hover{background:#fff}
+.ttab[aria-pressed="true"]{color:var(--cream);border-color:rgba(255,255,255,.3);background:var(--coral);text-shadow:0 1px 1px rgba(90,38,18,.4)}
+.step.skipped .step-head{cursor:default;opacity:.45}
+.step.skipped .chev{visibility:hidden}
+.step.skipped .step-n::after{content:''}
+.step.skipped .step-body{display:none}
+.step.skipped .step-sum{display:block;font-style:italic;color:var(--muted)}
+.folder{display:flex;flex-direction:column;min-width:0}
+.folder > .panel{border-top-left-radius:0;border-top-right-radius:0}
+.tabs{position:relative;z-index:1;display:flex;align-items:flex-end;gap:4px}
+.tab{position:relative;flex:1 1 0;min-width:0;min-height:40px;padding:0 18px;border:1px solid var(--line);border-bottom:0;border-radius:12px 12px 0 0;background:transparent;font:600 15px var(--body);color:var(--label);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:background .15s ease,color .15s ease}
+.tab:hover{color:var(--brown);background:rgba(101,59,44,.06)}
+.tab[aria-selected="true"]{background:var(--card);color:var(--brown);margin-bottom:-1px;padding-bottom:1px}
+.pane{display:flex;flex-direction:column}
+.info{display:flex;flex-direction:column;gap:8px}
+.info + .info{border-top:1px solid var(--line);margin-top:16px;padding-top:16px}
+.itab{width:100%;border-collapse:collapse;font-size:14.5px;background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 0 0 1px var(--line)}
+.itab th{text-align:left;font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--label);padding:10px 12px;background:#FBF7F1}
+.itab td{padding:9px 12px;border-top:1px solid var(--line);font-variant-numeric:tabular-nums}
+.itab td:first-child{font-weight:600;color:var(--brown)}
+.itab small{display:block;font-size:12px;font-weight:500;color:var(--muted)}
+.offers td:nth-child(2) small{display:inline;margin-left:2px;color:var(--good)}
+.offers td strong{color:var(--brown)}
+.itab-sub td{background:#FBF7F1;font-size:12px!important;font-weight:600!important;letter-spacing:.1em;text-transform:uppercase;color:var(--label)!important;padding:7px 12px}
+.offers th,.offers td{padding-left:10px;padding-right:10px}
+/* Promo details tables: every column centered */
+.itab th,.itab td{text-align:center!important}
+.ilist{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px;font-size:14.5px}
+.ilist li{display:grid;grid-template-columns:140px minmax(0,1fr);gap:10px}
+.ilist b{font-weight:600;color:var(--brown)}
+@media (max-width:520px){.ilist li{grid-template-columns:1fr;gap:2px}}
+.why strong.ok{color:var(--good)}
+.why strong.short{color:var(--warn)}
+.why strong.deficit{display:block;color:#B3261E;font-weight:600}
+.mode-row{display:flex;justify-content:space-between;align-items:center;gap:12px;padding-bottom:14px;margin-bottom:14px;border-bottom:1px solid var(--line)}
+/* Simple mode: guest, service and tip only, all open at once, one pitch on the right */
+body.simple .step[data-step="3"], body.simple .step[data-step="5"], body.simple .adv-only{display:none!important}
+body.simple .step .step-body{display:flex!important}
+body.simple .step-sum, body.simple .chev, body.simple .obj-rules{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;font-size:14.5px;line-height:1.45}
+.obj-rules b{color:var(--brown)}
+.promo-card{gap:0}
+.obj-list{display:flex;flex-direction:column;gap:14px}
+.obj{border-radius:14px;background:#fff;box-shadow:0 0 0 1px var(--line);overflow:hidden}
+.obj summary{list-style:none;cursor:pointer;display:flex;flex-direction:column;gap:2px;padding:12px 40px 12px 14px;position:relative}
+.obj summary::-webkit-details-marker{display:none}
+.obj summary::after{content:"";position:absolute;right:16px;top:18px;width:8px;height:8px;border-right:2px solid var(--label);border-bottom:2px solid var(--label);transform:rotate(45deg);transition:transform .2s ease}
+.obj[open] summary::after{transform:rotate(-135deg);top:22px}
+.obj summary b{font-size:15.5px;color:var(--ink)}
+.obj summary small{font-size:13px;color:var(--muted)}
+.obj-body{display:flex;flex-direction:column;gap:8px;padding:0 14px 14px}
+.obj-say{padding:10px 12px;border-radius:12px;background:#F4EFE7;border-left:4px solid var(--clay)}
+.obj.ladder.best{box-shadow:0 0 0 1.5px var(--clay)}
+.best-tag{display:inline-block;margin-left:6px;padding:2px 9px;border-radius:999px;font-size:11.5px;font-weight:600;letter-spacing:.04em;color:var(--cream);background:var(--coral);vertical-align:2px}
+.ladder .obj-body{padding-top:2px}
+.obj-say.fallback{background:var(--coral);border-left-color:#8E4426;color:var(--cream);box-shadow:inset 0 1.5px 1px rgba(255,255,255,.45),0 10px 18px -12px rgba(160,80,45,.9)}
+.obj-say.fallback .lbl{color:var(--cream);opacity:.9}
+.obj-say.fallback p{text-shadow:0 1px 1px rgba(90,38,18,.35)}
+.obj-say.alt{background:#F7F2EB;border-left-color:var(--label)}
+.obj-say p{margin:4px 0 0;font-size:15px;line-height:1.5}
+.tip-slider{display:flex;flex-direction:column;gap:10px;width:100%}
+.tip-top{display:flex;align-items:baseline;gap:8px}
+.tip-top output{font:600 28px var(--body);color:var(--brown);font-variant-numeric:tabular-nums}
+.tip-per{font-size:14px;color:var(--muted)}
+.tip-top .tip-custom{margin-left:auto;align-self:center}
+/* Custom tip field sits just left of the Custom button when open */
+.tip-top .money{margin-left:auto;align-self:center;width:110px}
+.tip-top .money input{min-height:38px}
+.tip-top .money:not([hidden]) + .tip-custom{margin-left:8px}
+#tipRange,#crRange,#mtRange{--pct:0%;-webkit-appearance:none;appearance:none;width:100%;height:30px;background:transparent;margin:0;cursor:pointer}
+#tipRange::-webkit-slider-runnable-track,#crRange::-webkit-slider-runnable-track,#mtRange::-webkit-slider-runnable-track{height:10px;border-radius:999px;border:1px solid rgba(255,255,255,.55);background:linear-gradient(90deg,rgba(205,115,76,.85) 0%,rgba(205,115,76,.85) var(--pct),rgba(101,59,44,.12) var(--pct));box-shadow:inset 0 2px 4px rgba(101,59,44,.16)}
+#tipRange::-moz-range-track,#crRange::-moz-range-track,#mtRange::-moz-range-track{height:10px;border-radius:999px;background:rgba(101,59,44,.12);box-shadow:inset 0 2px 4px rgba(101,59,44,.16)}
+#tipRange::-moz-range-progress,#crRange::-moz-range-progress,#mtRange::-moz-range-progress{height:10px;border-radius:999px;background:rgba(205,115,76,.85)}
+#tipRange::-webkit-slider-thumb,#crRange::-webkit-slider-thumb,#mtRange::-webkit-slider-thumb{-webkit-appearance:none;width:28px;height:28px;margin-top:-10px;border-radius:50%;border:1px solid rgba(255,255,255,.4);background:var(--coral);box-shadow:inset 0 1.5px 1px rgba(255,255,255,.55),0 6px 12px -4px rgba(160,80,45,.8)}
+#tipRange::-moz-range-thumb,#crRange::-moz-range-thumb,#mtRange::-moz-range-thumb{width:28px;height:28px;border-radius:50%;border:1px solid rgba(255,255,255,.4);background:var(--coral);box-shadow:inset 0 1.5px 1px rgba(255,255,255,.55),0 6px 12px -4px rgba(160,80,45,.8)}
+#tipRange.off::-webkit-slider-thumb,#crRange.off::-webkit-slider-thumb,#mtRange.off::-webkit-slider-thumb{background:#D9CFC5}
+#tipRange.off::-moz-range-thumb,#crRange.off::-moz-range-thumb,#mtRange.off::-moz-range-thumb{background:#D9CFC5}
+#tipRange:focus-visible,#crRange:focus-visible,#mtRange:focus-visible{outline:3px solid var(--clay);outline-offset:4px;border-radius:999px}
+.tip-ticks{display:flex;justify-content:space-between;margin:-4px 2px 0}
+.tip-ticks button{border:0;background:transparent;padding:4px 2px;font:500 13.5px var(--body);color:var(--label);min-width:34px;text-align:center;font-variant-numeric:tabular-nums}
+.tip-ticks button:first-child{text-align:left}
+.tip-ticks button:last-child{text-align:right}
+.tip-ticks button.on{color:var(--clay);font-weight:700}
+.radio-row{display:flex;flex-wrap:wrap;gap:8px 18px}
+.radio span{display:inline-flex;align-items:center;gap:9px;min-height:36px;font-size:15.5px;font-weight:500;color:var(--brown);cursor:pointer;user-select:none}
+.radio i{flex:none;width:20px;height:20px;border-radius:50%;border:2px solid rgba(101,59,44,.35);background:#fff;box-shadow:inset 0 1px 2px rgba(101,59,44,.15);display:grid;place-items:center;transition:border-color .15s ease}
+.radio i::after{content:"";width:10px;height:10px;border-radius:50%;background:var(--coral);transform:scale(0);transition:transform .18s var(--ease)}
+.radio input:checked+span{font-weight:600}
+.radio input:checked+span i{border-color:var(--clay)}
+.radio input:checked+span i::after{transform:scale(1)}
+.radio input:focus-visible+span i{outline:3px solid var(--clay);outline-offset:2px}
+/* Compact steps so the form fits with less scrolling */
+.panel{padding:20px 22px 18px}
+.mode-row{padding-bottom:10px;margin-bottom:10px}
+.step + .step{margin-top:10px;padding-top:10px}
+.step-head{padding:2px 0}
+.step-n{font-size:11px}
+.step h2{font-size:18px}
+.step-body{gap:9px;padding-top:8px}
+.step .hint{font-size:12.5px}
+.step .sub{gap:6px}
+.segs{padding:4px}
+.seg{min-height:34px;font-size:14.5px}
+.thumb{top:4px;bottom:4px;left:4px;width:calc((100% - 8px - (var(--n) - 1) * 4px) / var(--n))}
+.pill span{min-height:36px;font-size:14.5px;padding:0 13px 0 10px}
+.svc{gap:6px}
+.svc .pill span{min-height:48px;padding:7px 12px;border-radius:14px}
+.svc .pill span b{font-size:14.5px}
+.cnt-btn{width:34px;height:34px}
+.counter output{font-size:17px;min-width:32px}
+.tip-top output{font-size:24px}
+.step-next .btn{min-height:40px;padding:0 22px;font-size:14px}
+.switch{min-height:34px;font-size:14.5px}
+.svc .pill span{position:relative;padding-right:34px}
+.svc kbd{position:absolute;top:7px;right:8px;min-width:20px;height:20px;padding:0 5px;display:grid;place-items:center;border-radius:6px;font:700 11.5px var(--body);color:var(--label);background:rgba(255,255,255,.75);border:1px solid rgba(101,59,44,.18);box-shadow:0 1px 0 rgba(101,59,44,.18)}
+.svc .pill input:checked+span kbd{color:var(--clay);background:var(--cream);border-color:rgba(255,255,255,.6);text-shadow:none}
+.oop{margin:0;padding:10px 12px;border-radius:12px;background:var(--warn-bg);color:var(--warn);font-size:14.5px;line-height:1.45}
+.oop b{font-weight:700}
+.step-mt .step-head{cursor:default}
+.step-mt .chev{display:none}
+#mtTicks button{position:relative}
+#mtTicks button:disabled,#crTicks button:disabled{opacity:.3;cursor:not-allowed}
+#mtTicks button::after{content:attr(data-tip);position:absolute;z-index:20;left:50%;bottom:calc(100% + 8px);transform:translate(-50%,4px);width:max-content;max-width:200px;padding:6px 12px;border-radius:12px;background:var(--brown);color:var(--cream);font:500 12.5px/1.3 var(--body);white-space:normal;text-align:center;box-shadow:0 8px 18px -8px rgba(0,0,0,.5);opacity:0;pointer-events:none;transition:opacity .14s ease,transform .14s ease}
+#mtTicks button:first-child::after{left:0;transform:translate(0,4px)}
+#mtTicks button:last-child::after{left:auto;right:0;transform:translate(0,4px)}
+#mtTicks button:hover::after,#mtTicks button:focus-visible::after{opacity:1;transform:translate(-50%,0);transition-delay:.15s}
+#mtTicks button:first-child:hover::after,#mtTicks button:first-child:focus-visible::after,#mtTicks button:last-child:hover::after,#mtTicks button:last-child:focus-visible::after{transform:translate(0,0)}
+/* Even spacing between every calculator step */
+#pane-calc > .step + .step{margin-top:14px;padding-top:14px}
+#pane-calc > .step > .step-body{padding-top:10px}
+.addon-grid{grid-template-rows:repeat(4,auto)}
+.addon-grid > .lbl{align-self:end;padding:2px 2px 0}
+.addon-grid .pill span{min-height:44px;flex-direction:row;align-items:center;gap:9px;padding-right:36px}
+.addon-grid label[data-qty]:not([data-qty=""]) span::after{content:attr(data-qty);position:absolute;top:-7px;left:10px;padding:1px 7px;border-radius:999px;font:700 11px var(--body);color:var(--cream);background:var(--brown);box-shadow:0 2px 6px -2px rgba(0,0,0,.4)}
+.addon-grid .pill span{overflow:visible}
+/* Picked for both guests (couples): deeper clay so the doubled price stands out */
+.addon-grid .pill.dbl input:checked+span{background:linear-gradient(180deg,rgba(178,96,62,.98) 0%,rgba(150,74,44,.98) 52%,rgba(122,58,34,.98) 100%);box-shadow:inset 0 1.5px 1px rgba(255,255,255,.45),0 0 0 2px rgba(122,58,34,.35),0 10px 18px -10px rgba(110,50,28,.95)}
+.addon-grid .pill.dbl input:checked+span em{font-weight:700;opacity:1}
+.addon-grid kbd{top:50%;transform:translateY(-50%)}
+.addon-grid .pill span em{margin-left:auto}
+.tip-ticks kbd.tk{display:inline-grid;place-items:center;min-width:16px;height:16px;margin-left:3px;padding:0 3px;border-radius:4px;font:700 11px var(--body);color:var(--label);background:rgba(255,255,255,.75);border:1px solid rgba(101,59,44,.18);vertical-align:1px}
+.step-next{display:none!important}
+body.simple .step .step-head{cursor:default;opacity:1!important}
+body.simple .step.done .step-n::after{content:''}
+.quick-pitch .pay-get{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 10px;font-size:17px;font-weight:600;color:var(--brown);font-variant-numeric:tabular-nums}
+.quick-pitch .pay-get span{color:var(--muted);font-weight:500;font-size:15px}
+.quick-pitch .if-no{margin:0;font-size:15px;line-height:1.5;color:var(--ink)}
+.quick-pitch .if-no b{color:var(--label);font-size:12px;letter-spacing:.12em;text-transform:uppercase;margin-right:6px}
+.step-next{display:flex;justify-content:flex-end;padding-top:4px}
+.step-next .btn{min-height:46px;padding:0 28px}
+@media (max-width:520px){.step-sum{display:none}}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap nav">
+    <div>
+      <h1>Gift Card Pitch</h1>
+      <p class="sub-title">Holiday promo · Heights Wellness Retreat</p>
+    </div>
+    <div class="nav-right">
+      <div class="nav-btns">
+        <button class="btn-ghost icon-ghost" id="reset" type="button" aria-label="Reset all fields" data-tip="Reset for next guest"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/></svg></button>
+      </div>
+      <div class="clock" aria-hidden="true"><span class="time-now" id="tNow">--:--</span><span class="date-now" id="dNow"></span></div>
+    </div>
+  </div>
+</header>
+<div class="strip-h"></div>
+
+<main>
+  <div class="wrap">
+    <div class="layout">
+      <!-- Form -->
+      <div class="folder">
+        <div class="tabs" role="tablist" aria-label="Left column">
+          <button class="tab" role="tab" type="button" id="tab-calc" aria-selected="true" aria-controls="pane-calc">Calculator</button>
+          <button class="tab" role="tab" type="button" id="tab-promo" aria-selected="false" aria-controls="pane-promo">Promo details</button>
+          <button class="tab" role="tab" type="button" id="tab-obj" aria-selected="false" aria-controls="pane-obj">Objections</button>
+        </div>
+      <section class="panel" aria-label="Guest details">
+        <div class="strip"></div>
+        <div class="pane" id="pane-calc" role="tabpanel" aria-labelledby="tab-calc">
+
+        <div class="step" data-step="2">
+          <button class="step-head" type="button" aria-expanded="false"><span class="step-h"><span class="step-n">Step 1</span><h2>Service</h2></span><span class="step-sum"></span><svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
+          <div class="step-body">
+            <div class="svc" id="svcList"></div>
+            <label class="switch adv-only" id="bothWrap" hidden><input class="sr" type="checkbox" id="both" checked><span class="track"><span class="knob"></span></span>Same add-ons for both guests</label>
+            <div class="step-next"><button class="btn btn-fill next" type="button">Next</button></div>
+          </div>
+        </div>
+
+        <div class="step" data-step="3">
+          <button class="step-head" type="button" aria-expanded="false"><span class="step-h"><span class="step-n">Step 3</span><h2>Add-ons</h2></span><span class="step-sum"></span><svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
+          <div class="step-body">
+            <div class="sub"><span class="lbl">Elevations</span><div class="pills" id="elevList"></div></div>
+            <div class="sub"><span class="lbl">Enhancements</span><div class="pills" id="enhList"></div></div>
+            <div class="sub">
+              <span class="lbl">Master Therapist</span>
+              <div class="mt-grid">
+                <div class="mt-guest"><span class="mt-who" id="mtWho1" hidden>Guest 1</span>
+                  <div class="segs" id="mtSegs" style="--n:3;max-width:420px" role="radiogroup" aria-label="Master Therapist, guest 1">
+                    <div class="thumb"></div>
+                    <label class="seg"><input class="sr" type="radio" name="mt" value="none" checked>None</label>
+                    <label class="seg"><input class="sr" type="radio" name="mt" value="mt">Master</label>
+                    <label class="seg"><input class="sr" type="radio" name="mt" value="joseph">Joseph</label>
+                  </div>
+                </div>
+                <div class="mt-guest" id="mtGuest2" hidden><span class="mt-who">Guest 2</span>
+                  <div class="segs" id="mtSegs2" style="--n:3;max-width:420px" role="radiogroup" aria-label="Master Therapist, guest 2">
+                    <div class="thumb"></div>
+                    <label class="seg"><input class="sr" type="radio" name="mt2" value="none" checked>None</label>
+                    <label class="seg"><input class="sr" type="radio" name="mt2" value="mt">Master</label>
+                    <label class="seg"><input class="sr" type="radio" name="mt2" value="joseph">Joseph</label>
+                  </div>
+                </div>
+              </div>
+              <p class="hint" id="mtHint">$12 for 60 min · $18 for 90 min · Joseph $24 (90 min only)</p>
+            </div>
+            <div class="step-next"><button class="btn btn-fill next" type="button">Next</button></div>
+          </div>
+        </div>
+
+        <div class="step step-mt step-addons">
+          <button class="step-head" type="button" aria-expanded="true"><span class="step-h"><span class="step-n">Step 2</span><h2>Elevations &amp; enhancements</h2></span><span class="step-sum"></span></button>
+          <div class="step-body">
+            <div class="svc addon-grid"><span class="lbl">Elevations</span><label class="pill"><input class="sr" type="checkbox" name="addonS" value="stones" aria-keyshortcuts="A"><span><kbd>A</kbd><i><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></i><b>Hot stones</b><em data-price="20">$20</em></span></label><label class="pill"><input class="sr" type="checkbox" name="addonS" value="foot" aria-keyshortcuts="B"><span><kbd>B</kbd><i><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></i><b>Foot scrub</b><em data-price="12">$12</em></span></label><label class="pill"><input class="sr" type="checkbox" name="addonS" value="face" aria-keyshortcuts="C"><span><kbd>C</kbd><i><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></i><b>Face massage</b><em data-price="12">$12</em></span></label><span class="lbl">Enhancements</span><label class="pill"><input class="sr" type="checkbox" name="addonS" value="cbd" aria-keyshortcuts="D"><span><kbd>D</kbd><i><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></i><b>CBD</b><em data-price="20">$20</em></span></label><label class="pill"><input class="sr" type="checkbox" name="addonS" value="cup" aria-keyshortcuts="E"><span><kbd>E</kbd><i><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></i><b>Cupping</b><em data-price="25">$25</em></span></label><label class="pill"><input class="sr" type="checkbox" name="addonS" value="vitad" aria-keyshortcuts="F"><span><kbd>F</kbd><i><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></i><b>Vita D Glow</b><em data-price="35">$35</em></span></label></div>
+            <p class="hint" id="addonHint">Pick any that apply. Massages only.</p>
+          </div>
+        </div>
+
+        <div class="step step-mt">
+          <button class="step-head" type="button" aria-expanded="true"><span class="step-h"><span class="step-n">Step 3</span><h2>Master Therapist fee</h2></span><span class="step-sum"></span><svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
+          <div class="step-body">
+            <div class="tip-slider">
+              <div class="tip-top"><output id="mtOut">$0</output><span class="tip-per" id="mtDesc">No Master Therapist</span><button class="chip-btn tip-custom" id="mtDoubleBtn" type="button" aria-pressed="false" hidden>× 2 MTs</button></div>
+              <input type="range" id="mtRange" min="0" max="2" step="1" value="0" aria-label="Master Therapist fee">
+              <div class="tip-ticks" id="mtTicks">
+                <button type="button" data-m="0" data-tip="No Master Therapist">$0 <kbd class="tk">,</kbd></button><button type="button" data-m="1" data-tip="60 min with a Master Therapist">$12 <kbd class="tk">.</kbd></button><button type="button" data-m="2" data-tip="90 min with a Master Therapist">$18 <kbd class="tk">/</kbd></button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="step" data-step="4">
+          <button class="step-head" type="button" aria-expanded="false"><span class="step-h"><span class="step-n">Step 4</span><h2>Gratuity</h2></span><span class="step-sum"></span><svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
+          <div class="step-body">
+            <div class="tip-slider">
+              <div class="tip-top">
+                <output id="tipOut">$0</output><span class="tip-per" id="tipPer">per guest</span>
+                <div class="money" id="tipCustomWrap" hidden><input type="number" id="tip" inputmode="decimal" min="0" step="1" value="0" aria-label="Custom gratuity per guest"></div>
+                <button class="chip-btn tip-custom" id="tipCustomBtn" type="button" aria-pressed="false">Custom</button>
+              </div>
+              <input type="range" id="tipRange" min="0" max="5" step="1" value="0" aria-label="Gratuity per guest">
+              <div class="tip-ticks">
+                <button type="button" data-i="0">$0</button><button type="button" data-i="1">$15</button><button type="button" data-i="2">$25</button><button type="button" data-i="3">$35</button><button type="button" data-i="4">$45</button><button type="button" data-i="5">$50</button>
+              </div>
+            </div>
+            <p class="hint" id="tipHint">Recommended: $25 for 60 min, $35 for 90 min.</p>
+            <div class="step-next"><button class="btn btn-fill next" type="button">Next</button></div>
+          </div>
+        </div>
+
+        <div class="step" data-step="1">
+          <div class="step-top">
+            <button class="step-head" type="button" aria-expanded="false"><span class="step-h"><span class="step-n">Step 5</span><h2>Credits on account</h2></span><span class="step-sum"></span><svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
+          </div>
+          <div class="step-body">
+            <div class="tip-slider">
+              <div class="tip-top">
+                <output id="crOut">0 credits</output><span class="tip-per" id="crMin">member pricing, paid today</span>
+                <button class="chip-btn tip-custom" id="nonBtn" type="button" aria-pressed="false">Non-member</button>
+              </div>
+              <input type="range" id="crRange" min="0" max="6" step="1" value="0" aria-label="Credits on account">
+              <div class="tip-ticks" id="crTicks">
+                <button type="button" data-c="0">0</button><button type="button" data-c="1">1</button><button type="button" data-c="2">2</button><button type="button" data-c="3">3</button><button type="button" data-c="4">4</button><button type="button" data-c="5">5</button><button type="button" data-c="6">6</button>
+              </div>
+              <p class="hint" id="crHint">0 = member paying today at member prices. 1 credit = 30 min (60 min = 2, 90 min = 3, couples 60 = 4, couples 90 = 6). Credits don't cover the HydraFacial or the $20 facial fee.</p>
+            </div>
+            <div class="legacy-step1" hidden>
+            <div class="radio-row" role="radiogroup" aria-label="Pricing">
+              <label class="radio"><input class="sr" type="radio" name="status" value="member" checked><span><i></i>Member pricing</span></label>
+              <label class="radio"><input class="sr" type="radio" name="status" value="non"><span><i></i>Non-member pricing</span></label>
+            </div>
+            <div class="sub" id="termWrap">
+              <span class="lbl">Plan</span>
+              <div class="segs" id="termSegs" style="--n:3;max-width:360px" role="radiogroup" aria-label="Membership plan">
+                <div class="thumb"></div>
+                <label class="seg"><input class="sr" type="radio" name="term" value="12" checked>12M</label>
+                <label class="seg"><input class="sr" type="radio" name="term" value="3">3M PIF</label>
+                <label class="seg"><input class="sr" type="radio" name="term" value="6">6M PIF</label>
+              </div>
+            </div>
+            <div class="sub" id="creditsWrap">
+              <span class="lbl">Credits on account</span>
+              <div class="credit-row"><div class="counter" id="credits">
+                <button type="button" class="cnt-btn" data-step="-1" aria-label="One less credit"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M5 12h14"/></svg></button>
+                <output id="creditsN" aria-live="polite">0</output>
+                <button type="button" class="cnt-btn" data-step="1" aria-label="One more credit"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button>
+              </div><span class="credit-min" id="creditsMin"></span></div>
+              <p class="hint" id="creditsHint">1 credit = 30 min. A 60 min uses 2, a 90 min uses 3.</p>
+            </div>
+            </div>
+            <p class="hint" id="statusHint" hidden>Pitch is based on today's checkout.</p>
+          </div>
+        </div>
+
+        <div class="step" data-step="5">
+          <button class="step-head" type="button" aria-expanded="false"><span class="step-h"><span class="step-n">Step 5 · Optional</span><h2>Retail</h2></span><span class="step-sum"></span><svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
+          <div class="step-body">
+            <div class="money-row"><div class="money"><input type="number" id="retail" inputmode="decimal" min="0" step="1" value="0" aria-label="Retail amount"></div></div>
+            <div class="step-next"><button class="btn btn-fill next" type="button">Done</button></div>
+          </div>
+        </div>
+
+        </div>
+        <div class="pane" id="pane-promo" role="tabpanel" aria-labelledby="tab-promo" hidden>
+          <div class="info">
+            <span class="step-n">Holiday promo</span><h2>Gift card offers</h2>
+            <table class="itab offers"><thead><tr><th>Buy</th><th>GC</th><th>Passes</th><th>Bonus</th><th>Overall value</th></tr></thead><tbody>
+              <tr><td>$250</td><td>$250</td><td>1</td><td>$75</td><td><strong>$325</strong></td></tr>
+              <tr><td>$450</td><td>$500 <small>+$50</small></td><td>1</td><td>$125</td><td><strong>$575</strong></td></tr>
+              <tr><td>$900</td><td>$1,000 <small>+$100</small></td><td>2</td><td>$250</td><td><strong>$1,150</strong></td></tr>
+              <tr class="itab-sub"><td colspan="5">Combos</td></tr>
+              <tr><td>$700<small>$450 + $250</small></td><td>$750 <small>+$50</small></td><td>2</td><td>$200</td><td><strong>$900</strong></td></tr>
+              <tr><td>$1,150<small>$900 + $250</small></td><td>$1,250 <small>+$100</small></td><td>3</td><td>$325</td><td><strong>$1,475</strong></td></tr>
+              <tr><td>$1,350<small>$900 + $450</small></td><td>$1,500 <small>+$150</small></td><td>3</td><td>$375</td><td><strong>$1,725</strong></td></tr>
+              <tr><td>$1,800<small>$900 + $900</small></td><td>$2,000 <small>+$200</small></td><td>4</td><td>$500</td><td><strong>$2,300</strong></td></tr>
+              <tr><td>$2,250<small>$900 + $900 + $450</small></td><td>$2,500 <small>+$250</small></td><td>5</td><td>$625</td><td><strong>$2,875</strong></td></tr>
+            </tbody></table>
+            <p class="hint">Day Pass value: $75. Bonus = extra card value + Day Passes. Overall value = gift card + Day Passes. Gift cards can pay for memberships and PIFs.</p>
+          </div>
+        </div>
+        <div class="pane" id="pane-obj" role="tabpanel" aria-labelledby="tab-obj" hidden>
+          <div class="info">
+            <span class="step-n">Quick guide</span><h2>Objection handling</h2>
+            <ul class="obj-rules">
+              <li><b>Acknowledge</b> what they said before anything else.</li>
+              <li><b>Ask</b> one question to find the real reason (price, timing, use).</li>
+              <li><b>Adjust</b>: step down a card level, or tie it to what they already spend.</li>
+              <li><b>Let it go</b> after one redirect. Leave them happy and note it for next visit.</li>
+            </ul>
+          </div>
+          <div class="info">
+            <span class="step-n">Close it today</span><h2>Make today the easy yes</h2>
+            <p class="hint">Credit goes to whoever rings it up, so aim to finish the sale while you're with them. Keep it honest: real reasons, no fake deadlines.</p>
+            <div class="obj-say"><span class="lbl">Use today's checkout</span><p>“Since you're already checking out, I can put it toward today. You get the Day Pass right now instead of waiting.”</p></div>
+            <div class="obj-say"><span class="lbl">It's quick now</span><p>“I've already got your numbers pulled up. It takes about a minute to set up while you're here.”</p></div>
+            <div class="obj-say"><span class="lbl">Be honest about your goal</span><p>“Honestly, I'm working toward a holiday sales goal, and I'd love to be the one to set this up for you since I already worked out what fits your visits.”</p></div>
+            <div class="obj-say"><span class="lbl">Ask which, not if</span><p>“Would the $250 or the $450 work better for you? Either way, I'll put it toward today.”</p></div>
+            <div class="obj-say fallback"><span class="lbl">Fallback · Smallest yes</span><p>If they hesitate on bigger cards, offer the $250 on today's total. It's the least they'll spend for a free Day Pass, and it still counts as your sale.</p></div>
+          </div>
+        </div>
+      </section>
+      </div>
+
+      <!-- Results -->
+      <div class="right-col">
+      <section class="results" id="results" aria-live="polite"></section>
+      <section class="results" id="promoResults" hidden aria-label="Membership terms and service prices">
+        <article class="card promo-card">
+          <div class="info">
+            <span class="step-n">Memberships</span><h2>Terms</h2>
+            <table class="itab"><thead><tr><th>Term</th><th>Cost</th><th>Best card</th></tr></thead><tbody>
+              <tr><td>3M PIF</td><td>$300 + $99 setup</td><td>$450</td></tr>
+              <tr><td>6M PIF</td><td>$600 + $99 setup</td><td>$900</td></tr>
+              <tr><td>12M</td><td>$1,200 total, setup waived</td><td>Combo</td></tr>
+            </tbody></table>
+            <p class="hint">Membership includes one 60 min massage or facial a month. 1 credit = 30 min (60 min = 2, 90 min = 3). The $250 card is never pitched toward a membership.</p>
+          </div>
+          <div class="info">
+            <span class="step-n">Menu</span><h2>Service prices</h2>
+            <table class="itab"><thead><tr><th>Service</th><th>Member</th><th>Non-member</th></tr></thead><tbody>
+              <tr><td>60 min massage</td><td>$100</td><td>$180</td></tr>
+              <tr><td>90 min massage</td><td>$150</td><td>$270</td></tr>
+              <tr><td>60 min facial</td><td>$120</td><td>$220</td></tr>
+              <tr><td>HydraFacial Deluxe</td><td>$249</td><td>$299</td></tr>
+              <tr><td>Couples 2 × 60</td><td>$200</td><td>$360</td></tr>
+              <tr><td>Couples 2 × 90</td><td>$300</td><td>$540</td></tr>
+            </tbody></table>
+          </div>
+        </article>
+      </section>
+      <section class="results" id="objResults" hidden aria-label="Common objections">
+        <div class="col-h"><span class="ot">Common objections</span><h3>What they say</h3><p>Tap one for what to say back.</p></div>
+          <div class="obj-list">
+            <details class="obj">
+              <summary><b>“I need to think about it.”</b><small>Usually means they're unsure it's worth it, not that they said no.</small></summary>
+              <div class="obj-body">
+                <div class="obj-say"><span class="lbl">Redirect</span><p>Totally fair. Is it the amount, or not sure you'll use it? Since it goes toward today's total, you'd get the Day Pass right now. And honestly, I'm working on a holiday goal, so I'd love to help you get it set up while you're here.</p></div>
+                <div class="obj-say alt"><span class="lbl">If they still say no</span><p>Offer the smallest yes: “Even the $250 toward today gets you the Day Pass, and you're spending most of that already.” If it's still no, thank them warmly and let it go.</p></div>
+              </div>
+            </details>
+            <details class="obj">
+              <summary><b>“I need to check with my partner.”</b><small>Shared money. Make it easy to say yes later.</small></summary>
+              <div class="obj-body">
+                <div class="obj-say"><span class="lbl">Redirect</span><p>Of course. Want me to jot down the numbers so you can show them? It's $[pay] for $[value] plus [passes].</p></div>
+                <div class="obj-say alt"><span class="lbl">If they still say no</span><p>Couples' visits are a great way to use it, so the $450 or $900 card usually makes the conversation easy.</p></div>
+              </div>
+            </details>
+            <details class="obj">
+              <summary><b>“I'll do it next time.”</b><small>Credit only goes to whoever rings it up, so try once to close it today.</small></summary>
+              <div class="obj-body">
+                <div class="obj-say"><span class="lbl">Redirect</span><p>I get it! The nice thing about doing it now is it goes toward today's visit, so you get the Day Pass today instead of next time. Plus I'm working toward a holiday sales goal, and I'd really love to be the one to help you with it.</p></div>
+                <div class="obj-say alt"><span class="lbl">If they still say no</span><p>Try the smallest yes ($250 toward today). If it's still no, smile, thank them, and leave it there. A guest who leaves happy is more likely to say yes next time.</p></div>
+              </div>
+            </details>
+            <details class="obj">
+              <summary><b>“That's more than I want to spend right now.”</b><small>Price shock. Step down, don't argue.</small></summary>
+              <div class="obj-body">
+                <div class="obj-say"><span class="lbl">Redirect</span><p>Makes sense. The $250 card still gets you the free Day Pass, and it goes toward what you're paying today anyway.</p></div>
+                <div class="obj-say alt"><span class="lbl">If they still say no</span><p>If even that's too much today, no worries. Your total stays the same, and you can grab it anytime before the promo ends.</p></div>
+              </div>
+            </details>
+            <details class="obj">
+              <summary><b>“I'm a member, I don't need a gift card.”</b><small>They see it as a gift for someone else, not a way to pay.</small></summary>
+              <div class="obj-body">
+                <div class="obj-say"><span class="lbl">Redirect</span><p>It's actually a great fit for members. You put it toward your monthly membership, gratuity and upgrades, and you get the bonus value and Day Passes on top. Same money, more value.</p></div>
+                <div class="obj-say alt"><span class="lbl">If they still say no</span><p>If you'd rather keep paying the usual way, that's fine too. Just know the bonus is only during the holidays.</p></div>
+              </div>
+            </details>
+            <details class="obj">
+              <summary><b>“I'm in a hurry.”</b><small>They're leaving. Keep it to one sentence.</small></summary>
+              <div class="obj-body">
+                <div class="obj-say"><span class="lbl">Redirect</span><p>Super quick: you're at $[total] today. If I put $250 on a gift card, you get a free $75 Day Pass. Want me to do that?</p></div>
+                <div class="obj-say alt"><span class="lbl">If they still say no</span><p>No worries at all. I'll note it on your account and we can set it up next visit.</p></div>
+              </div>
+            </details>
+            <details class="obj">
+              <summary><b>“I already finished my holiday shopping.”</b><small>They think it's only a gift.</small></summary>
+              <div class="obj-body">
+                <div class="obj-say"><span class="lbl">Redirect</span><p>Nice! A lot of people are actually buying these for themselves. It covers your own visits and you keep the Day Pass.</p></div>
+                <div class="obj-say alt"><span class="lbl">If they still say no</span><p>If they have someone left on their list: the $450 card works as a $500 gift, and you keep the Day Pass.</p></div>
+              </div>
+            </details>
+            <details class="obj">
+              <summary><b>“What if I don't use it all?”</b><small>Fear of waste.</small></summary>
+              <div class="obj-body">
+                <div class="obj-say"><span class="lbl">Redirect</span><p>Because it covers things you already pay for, like gratuity, upgrades and your membership, most guests use it up within a few visits.</p></div>
+                <div class="obj-say alt"><span class="lbl">If they still say no</span><p>Check our current gift card terms before talking about expiration, so you give accurate info.</p></div>
+              </div>
+            </details>
+            <details class="obj">
+              <summary><b>“Can I just buy the Day Pass?”</b><small>They like the perk.</small></summary>
+              <div class="obj-body">
+                <div class="obj-say"><span class="lbl">Redirect</span><p>The Day Pass is free with the gift card, so you'd get it plus the full card value. It's better than buying it alone.</p></div>
+                <div class="obj-say alt"><span class="lbl">If they still say no</span><p>If they truly only want the pass, ring it up normally and mention the card again next visit.</p></div>
+              </div>
+            </details>
+          </div>
+      </section>
+      </div>
+    </div>
+  </div>
+</main>
+<div class="toast" id="toast">Copied</div>
+
+<script>
+/* ===== Prices: edit here when the menu changes ===== */
+const PASS = 75;
+const MEMBER_YEAR = 1200;
+// Membership terms. The $250 card is never pitched toward a membership.
+const TERMS = [
+  {id:'3',  months:3,  credits:6,  base:399,  name:'3-month PIF',  short:'3M PIF', detail:'$300 + $99 setup'},
+  {id:'6',  months:6,  credits:12, base:699,  name:'6-month PIF',  short:'6M PIF', detail:'$600 + $99 setup'},
+  {id:'12', months:12, credits:24, base:1200, name:'12-month membership', short:'12M', detail:'$1,200, setup waived'},
+];
+// Each plan has a fixed bank of credits (1 credit = 30 min): 3M = 6, 6M = 12, 12M = 24.
+// Credits today's service uses decide how many visits like today the plan holds.
+const CREDIT_VALUE = 50; // member price per 30 min
+function visitCredits(){
+  const sv = SERVICES.find(x => x.id === state.svc);
+  if (!sv || !sv.covered) return MONTHLY_CREDITS;
+  return creditsFor(sv) || MONTHLY_CREDITS; // a PIF bank covers the whole service each visit
+}
+const visitsIn = t => Math.floor(t.credits / visitCredits());
+// 12M gives 2 credits a month: a bigger service (like a 90 min) still happens monthly, with the extra credits paid out of pocket.
+// PIF plans draw every visit from their fixed credit bank, so bigger services mean fewer visits.
+const visitsFor = t => t.months === 12 ? 12 : visitsIn(t);
+function perVisitFor(t){ // out of pocket per visit on this plan (fees, tips, add-ons, any upgrade)
+  const sv = SERVICES.find(x => x.id === state.svc);
+  if (!sv) return 0;
+  const base = state.advanced ? state : simpleState();
+  const cr = sv.covered ? (t.months === 12 ? MONTHLY_CREDITS : creditsFor(sv)) : 0;
+  return checkout({...base, status: base.status === 'non' ? 'member' : base.status, credits: cr, retail: 0, pkg: null}).total;
+}
+function upgradeFor12(){ // out of pocket for credits beyond the 2 a month
+  const sv = SERVICES.find(x => x.id === state.svc);
+  if (!sv || !sv.covered) return 0;
+  return Math.round(sv.price * Math.max(0, creditsFor(sv) - MONTHLY_CREDITS) / creditsFor(sv));
+}
+const termCost = t => t.base + visitsFor(t) * perVisitFor(t);
+function creditsLine(t){
+  const vc = visitCredits();
+  if (t.months === 12) {
+    const sv = SERVICES.find(x => x.id === state.svc), need = sv && sv.covered ? creditsFor(sv) : vc, up = upgradeFor12();
+    return `2 a month (24 a year) · this service uses ${need}` + (up ? ` · <strong class="short">${$(up)} out of pocket each visit</strong>, covered by the card on file` : ' · <strong class="ok">fully covered each month</strong>');
+  }
+  const after = Math.max(0, t.credits - vc);
+  return `${t.credits} in plan · today uses ${vc} · <strong class="ok">${after} left after today</strong> (${after * CREDIT_MIN} min, about ${$(after * CREDIT_VALUE)} in service)`;
+}
+function fitTerm(val, perVisit){ // biggest term (with its visits' extras) this much card value covers
+  let fit = null;
+  for (const t of TERMS) { const cost = termCost(t); if (cost <= val) fit = {term:t, cost, left: val - cost}; }
+  return fit;
+}
+const CREDIT_MIN = 30;      // 1 credit = 30 min of service; a 60 min uses 2, a 90 min uses 3
+const MONTHLY_CREDITS = 2;  // membership: one 60 min massage or facial a month
+const creditsFor = svc => svc.covered ? (svc.dur / CREDIT_MIN) * svc.guests : 0;
+const TIERS = [
+  {pay:250, val:250,  passes:1},
+  {pay:450, val:500,  passes:1},
+  {pay:900, val:1000, passes:2},
+];
+const SERVICES = [
+  {id:'m60', name:'60 min massage', price:100, non:180, guests:1, dur:60, tip:25, covered:true},
+  {id:'m90', name:'90 min massage', price:150, non:270, guests:1, dur:90, tip:35, covered:true},
+  {id:'f60', name:'60 min facial', price:100, non:220, fee:20, guests:1, dur:60, tip:25, covered:true, facial:true},
+  {id:'hyd', name:'HydraFacial Deluxe', price:249, non:299, guests:1, dur:60, tip:25, covered:false, facial:true},
+  {id:'c60', name:'Couples 2 × 60', price:200, non:360, guests:2, dur:60, tip:25, covered:true},
+  {id:'c90', name:'Couples 2 × 90', price:300, non:540, guests:2, dur:90, tip:35, covered:true},
+];
+const ELEVATIONS = [
+  {id:'stones', name:'Hot stones', price:20},
+  {id:'foot', name:'Foot scrub', price:12},
+  {id:'face', name:'Face massage', price:12},
+];
+const ENHANCEMENTS = [
+  {id:'cbd', name:'CBD', price:20},
+  {id:'cup', name:'Cupping', price:25},
+  {id:'vitad', name:'Vita D Glow', price:35},
+];
+const ADDONS = [...ELEVATIONS, ...ENHANCEMENTS];
+const MT_FEE = {mt:{60:12, 90:18}, joseph:{90:24}};
+
+/* ===== Math ===== */
+const $ = n => '$' + Math.round(n).toLocaleString('en-US');
+const passTxt = n => n === 1 ? 'a free Day Pass' : (n === 2 ? 'two free Day Passes' : n + ' free Day Passes');
+const passShort = n => n === 1 ? '1 Day Pass' : n + ' Day Passes';
+
+function checkout(s){
+  const svc = SERVICES.find(x => x.id === s.svc);
+  const mult = svc.guests === 2 && s.both ? 2 : 1;
+  const base = s.status === 'non' && svc.non ? svc.non : svc.price; // non-member menu price where it differs
+  const lines = [];
+  lines.push([svc.name, base]);
+  const feeEach = s.status === 'non' ? 0 : (svc.fee || 0);
+  if (feeEach) lines.push(['Facial fee', feeEach * svc.guests]);
+  let cover = 0;
+  if (svc.covered && s.credits > 0) {
+    const max = creditsFor(svc), n = Math.min(s.credits, max);
+    cover = Math.round(base * n / max); // each credit covers one 30 min share of the service
+    lines.push([n + (n === 1 ? ' credit' : ' credits') + ' applied', -cover, 'cover']);
+  }
+  let addons = 0;
+  const noAddons = !!svc.facial; // elevations, enhancements and MT fees don't apply to facials
+  for (const id of (noAddons ? [] : s.addons)) {
+    const a = ADDONS.find(x => x.id === id);
+    // Couples: one add-on per guest, so each pick is charged by how many guests chose it (1 or 2)
+    const q = svc.guests === 2 && s.addonQty && s.addonQty[id] ? s.addonQty[id] : mult;
+    lines.push([a.name + (q > 1 ? ' × 2' : (svc.guests === 2 ? ' (1 guest)' : '')), a.price * q]);
+    addons += a.price * q;
+  }
+  // Master Therapist fee: set per guest, so a couple can have one, both or neither
+  let mt = 0;
+  const mtPicks = noAddons ? [] : (svc.guests === 2 ? [s.mt, s.mt2] : [s.mt]);
+  mtPicks.forEach((pick, i) => {
+    if (pick === 'none') return;
+    const fee = (MT_FEE[pick] || {})[svc.dur] || 0;
+    if (!fee) return;
+    mt += fee;
+    lines.push([(pick === 'joseph' ? 'Joseph' : 'Master Therapist') + ' fee' + (svc.guests === 2 ? ' (guest ' + (i + 1) + ')' : ''), fee]);
+  });
+  if (!noAddons && s.mtFee) { // Step 3 slider; not for facials. Couples can see two MTs (only one can be Joseph)
+    const two = s.mtDouble && svc.guests === 2;
+    mt += s.mtFee; lines.push([(s.mtFee === 24 ? 'Joseph fee' : 'Master Therapist fee') + (two ? ' (guest 1)' : ''), s.mtFee]);
+    if (two) { const f2 = s.mtFee === 24 ? 18 : s.mtFee; mt += f2; lines.push(['Master Therapist fee (guest 2)', f2]); }
+  }
+  const tip = s.tip * svc.guests;
+  if (tip) lines.push(['Gratuity' + (svc.guests > 1 ? ' (' + $(s.tip) + ' × 2)' : ''), tip]);
+  if (s.retail) lines.push(['Retail', s.retail]);
+  const pkg = PACKAGES.find(x => x.id === s.pkg);
+  const pkgPrice = pkg ? pkg.price : 0;
+  if (pkg) lines.push([pkg.name + ' (future visits)', pkgPrice]);
+  const total = base + feeEach * svc.guests - cover + addons + mt + tip + s.retail + pkgPrice;
+  const perVisitNoRetail = total - s.retail - pkgPrice; // for members: out of pocket each monthly visit
+  return {svc, mult, lines, total, cover, perVisitNoRetail, pkg, preTotal: total - pkgPrice};
+}
+
+function tierView(t, total){
+  return {...t,
+    bonus: t.val - t.pay + t.passes * PASS,
+    extra: Math.max(0, t.pay - total),          // what they spend beyond today
+    left: Math.max(0, t.val - total),           // stays on card after today
+    owe: Math.max(0, total - t.val),            // still pay after card
+    visits: total > 0 ? Math.floor(t.val / total) : 0,
+  };
+}
+
+const STRETCH = {250:50, 450:75, 900:120};
+
+function pickToday(total){
+  const views = TIERS.map(t => tierView(t, total));
+  if (total <= 0) return {views, pick:null, kind:'none'};
+  // highest tier they're at, or within a reasonable stretch of
+  let pick = null;
+  for (const v of views) if (v.extra <= STRETCH[v.pay]) pick = v;
+  if (pick) return {views, pick, kind: pick.extra === 0 ? 'over' : 'cusp'};
+  // far from every level: prepay future visits like today's
+  const v450 = views[1], v250 = views[0];
+  pick = (v450.visits >= 2) ? v450 : v250;
+  return {views, pick, kind:'prepay'};
+}
+
+// Add-on packages to buy at checkout for future visits (service is already done by then)
+// value = 3 of the priciest item in the pack (hot stones $20; Vita D Glow $35)
+const PACKAGES = [
+  {id:'elev', name:'Elevation 3-pack', detail:'hot stones, face massage or foot scrub', price:30, value:60, valueNote:'3 hot stones'},
+  {id:'enh', name:'Enhancement 3-pack', detail:'cupping, Vita D Glow or CBD', price:60, value:105, valueNote:'3 Vita D Glows'},
+  {id:'both', name:'Both 3-packs', detail:'elevations + enhancements', price:90, value:165, valueNote:'3 hot stones + 3 Vita D Glows'},
+];
+function gapIdeas(s, pre, target){
+  return PACKAGES.map(p => ({...p, newTotal: pre + p.price, clears: pre + p.price >= target}));
+}
+
+const COMBOS = [[450],[900],[900,450],[900,900],[900,900,450],[900,900,900]]; // no $250 toward memberships
+// Backup pitches: a smaller card to fall back on if the best pitch feels like too much
+// Members are on 12M ($100/mo, setup waived): show how many months of membership + extras a card covers
+const memberMonths = val => Math.floor(val / (MEMBER_YEAR / 12 + perVisitFor(TERMS[2])));
+const isMember12 = () => state.status === 'member';
+function backupYear(c, y){
+  const idx = y.views.indexOf(y.pick);
+  if (idx <= 0) return null;
+  const v = y.views[idx - 1];
+  return {...v, fit: fitTerm(v.val), months: memberMonths(v.val)};
+}
+function backupToday(c, r){
+  if (!r.pick || r.pick.pay <= 250) return null;
+  const t = tierView(TIERS[TIERS.findIndex(x => x.pay === r.pick.pay) - 1], c.total);
+  return t;
+}
+function backupYearScript(b){
+  if (isMember12() && b.months != null) return `If that's more than you want to do today, ${cardsTxt(b.cards)} ${b.cards.length > 1 ? 'give' : 'gives'} you ${$(b.val)}, which covers about ${b.months === 1 ? 'a month' : b.months + ' months'} of your 12-month membership and gratuity, plus ${passTxt(b.passes)}.`;
+  const f = b.fit;
+  return `If that's more than you want to do today, ${cardsTxt(b.cards)} ${b.cards.length > 1 ? 'give' : 'gives'} you ${$(b.val)}` +
+    (f ? `. That covers a ${f.term.name} and your extras${f.left ? `, with ${$(f.left)} left over` : ''}` : ' toward your membership') +
+    `, plus ${passTxt(b.passes)}.`;
+}
+function backupTodayScript(c, b){
+  if (c.total >= b.pay) return `If that feels like a lot, even a ${$(b.pay)} gift card toward today gets you ${passTxt(b.passes)}${b.left ? ` and ${$(b.left)} on your card for next time` : ''}. You're spending this anyway.`;
+  return `If that feels like a lot, a ${$(b.pay)} gift card covers today${b.left ? ` with ${$(b.left)} left for next time` : ''}, plus ${passTxt(b.passes)}. Just ${$(b.extra)} more than today.`;
+}
+function backupBlock(title, rows, script){
+  return `<div class="backup"><div class="card-h"><span class="lbl">Backup pitch</span><span class="rank">${title}</span></div>
+    <ul class="why">${rows.map(r => `<li><b>${r[0]}</b><span>${r[1]}</span></li>`).join('')}</ul>
+    ${scriptBlock(script)}</div>`;
+}
+function pickYear(c, termId){
+  // Members are on the 12M plan; PIF terms only apply when Renewal / PIF is picked in Step 1
+  const term = TERMS.find(t => t.id === (termId || (state.status === 'renew' ? state.term : '12'))) || TERMS[2];
+  const perVisit = perVisitFor(term);
+  const yearly = termCost(term);
+  const views = COMBOS.map(cards => {
+    const ts = cards.map(p => TIERS.find(t => t.pay === p));
+    const pay = ts.reduce((a,t)=>a+t.pay,0), val = ts.reduce((a,t)=>a+t.val,0), passes = ts.reduce((a,t)=>a+t.passes,0);
+    return {cards, pay, val, passes, left: Math.max(0, val - yearly), short: Math.max(0, yearly - val), bonus: val - pay + passes*PASS};
+  });
+  const pick = views.find(v => v.val >= yearly) || views[views.length-1];
+  return {term, yearly, pick, views, perVisit};
+}
+const cardsTxt = cards => {
+  const words = ['', 'a', 'two', 'three', 'four'];
+  const parts = [900, 450, 250].map(p => {
+    const n = cards.filter(x => x === p).length;
+    return n ? `${words[n] || n} $${p} gift card${n > 1 ? 's' : ''}` : '';
+  }).filter(Boolean);
+  return parts.length > 1 ? parts.slice(0, -1).join(', ') + ' and ' + parts[parts.length - 1] : parts[0];
+};
+const cardsShort = cards => cards.map(x => '$' + x).join(' + ');
+
+/* ===== Scripts ===== */
+function todayScript(c, r){
+  const base = todayScriptCore(c, r);
+  if (!c.pkg || !base) return base;
+  return base + ` That includes the ${c.pkg.name.toLowerCase()} for your next visits, worth up to ${$(c.pkg.value)} for ${$(c.pkg.price)}.`;
+}
+function todayScriptCore(c, r){
+  const p = r.pick, couple = c.svc.guests === 2, you = couple ? 'the two of you are' : "you're";
+  if (r.kind === 'over') {
+    if (p.owe > 0) return `Your total today is ${$(c.total)}. If you buy a ${$(p.pay)} gift card and use it toward today, you get ${passTxt(p.passes)}, and you just pay the other ${$(p.owe)} like normal. Same money you're already spending, plus a ${$(PASS * p.passes)} value.`;
+    return `Your total today is ${$(c.total)}. If you buy a ${$(p.pay)} gift card and pay with it, you get ${$(p.val)} on the card to cover today${p.left ? `, ${$(p.left)} stays on your card for next time,` : ''} and ${passTxt(p.passes)}.${p.pay === c.total ? ' Same price, free pass.' : ''}`;
+  }
+  if (r.kind === 'cusp') return `With everything today ${you} at ${$(c.total)}. For ${$(p.extra)} more, a ${$(p.pay)} gift card gives you ${$(p.val)} to cover today${p.left ? `, with ${$(p.left)} left on your card for next time` : ''}, plus ${passTxt(p.passes)}.`;
+  if (r.kind === 'prepay') {
+    const n = p.visits, more = n - 1; // n visits fit on the card, today included
+    return `Today comes to about ${$(c.total)}. If you come in regularly, a ${$(p.pay)} gift card gives you ${$(p.val)}, which covers today${more > 0 ? ` and your next ${more === 1 ? 'visit' : more + ' visits'} like this one` : ''}${p.val - n*c.total > 0 ? ` with ${$(p.val - n*c.total)} to spare` : ''}, plus ${passTxt(p.passes)}. It's what you'd spend anyway, paid ahead with a bonus.`;
+  }
+  return '';
+}
+function yearScript(c, y, status){
+  const parts = [y.term.months === 12 ? 'your 12-month membership ($100 a month)' : `a ${y.term.name}`];
+  if (c.svc.fee) parts.push('facial fees');
+  if (state.tip) parts.push('gratuity');
+  if (state.addons.length || state.mt !== 'none' || state.mt2 !== 'none') parts.push('add-ons');
+  const what = parts.length > 1 ? parts.slice(0,-1).join(', ') + ' and ' + parts[parts.length-1] : parts[0];
+  const lead = status === 'renew' ? `Since your membership is up for renewal, here's an easy way to pay for it. ` : '';
+  const up = y.term.months === 12 ? upgradeFor12() : 0;
+  return `${lead}Between ${what}${up ? (c.svc.guests === 2 ? `, plus ${$(up)} for the second guest's service each visit` : `, plus the ${$(up)} upgrade on each visit`) : ''}, it comes to about ${$(y.yearly)}. With ${cardsTxt(y.pick.cards)} you'd pay ${$(y.pick.pay)} and get ${$(y.pick.val)}, which covers ${y.pick.short ? 'most of it' : 'all of it'}${y.pick.left ? ` with ${$(y.pick.left)} left over` : ''}, plus ${passTxt(y.pick.passes)}.` + (up ? ` With the card on file, ${c.svc.guests === 2 ? 'that' : 'those upgrades'} ${c.svc.guests === 2 ? 'is' : 'are'} paid up front, so you're not paying out of pocket every visit.` : '');
+}
+
+/* ===== UI ===== */
+const state = {status:'member', svc:null, addons:[], mt:'none', mt2:'none', tip:0, retail:0, both:true, tipTouched:false, pkg:null, view:'250', addonQty:{}, term:'12', comboTerm:null, advanced:false, checkoutOpen:true, mtFee:0, mtDouble:false, combo:{250:0, 450:0, 900:0}, credits:0, creditsTouched:false};
+const check = '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>';
+const esc = s => String(s).replace(/[&<>"]/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[ch]));
+
+function buildPills(){
+  // Quick keys: 1, 2, 3… pick the services in order
+  document.getElementById('svcList').innerHTML = SERVICES.map((s, i) =>
+    `<label class="pill"><input class="sr" type="radio" name="svc" value="${s.id}" ${s.id===state.svc?'checked':''} aria-keyshortcuts="${i + 1}"><span><kbd>${i + 1}</kbd><b>${s.name}</b><em class="svc-price" data-id="${s.id}"></em></span></label>`).join('');
+  const pill = a => `<label class="pill"><input class="sr" type="checkbox" name="addon" value="${a.id}"><span><i>${check}</i>${a.name} <em>${$(a.price)}</em></span></label>`;
+  document.getElementById('elevList').innerHTML = ELEVATIONS.map(pill).join('');
+  document.getElementById('enhList').innerHTML = ENHANCEMENTS.map(pill).join('');
+}
+function syncSegs(){
+  for (const id of ['termSegs','mtSegs','mtSegs2']) {
+    const el = document.getElementById(id);
+    const inputs = [...el.querySelectorAll('input')];
+    el.style.setProperty('--sel', Math.max(0, inputs.findIndex(i => i.checked)));
+  }
+}
+function readForm(){
+  // Step 1 is member vs non-member pricing; a PIF plan makes the member a renewal / PIF guest
+  state.status = document.querySelector('input[name=status]:checked').value;
+  const termIn = document.querySelector('input[name=term]:checked');
+  if (state.status === 'member' && termIn && termIn.value !== '12') state.status = 'renew';
+  const svcIn = document.querySelector('input[name=svc]:checked');
+  state.svc = svcIn ? svcIn.value : null; // nothing picked yet after a reset
+  state.addons = [...document.querySelectorAll('input[name=addon]:checked, input[name=addonS]:checked')].map(i => i.value); // Step 4 tiles (addonS)
+  state.mt = document.querySelector('input[name=mt]:checked').value;
+  state.mt2 = document.querySelector('input[name=mt2]:checked').value;
+  state.term = document.querySelector('input[name=term]:checked').value;
+  state.tip = Math.max(0, parseFloat(document.getElementById('tip').value) || 0);
+  state.retail = Math.max(0, parseFloat(document.getElementById('retail').value) || 0);
+  state.both = document.getElementById('both').checked;
+}
+function syncControls(){
+  // Before a service is picked, controls behave as for a single 60 min guest
+  const svc = SERVICES.find(x => x.id === state.svc) || {guests:1, dur:60, covered:true, tip:25, price:0};
+  const nx2 = document.querySelector('.step[data-step="2"] .next'); if (nx2) nx2.disabled = !state.svc;
+  if (svc.facial) {
+    document.querySelectorAll('input[name=addon], input[name=addonS]').forEach(i => i.checked = false);
+    document.querySelector('input[name=mt][value=none]').checked = true;
+    document.querySelector('input[name=mt2][value=none]').checked = true;
+    state.addons = []; state.mt = 'none'; state.mt2 = 'none';
+  }
+  document.getElementById('bothWrap').hidden = svc.guests !== 2;
+  document.getElementById('termWrap').hidden = state.status === 'non';
+  document.getElementById('creditsWrap').hidden = state.status === 'non';
+  const couple = svc.guests === 2;
+  document.getElementById('mtGuest2').hidden = !couple;
+  document.getElementById('mtWho1').hidden = !couple;
+  if (!couple && state.mt2 !== 'none') { document.querySelector('input[name=mt2][value=none]').checked = true; state.mt2 = 'none'; }
+  // Joseph: 90 min only, and he can only take one guest
+  for (const [name, other] of [['mt', 'mt2'], ['mt2', 'mt']]) {
+    const jo = document.querySelector(`input[name=${name}][value=joseph]`);
+    jo.disabled = svc.dur !== 90 || (couple && state[other] === 'joseph');
+    if (jo.disabled && jo.checked) { document.querySelector(`input[name=${name}][value=none]`).checked = true; state[name] = 'none'; }
+  }
+  document.getElementById('tipHint').textContent = svc.guests === 2
+    ? `Gratuity per guest. Recommended: ${$(svc.tip)} each.`
+    : `Recommended: $25 for 60 min, $35 for 90 min.`;
+  // Tip slider: snaps to the benchmark amounts; anything else is a custom amount
+  const ti = TIP_STOPS.indexOf(state.tip), rng = document.getElementById('tipRange');
+  const isCustom = ti < 0 || tipCustomOpen;
+  if (ti >= 0) rng.value = ti;
+  rng.classList.toggle('off', ti < 0);
+  rng.style.setProperty('--pct', (ti < 0 ? 0 : ti / (TIP_STOPS.length - 1) * 100) + '%');
+  document.getElementById('tipOut').textContent = $(state.tip);
+  document.getElementById('tipPer').textContent = svc.guests === 2 ? 'per guest (× 2)' : 'gratuity';
+  document.getElementById('tipCustomWrap').hidden = !isCustom;
+  document.getElementById('tipCustomBtn').setAttribute('aria-pressed', String(isCustom));
+  document.querySelectorAll('.tip-ticks button[data-i]').forEach(b => b.classList.toggle('on', +b.dataset.i === ti && !tipCustomOpen));
+  // Elevations & enhancements (Step 4): massages only
+  document.querySelectorAll('input[name=addonS]').forEach(i => {
+    i.disabled = !!svc.facial;
+    if (svc.guests !== 2) delete state.addonQty[i.value];
+    const q = svc.guests === 2 && i.checked ? (state.addonQty[i.value] || 1) : 0;
+    if (svc.guests === 2) { if (q) state.addonQty[i.value] = q; else delete state.addonQty[i.value]; }
+    const lab = i.closest('label'), em = lab.querySelector('em[data-price]');
+    lab.dataset.qty = '';
+    lab.classList.toggle('dbl', q > 1); // both guests picked it: deeper clay + ×2 price
+    if (em) em.textContent = q > 1 ? `×2 · $${em.dataset.price * 2}` : `$${em.dataset.price}`;
+  });
+  // Cap at 2 picks total (solo: 2 tiles; couples: one per guest). Unpicked tiles lock once the cap is hit.
+  const picks = svc.guests === 2 ? Object.values(state.addonQty).reduce((a, b) => a + b, 0) : document.querySelectorAll('input[name=addonS]:checked').length;
+  document.querySelectorAll('input[name=addonS]').forEach(i => { if (!i.checked) i.disabled = !!svc.facial || picks >= 2; });
+  document.getElementById('addonHint').textContent = svc.facial ? "Elevations and enhancements don't apply to facials." : svc.guests === 2 ? 'One per guest (2 total). Tap a tile twice if both guests want the same one.' : 'Pick up to 2. Massages only.';
+  // Master Therapist slider (Step 3)
+  const MT_STOPS = [0, 12, 18], MT_DESC = ['No Master Therapist', '60 min with a Master Therapist', '90 min with a Master Therapist'];
+  // Only the fee that matches the service length can be picked: 60 min → $12, 90 min → $18 (or Joseph $24)
+  const mtOk = svc.dur === 90 ? [0, 18] : [0, 12];
+  if (!mtOk.includes(state.mtFee)) state.mtFee = state.mtFee ? (svc.dur === 90 ? 18 : 12) : 0;
+  const mi = Math.max(0, MT_STOPS.indexOf(state.mtFee)), mR = document.getElementById('mtRange');
+  mR.value = mi; mR.disabled = !!svc.facial; mR.classList.toggle('off', !!svc.facial);
+  mR.style.setProperty('--pct', (mi / 2 * 100) + '%');
+  const two = state.mtDouble && svc.guests === 2 && state.mtFee > 0;
+  const mtTotal = state.mtFee + (two ? (state.mtFee === 24 ? 18 : state.mtFee) : 0);
+  document.getElementById('mtOut').textContent = svc.facial ? '$0' : $(mtTotal);
+  const dbl = document.getElementById('mtDoubleBtn');
+  dbl.hidden = svc.guests !== 2; dbl.disabled = !state.mtFee; dbl.setAttribute('aria-pressed', String(two));
+  document.getElementById('mtDesc').textContent = svc.facial ? "Doesn't apply to facials" : two ? (state.mtFee === 24 ? 'Joseph + a Master Therapist' : '2 Master Therapists') : MT_DESC[mi];
+  document.querySelectorAll('#mtTicks button').forEach(b => {
+    b.classList.toggle('on', +b.dataset.m === mi);
+    b.disabled = !!svc.facial || !mtOk.includes(MT_STOPS[+b.dataset.m]);
+  });
+  // Credits slider (Step 1): 1–6 credits, or non-member pricing
+  // A service can only take as many credits as its length (60 min = 2, 90 min = 3…); HydraFacial takes none
+  const maxC = !state.svc ? 6 : (svc.covered ? creditsFor(svc) : 0);
+  if (state.credits > maxC) state.credits = maxC;
+  const non = state.status === 'non', cr = Math.max(0, Math.min(maxC, state.credits || 0)), crR = document.getElementById('crRange');
+  crR.value = cr; crR.disabled = non; crR.classList.toggle('off', non);
+  crR.style.setProperty('--pct', non ? '0%' : (cr / 6 * 100) + '%');
+  document.getElementById('crOut').textContent = non ? 'Non-member' : cr + (cr === 1 ? ' credit' : ' credits');
+  document.getElementById('crMin').textContent = non ? 'pricing, no credits' : cr === 0 ? 'member pricing, paid today' : (cr * CREDIT_MIN) + ' min' + (svc.covered === false ? " · doesn't apply to this service" : '');
+  document.getElementById('nonBtn').setAttribute('aria-pressed', String(non));
+  document.querySelectorAll('#crTicks button').forEach(b => { b.classList.toggle('on', !non && +b.dataset.c === cr); b.disabled = +b.dataset.c > maxC; });
+  crR.dataset.max = maxC;
+  const hint = {non:"Pitch is based on today's checkout.", member:"12M membership: $1,200 a year ($100/mo, setup waived), one 60 min service a month. Our most popular and best value.", renew:"Pitches gift cards as the way to pay for their year."};
+  document.getElementById('statusHint').textContent = hint[state.status];
+  const maxCredits = creditsFor(svc);
+  const shown = Math.min(state.credits, maxCredits); // keep the count when switching to a service credits don't cover
+  document.getElementById('creditsN').textContent = shown;
+  document.getElementById('creditsMin').innerHTML = maxCredits ? `<b>${shown * CREDIT_MIN} min</b> of ${maxCredits * CREDIT_MIN} min covered` : '';
+  document.querySelector('.cnt-btn[data-step="-1"]').disabled = shown <= 0;
+  document.querySelector('.cnt-btn[data-step="1"]').disabled = shown >= maxCredits;
+  document.getElementById('creditsHint').textContent = svc.covered
+    ? `1 credit = 30 min. This service uses ${maxCredits} credit${maxCredits === 1 ? '' : 's'} to cover it fully.`
+    : "Credits don't apply to this service.";
+  document.querySelectorAll('.svc-price').forEach(el => {
+    const sv = SERVICES.find(x => x.id === el.dataset.id);
+    const price = state.status === 'non' && sv.non ? sv.non : sv.price;
+    el.textContent = $(price + (sv.fee && state.status !== 'non' ? sv.fee : 0));
+  });
+  syncSegs();
+}
+
+/* ===== Quick links: jump between the best pitch, each promo level and a custom combo ===== */
+const VIEWS = [['250','$250'],['450','$450'],['900','$900'],['best','Best pitch'],['custom','Custom combo']];
+function quickBar(views){
+  return `<nav class="quick" aria-label="Pitch views">${(views || VIEWS).map(([id, label]) =>
+    `<button type="button" class="qtab" data-view="${id}" aria-pressed="${state.view === id}">${label}</button>`).join('')}</nav>`;
+}
+function yearLine(c, val, pay){
+  if (pay === 250 || state.status === 'non' || !c.svc.covered) return null; // never pitch $250 toward a membership
+  const fit = fitTerm(val);
+  return {fit, perVisit: isMember12() ? perVisitFor(TERMS[2]) : (fit ? perVisitFor(fit.term) : 0), months: isMember12() ? memberMonths(val) : null};
+}
+const fitText = (y) => y.months != null ? `About ${y.months} month${y.months === 1 ? '' : 's'} of their 12M (${$(MEMBER_YEAR / 12)}/mo + ${$(y.perVisit)}/visit)` : y.fit ? `Covers a ${y.fit.term.short} (${y.fit.term.detail}) + ${$(y.perVisit)}/visit extras${y.fit.left ? `, ${$(y.fit.left)} left` : ''}` : 'Not enough for a PIF';
+function tierCard(c, pay, todayOnly){
+  const t = tierView(TIERS.find(x => x.pay === pay), c.total);
+  const kind = c.total >= t.pay ? 'over' : (t.visits >= 2 ? 'prepay' : 'cusp');
+  const y = todayOnly ? null : yearLine(c, t.val, t.pay); // todayOnly: just how the promo works with today's checkout
+  const rows = [
+    ['They pay', `${$(t.pay)}${t.owe ? ` + ${$(t.owe)} for the rest of today` : ''}`],
+    ['They get', `${$(t.val)} card + ${passShort(t.passes)}`],
+    ['Vs. today', t.extra ? `${$(t.extra)} more than today's ${$(c.total)}` : `Covered by what they're spending today`],
+    ['Left on card', $(t.left)],
+  ];
+  if (!y) { // whole future visits only: the balance left after today must cover the full next visit
+    const next = c.total > 0 ? Math.floor(t.left / c.total) : 0;
+    const rem = t.left - next * c.total, short = c.total - rem; // what the following visit would still cost them
+    const deficit = c.total > 0 ? ` <strong class="deficit">−${$(short)} out of pocket on ${next ? 'visit ' + (next + 1) + ' after today' : 'the next visit'}</strong>` : '';
+    rows.push(['Next visits covered', (next ? `${next} full visit${next === 1 ? '' : 's'} like today` + (rem ? `, ${$(rem)} extra` : '') : (t.left ? `None in full · ${$(t.left)} toward the next one` : 'Covers today only')) + deficit]);
+  }
+  if (y) rows.push(['Membership', fitText(y)]);
+  rows.push(['Bonus value', `${$(t.bonus)} extra`]);
+  return `<article class="card top">
+    <div class="card-h"><h4>${$(t.pay)} gift card</h4><span class="rank">${$(t.val)} + ${passShort(t.passes)}</span></div>
+    <ul class="why">${rows.map(r => `<li><b>${r[0]}</b><span>${r[1]}</span></li>`).join('')}</ul>
+    ${scriptBlock(y && y.months != null ? `A ${$(t.pay)} gift card gives you ${$(t.val)}, which covers about ${y.months === 1 ? 'a month' : y.months + ' months'} of your 12-month membership and gratuity, plus ${passTxt(t.passes)}. That's ${$(t.bonus)} in extra value.` : y && y.fit ? `A ${$(t.pay)} gift card gives you ${$(t.val)}. That covers a ${y.fit.term.name} (${y.fit.term.detail}) plus your extras${y.fit.left ? `, with ${$(y.fit.left)} left over` : ''}, and you get ${passTxt(t.passes)}. That's ${$(t.bonus)} in extra value.` : todayScript(c, {pick: t, kind}))}
+  </article>`;
+}
+function customCard(c){
+  const cards = [];
+  for (const p of [900, 450, 250]) for (let i = 0; i < state.combo[p]; i++) cards.push(p);
+  const ts = cards.map(p => TIERS.find(t => t.pay === p));
+  const pay = ts.reduce((a,t)=>a+t.pay,0), val = ts.reduce((a,t)=>a+t.val,0), passes = ts.reduce((a,t)=>a+t.passes,0);
+  const bonus = val - pay + passes * PASS, left = Math.max(0, val - c.total), owe = Math.max(0, c.total - val);
+  const y = cards.length && cards.some(p => p !== 250) ? yearLine(c, val, 0) : null;
+  const counters = [250, 450, 900].map(p => `<div class="combo-row"><span><b>${$(p)} card</b><small>${$(TIERS.find(t=>t.pay===p).val)} + ${passShort(TIERS.find(t=>t.pay===p).passes)}</small></span>
+    <div class="counter"><button type="button" class="cnt-btn combo-btn" data-card="${p}" data-step="-1" aria-label="One less ${$(p)} card" ${state.combo[p] ? '' : 'disabled'}><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M5 12h14"/></svg></button>
+    <output>${state.combo[p]}</output>
+    <button type="button" class="cnt-btn combo-btn" data-card="${p}" data-step="1" aria-label="One more ${$(p)} card" ${state.combo[p] >= 4 ? 'disabled' : ''}><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button></div></div>`).join('');
+  let body = '';
+  if (cards.length) {
+    const rows = [
+      ['They pay', $(pay)],
+      ['They get', `${$(val)} on cards + ${passShort(passes)}`],
+      ['Today', owe ? `Covers ${$(val)} of ${$(c.total)}, ${$(owe)} left to pay` : `Covers today's ${$(c.total)}, ${$(left)} left on cards`],
+    ];
+    let plan = null;
+    if (y) {
+      // single-select plan: default to their PIF term, else the biggest plan this combo covers, else 12M
+      const tid = state.comboTerm || (state.status === 'renew' ? state.term : '12'); // members default to their 12M plan
+      const term = TERMS.find(t => t.id === tid);
+      const pv = perVisitFor(term), extras = visitsFor(term) * pv, cost = term.base + extras;
+      plan = {term, extras, cost, left: val - cost};
+      rows.push(['Plan', `${term.short}: ${term.detail}`]);
+      rows.push(['Credits', creditsLine(term)]);
+      rows.push(['Plan + extras', `${$(term.base)} + ${$(pv)}/visit × ${visitsFor(term)} visits = ${$(cost)}`]);
+      rows.push(['Remaining', plan.left >= 0 ? `<strong class="ok">${$(plan.left)} left on cards</strong>` : `<strong class="short">${$(-plan.left)} short</strong>`]);
+    }
+    rows.push(['Bonus value', `${$(bonus)} extra`]);
+    const script = `If you get ${cardsTxt(cards)}, you'd pay ${$(pay)} and get ${$(val)} on cards plus ${passTxt(passes)}. ` +
+      (owe ? `That covers ${$(val)} of today, and you'd pay the other ${$(owe)} like normal.` : `That covers today's ${$(c.total)}${left ? ` and leaves ${$(left)} for your next visits` : ''}.`) +
+      (plan ? (plan.left >= 0 ? ` Put toward a ${plan.term.name} and your extras, you'd still have ${$(plan.left)} left.` : ` Toward a ${plan.term.name} and your extras, it covers all but ${$(-plan.left)}.`) : '') + ` That's ${$(bonus)} in extra value.`;
+    const planTabs = plan ? `<div class="term-tabs" role="group" aria-label="Plan they're on">${TERMS.map(t => `<button type="button" class="ttab ctab" data-cterm="${t.id}" aria-pressed="${t.id === plan.term.id}">${t.short}</button>`).join('')}</div>` : '';
+    body = `${planTabs}<ul class="why">${rows.map(r => `<li><b>${r[0]}</b><span>${r[1]}</span></li>`).join('')}</ul>${scriptBlock(script)}`;
+  } else {
+    body = `<p class="extra-line">Add cards with the + buttons to build a quote.</p>`;
+  }
+  return `<article class="card top">
+    <div class="card-h"><h4>Custom combo</h4><span class="rank">${cards.length ? cardsShort(cards) : 'Build a quote'}</span></div>
+    <div class="combo">${counters}</div>
+    ${body}
+  </article>`;
+}
+
+/* ===== Pitch ladder: the best pitch, then every smaller option, highest value first ===== */
+function pitchLadder(c){
+  const rows = [];
+  if (state.status !== 'non' && c.svc.covered) {
+    const y = pickYear(c);
+    const list = y.views.filter(v => v.val <= y.pick.val).reverse();
+    for (const v of list) {
+      let covers, script;
+      if (!v.short) {
+        covers = `covers ${$(y.yearly)}${v.left ? `, ${$(v.left)} left` : ''}`;
+        script = yearScript(c, {...y, pick: v}, state.status);
+      } else if (isMember12()) {
+        const m = memberMonths(v.val);
+        covers = `about ${m} month${m === 1 ? '' : 's'} of their 12M`;
+        script = `${cardsTxt(v.cards).replace(/^a /, 'A ')} ${v.cards.length > 1 ? 'give' : 'gives'} you ${$(v.val)}, which covers about ${m === 1 ? 'a month' : m + ' months'} of your 12-month membership and gratuity, plus ${passTxt(v.passes)}. That's ${$(v.bonus)} in extra value.`;
+      } else {
+        const f = fitTerm(v.val);
+        covers = f ? `fits a ${f.term.short}${f.left ? `, ${$(f.left)} left` : ''}` : `${$(v.short)} short of the ${y.term.short}`;
+        script = `${cardsTxt(v.cards).replace(/^a /, 'A ')} ${v.cards.length > 1 ? 'give' : 'gives'} you ${$(v.val)}` + (f ? `, enough for a ${f.term.name} and your extras${f.left ? ` with ${$(f.left)} left over` : ''}` : ` toward your ${y.term.name}`) + `, plus ${passTxt(v.passes)}. That's ${$(v.bonus)} in extra value.`;
+      }
+      rows.push({title: cardsShort(v.cards), line: `Pay ${$(v.pay)} → Get ${$(v.val)} + ${passShort(v.passes)} · ${covers}`, script, best: v === y.pick});
+    }
+  } else {
+    const r = pickToday(c.total);
+    if (!r.pick) return rows;
+    for (const t of [...TIERS].reverse().filter(t => t.pay <= r.pick.pay)) {
+      const tv = tierView(t, c.total);
+      const kind = c.total >= tv.pay ? 'over' : (tv.visits >= 2 && r.kind === 'prepay' ? 'prepay' : 'cusp');
+      rows.push({title: $(t.pay) + ' card', line: `Pay ${$(tv.pay)} → Get ${$(tv.val)} + ${passShort(tv.passes)} · ${tv.extra ? `${$(tv.extra)} more than today` : 'no extra spend'}`, script: todayScript(c, {pick: tv, kind}), best: t.pay === r.pick.pay});
+    }
+  }
+  return rows;
+}
+function ladderCard(c){
+  const rows = pitchLadder(c);
+  if (rows.length < 2) return '';
+  return `<article class="card"><div class="card-h"><h4>All pitch options</h4><span class="rank">Highest value first</span></div>
+    <p class="extra-line">Tap one to see its script. Start at the top and step down if it's too much.</p>
+    <div class="obj-list">${rows.map((r, i) => `<details class="obj ladder${r.best ? ' best' : ''}">
+      <summary><b>${i + 1}. ${r.title}${r.best ? ' <span class="best-tag">Best pitch</span>' : ''}</b><small>${r.line}</small></summary>
+      <div class="obj-body">${scriptBlock(r.script, true)}</div></details>`).join('')}</div></article>`;
+}
+
+// When credits don't cover the whole service, the guest pays the rest every visit: a strong gift card angle
+function oopNote(c){
+  if (state.status === 'non' || !c.svc.covered || !state.credits) return ''; // only after credits are selected
+  const gap = Math.max(0, c.svc.price - c.cover);
+  if (!gap) return '';
+  // Tie today's out-of-pocket to the yearly number in the pitch so the math reads clearly
+  const today = c.total - (state.retail || 0);
+  const others = today - gap;
+  const y = pickYear(c);
+  const monthly = y.term.months === 12 ? MEMBER_YEAR / 12 + y.perVisit : null;
+  return `<p class="oop"><b>${$(today)} out of pocket today</b>: ${$(gap)} beyond their credits${others ? ` + ${$(others)} gratuity${c.svc.fee ? ' & fee' : ''}` : ''}.` +
+    (monthly ? ` A typical month for them is ${$(MEMBER_YEAR / 12)} membership + ${$(y.perVisit)} at the visit = ${$(monthly)}, or about ${$(y.yearly)} a year. That yearly total is what the cards above cover.` : '') + `</p>`;
+}
+
+// Simple mode ignores the advanced inputs: members' service is covered by credits, no add-ons, MT or retail
+const simpleState = () => { const sv = SERVICES.find(x => x.id === state.svc); return {...state, mt:'none', mt2:'none', retail:0, pkg:null, credits: state.status === 'non' || !sv ? 0 : Math.min(state.credits, creditsFor(sv))}; }; // members' credits come from the counter in Step 1
+function renderSimple(){
+  const ss = simpleState();
+  const c = checkout(ss);
+  const out = [];
+  out.push(`<div class="card checkout"><div class="col-h"><span class="ot">Today's checkout</span><h3><span class="num">${$(c.total)}</span></h3><p>${esc(c.svc.name)}${state.status === 'member' ? ' · 12M member' : state.status === 'renew' ? ' · ' + TERMS.find(t => t.id === state.term).short + ' renewal' : ''}</p></div><ul class="lines">
+    ${c.lines.map(l => `<li class="${l[2]||''}"><span>${esc(l[0])}</span><span>${l[1] < 0 ? '−' + $(-l[1]) : $(l[1])}</span></li>`).join('')}
+    <li class="total"><span>Total today</span><span>${$(c.total)}</span></li></ul></div>`);
+  // Quick toggles: each standard promo against today's checkout, plus the overall best pitch
+  const best = state.status === 'non' ? 'Best pitch' : 'Best pitch · 12M';
+  out.push(quickBar([['250','$250'],['450','$450'],['900','$900'],['best', best]]));
+  if (['250','450','900'].includes(state.view)) {
+    out.push(tierCard(c, +state.view, true));
+    document.getElementById('results').innerHTML = out.join('');
+    return;
+  }
+  let title, payGet, script, backup = '';
+  if (state.status !== 'non' && c.svc.covered) {
+    const y = pickYear(c), b = backupYear(c, y);
+    title = `${cardsShort(y.pick.cards)} for a ${y.term.short}`;
+    payGet = `Pay ${$(y.pick.pay)} → Get ${$(y.pick.val)} + ${passShort(y.pick.passes)} <span>covers ${$(y.yearly)}${y.pick.left ? `, ${$(y.pick.left)} left` : ''}</span>`;
+    script = yearScript(c, y, state.status);
+    if (b) backup = backupYearScript(b);
+  } else {
+    const r = pickToday(c.total), p = r.pick;
+    if (!p) { document.getElementById('results').innerHTML = out.join(''); return; }
+    title = `${$(p.pay)} gift card`;
+    payGet = `Pay ${$(p.pay)} → Get ${$(p.val)} + ${passShort(p.passes)} <span>${p.extra ? `${$(p.extra)} more than today` : 'no extra spend'}</span>`;
+    script = todayScript(c, r);
+    const bt = backupToday(c, r);
+    if (bt) backup = backupTodayScript(c, bt);
+  }
+  out.push(`<article class="card top quick-pitch">
+    <div class="card-h"><h4>${title}</h4><span class="rank">Pitch this</span></div>
+    <div class="pay-get">${payGet}</div>
+    ${oopNote(c)}
+    ${scriptBlock(script)}
+    ${backup ? `<p class="if-no"><b>If no</b>${esc(backup)}</p>` : ''}
+  </article>`);
+  // All pitch options list removed at the user's request
+  document.getElementById('results').innerHTML = out.join('');
+}
+
+function render(){
+  if (!state.svc) {
+    document.getElementById('results').innerHTML = `<div class="card checkout"><div class="col-h"><span class="ot">Today's checkout</span><h3><span class="num">$0</span></h3><p>Pick a service to build the checkout and pitch.</p></div></div>`;
+    return;
+  }
+  if (!state.advanced) { renderSimple(); return; }
+  const c = checkout(state);
+  const r = pickToday(c.total);
+  const out = [];
+  const couple = c.svc.guests === 2;
+
+
+  out.push(`<div class="card checkout"><div class="col-h"><span class="ot">Today's checkout</span><h3><span class="num">${$(c.total)}</span></h3><p>${esc(c.svc.name)}${state.status === 'member' ? ' · 12M member' : state.status === 'renew' ? ' · ' + TERMS.find(t => t.id === state.term).short + ' renewal' : ''}${couple ? ' · 2 guests' : ''}</p></div><ul class="lines">
+    ${c.lines.map(l => `<li class="${l[2]||''}"><span>${esc(l[0])}</span><span>${l[1] < 0 ? '−' + $(-l[1]) : $(l[1])}</span></li>`).join('')}
+    <li class="total"><span>Total today</span><span>${$(c.total)}</span></li></ul></div>`);
+
+  if (oopNote(c)) out.push(`<article class="card">${oopNote(c)}</article>`);
+  out.push(quickBar());
+  if (state.view !== 'best') {
+    out.push(state.view === 'custom' ? customCard(c) : tierCard(c, +state.view));
+    document.getElementById('results').innerHTML = out.join('');
+    return;
+  }
+
+  const yearFirst = state.status !== 'non' && c.svc.covered;
+  let yearCard = '';
+  if (state.status !== 'non') {
+    if (c.svc.covered) {
+      const y = pickYear(c);
+      const yS = yearScript(c, y, state.status);
+      yearCard = `<article class="card ${yearFirst ? 'top' : ''}">
+        <div class="card-h"><h4>${cardsShort(y.pick.cards)} for a ${y.term.short}</h4><span class="rank">${yearFirst ? 'Best pitch' : 'Membership pitch'}</span></div>
+        ${state.status === 'renew' ? `<div class="term-tabs" role="group" aria-label="Membership term">${TERMS.map(t => `<button type="button" class="ttab" data-term="${t.id}" aria-pressed="${t.id === y.term.id}">${t.short}</button>`).join('')}</div>` : ''}
+        <ul class="why">
+          <li><b>Credits</b><span>${creditsLine(y.term)}</span></li>
+          <li><b>Their term</b><span>${y.term.detail} + ${$(y.perVisit)}/visit × ${visitsFor(y.term)} visit${visitsFor(y.term) === 1 ? '' : 's'} = <strong>${$(y.yearly)}</strong></span></li>
+          <li><b>They pay</b><span>${$(y.pick.pay)}</span></li>
+          <li><b>They get</b><span>${$(y.pick.val)} on cards + ${passShort(y.pick.passes)}</span></li>
+          <li><b>Result</b><span>${y.pick.short ? `Covers all but ${$(y.pick.short)}` : `All covered, ${$(y.pick.left)} left over`}</span></li>
+          <li><b>Bonus value</b><span>${$(y.pick.bonus)} extra</span></li>
+        </ul>
+        ${scriptBlock(yS)}
+        ${(() => { const b = backupYear(c, y); return b ? backupBlock(`${cardsShort(b.cards)}`, [['They pay', $(b.pay)], ['They get', `${$(b.val)} card + ${passShort(b.passes)}`], ['Covers', isMember12() ? `about ${b.months} month${b.months === 1 ? '' : 's'} of their 12M` : b.fit ? `${b.fit.term.short} + extras${b.fit.left ? `, ${$(b.fit.left)} left` : ''}` : 'Part of their membership'], ['Bonus value', `${$(b.bonus)} extra`]], backupYearScript(b)) : ''; })()}
+      </article>`;
+    } else {
+      yearCard = `<article class="card"><p class="extra-line">This service isn't covered by the membership, so the pitch below is based on today's checkout. Switch the service to their usual monthly one to see the yearly pitch.</p></article>`;
+    }
+  }
+  if (yearFirst) { out.push(yearCard); }
+
+  const hideToday = yearFirst && r.kind === 'prepay';
+  if (r.pick && !hideToday) {
+    const p = r.pick;
+    const tags = [];
+    if (r.kind === 'over') tags.push(`<span class="tag good">No extra spend</span>`);
+    if (r.kind === 'cusp') tags.push(`<span class="tag warn">${$(p.extra)} away</span>`);
+    if (r.kind === 'prepay') tags.push(`<span class="tag">Covers ${p.visits} visit${p.visits===1?'':'s'} like today</span>`);
+    const title = r.kind === 'prepay' ? `${$(p.pay)} card for upcoming visits` : `${$(p.pay)} gift card`;
+    out.push(`<article class="card ${yearFirst ? '' : 'top'}">
+      <div class="card-h"><h4>${title}</h4><span class="rank">${yearFirst ? "Today's checkout" : 'Best pitch'}</span></div>
+      <div class="tags">${tags.join('')}</div>
+      <ul class="why">
+        <li><b>They pay</b><span>${$(p.pay)}${p.owe ? ` + ${$(p.owe)} for the rest of today` : ''}</span></li>
+        <li><b>They get</b><span>${$(p.val)} card + ${passShort(p.passes)}</span></li>
+        ${r.kind !== 'prepay' ? `<li><b>Left on card</b><span>${p.left ? $(p.left) : '$0'}</span></li>` : ''}
+        <li><b>Bonus value</b><span>${$(p.bonus)} extra</span></li>
+      </ul>
+      ${scriptBlock(todayScript(c, r))}
+      ${(() => { const b = backupToday(c, r); return b ? backupBlock(`${$(b.pay)} card`, [['They pay', `${$(b.pay)}${b.owe ? ` + ${$(b.owe)} for the rest of today` : ''}`], ['They get', `${$(b.val)} card + ${passShort(b.passes)}`], ['Bonus value', `${$(b.bonus)} extra`]], backupTodayScript(c, b)) : ''; })()}
+      ${p.pay === 250 && r.kind !== 'prepay' && state.tip > 0 ? `<p class="extra-line"><b>Heads up:</b> bring this up before they choose the gratuity, so the total doesn't feel like it changed on them.</p>` : ''}
+    </article>`);
+
+  }
+
+  // package upsell: the service is done, so offer packs for future visits
+  {
+    const pre = c.preTotal, rPre = pickToday(pre);
+    const nextTier = TIERS.find(t => t.pay > pre && t.pay - pre <= 90 && (rPre.kind !== 'over' || !rPre.pick || t.pay > rPre.pick.pay));
+    if (nextTier || state.pkg) {
+      const target = nextTier ? nextTier.pay : (TIERS.find(t => t.pay > pre) || {}).pay;
+      const ideas = gapIdeas(state, pre, target || Infinity);
+      out.push(`<article class="card">
+        <div class="card-h"><h4>${target ? 'Get them to ' + $(target) : 'Add a package'}</h4><span class="rank">${target ? $(Math.max(0, target - pre)) + ' to go' : ''}</span></div>
+        <p class="extra-line">Their service is done, so offer a package for future visits. Tap one to add it to today's total.</p>
+        <div class="gap-list">${ideas.map(i => `<button type="button" class="gap-item${state.pkg === i.id ? ' on' : ''}" data-pkg="${i.id}" aria-pressed="${state.pkg === i.id}">
+          <b>+ ${esc(i.name)} (${$(i.price)})<small>${esc(i.detail)}</small><small class="val">Worth up to ${$(i.value)} (${esc(i.valueNote)}), so they save up to ${$(i.value - i.price)}</small></b>
+          <span class="${i.clears ? '' : 'short'}">${$(i.newTotal)}${i.clears ? '' : '<small>not quite</small>'}</span></button>`).join('')}</div>
+      </article>`);
+    }
+  }
+
+  // (ladder removed)
+  if (!yearFirst && yearCard) out.push(yearCard);
+
+  // all three levels side by side
+  const pickPay = r.pick ? r.pick.pay : 0;
+  out.push(`<details class="card"><summary>Compare all three promo levels</summary>
+    <div class="tiers">${r.views.map(v => `<div class="tier ${v.pay === pickPay && !yearFirst ? 'pick' : ''}">
+      <h5>Buy ${$(v.pay)}</h5><span class="t-sub">${$(v.val)} card + ${passShort(v.passes)}</span>
+      <dl><dt>Extra vs. today</dt><dd>${v.extra ? '+' + $(v.extra) : '$0'}</dd>
+      <dt>Left on card</dt><dd>${$(v.left)}</dd>
+      <dt>Visits like today</dt><dd>${v.visits}</dd>
+      <dt>Bonus value</dt><dd>${$(v.bonus)}</dd></dl></div>`).join('')}</div>
+  </details>`);
+
+  document.getElementById('results').innerHTML = out.join('');
+}
+function scriptBlock(text, noCopy){
+  noCopy = true; // Copy buttons removed everywhere at the user's request
+  if (noCopy) return `<div class="script-row"><span class="lbl">Say this</span></div><p class="script">“${esc(text)}”</p>`;
+  return `<div class="script-row"><span class="lbl">Say this</span><button class="copy" type="button" data-copy="${esc(text)}"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>Copy</button></div><p class="script">“${esc(text)}”</p>`;
+}
+
+function update(){ readForm(); syncControls(); render(); if (typeof renderSteps === 'function') renderSteps(); }
+
+buildPills();
+document.querySelector('.panel').addEventListener('change', e => {
+  if (e.target.name === 'status' && !state.creditsTouched) state.credits = 0; // credits start at 0 until picked
+  if (e.target.name === 'svc' && !state.tipTouched) {
+    const svc = SERVICES.find(x => x.id === e.target.value);
+    document.getElementById('tip').value = svc.tip;
+  }
+  update();
+});
+document.querySelector('.panel').addEventListener('input', e => {
+  if (e.target.id === 'tip') state.tipTouched = true;
+  if (e.target.type === 'number') update();
+});
+document.getElementById('credits').addEventListener('click', e => {
+  const b = e.target.closest('.cnt-btn'); if (!b || b.disabled) return;
+  const shown = +document.getElementById('creditsN').textContent;
+  state.credits = Math.max(0, shown + +b.dataset.step); state.creditsTouched = true; update();
+});
+document.getElementById('mtDoubleBtn').addEventListener('click', () => { state.mtDouble = !state.mtDouble; update(); });
+function setMt(i){
+  const stops = [0, 12, 18], sv = SERVICES.find(x => x.id === state.svc) || {dur: 60};
+  const ok = sv.dur === 90 ? [0, 2] : [0, 1];
+  // snap a drag onto the nearest allowed stop for this service length
+  const j = ok.reduce((best, k) => Math.abs(k - i) <= Math.abs(best - i) ? k : best, ok[0]);
+  state.mtFee = stops[j]; update();
+}
+document.getElementById('mtRange').addEventListener('input', e => { e.stopPropagation(); setMt(+e.target.value); });
+document.getElementById('mtRange').addEventListener('change', e => e.stopPropagation());
+document.querySelectorAll('#mtTicks button').forEach(b => b.addEventListener('click', () => setMt(+b.dataset.m)));
+function setCredits(n){
+  document.querySelector('input[name=status][value=member]').checked = true;
+  const mx = +(document.getElementById('crRange').dataset.max || 6);
+  state.credits = Math.min(n, mx); // snap back to the most this service can use
+  state.creditsTouched = true; update(); goStep(2);
+}
+document.getElementById('crRange').addEventListener('input', e => { e.stopPropagation(); setCredits(+e.target.value); });
+document.getElementById('crRange').addEventListener('change', e => e.stopPropagation());
+document.querySelectorAll('#crTicks button').forEach(b => b.addEventListener('click', () => setCredits(+b.dataset.c)));
+document.getElementById('nonBtn').addEventListener('click', () => {
+  const toNon = state.status !== 'non';
+  document.querySelector(`input[name=status][value=${toNon ? 'non' : 'member'}]`).checked = true;
+  update(); goStep(2);
+});
+const TIP_STOPS = [0, 15, 25, 35, 45, 50];
+let tipCustomOpen = false;
+function setTipStop(i){ tipCustomOpen = false; document.getElementById('tip').value = TIP_STOPS[i]; state.tipTouched = true; update(); }
+document.getElementById('tipRange').addEventListener('input', e => { e.stopPropagation(); setTipStop(+e.target.value); });
+document.getElementById('tipRange').addEventListener('change', e => e.stopPropagation());
+document.querySelectorAll('.tip-ticks button[data-i]').forEach(b => b.addEventListener('click', () => setTipStop(+b.dataset.i)));
+document.getElementById('tipCustomBtn').addEventListener('click', () => {
+  tipCustomOpen = !tipCustomOpen; update();
+  if (tipCustomOpen) { const t = document.getElementById('tip'); t.focus(); t.select(); }
+});
+document.querySelectorAll('.chip-btn[data-tip]').forEach(b => b.addEventListener('click', () => {
+  document.getElementById('tip').value = b.dataset.tip; state.tipTouched = true; update(); goStep(5);
+}));
+document.getElementById('reset').addEventListener('click', () => {
+  document.querySelector('input[name=status][value=member]').checked = true;
+  document.querySelectorAll('input[name=svc]').forEach(i => i.checked = false);
+  document.querySelectorAll('input[name=addon], input[name=addonS]').forEach(i => i.checked = false);
+  document.querySelector('input[name=mt][value=none]').checked = true;
+  document.querySelector('input[name=mt2][value=none]').checked = true;
+  document.querySelector('input[name=term][value="12"]').checked = true;
+  document.getElementById('tip').value = 0; document.getElementById('retail').value = 0;
+  document.getElementById('both').checked = true; state.tipTouched = false; // $0 until a service is picked, then the recommended tip fills in (same as first load)
+  state.pkg = null; state.credits = 0; state.creditsTouched = false; state.checkoutOpen = true; state.addonQty = {}; state.mtFee = 0; state.mtDouble = false; tipCustomOpen = false;
+  state.view = '250'; state.combo = {250:0, 450:0, 900:0}; state.term = '12'; state.comboTerm = null;
+  reached = 1; openStep = 1;
+  update();
+  const panel = document.querySelector('.folder > .panel'); if (panel.scrollTo) panel.scrollTo({top:0, behavior:'smooth'});
+  window.scrollTo({top:0, behavior:'smooth'});
+});
+document.getElementById('results').addEventListener('click', async e => {
+  const ct = e.target.closest('.ctab');
+  if (ct) { state.comboTerm = ct.dataset.cterm; render(); return; }
+  const tt = e.target.closest('.ttab');
+  if (tt) { document.querySelector(`input[name=term][value="${tt.dataset.term}"]`).checked = true; update(); return; }
+  const q = e.target.closest('.qtab');
+  if (q) { state.view = q.dataset.view; render(); return; }
+  const cb = e.target.closest('.combo-btn');
+  if (cb && !cb.disabled) { const k = cb.dataset.card; state.combo[k] = Math.max(0, Math.min(4, state.combo[k] + +cb.dataset.step)); render(); return; }
+  const g = e.target.closest('.gap-item[data-pkg]');
+  if (g) { state.pkg = state.pkg === g.dataset.pkg ? null : g.dataset.pkg; render(); return; }
+  const b = e.target.closest('.copy'); if (!b) return;
+  const t = document.getElementById('toast');
+  try { await navigator.clipboard.writeText(b.dataset.copy); t.textContent = 'Copied'; }
+  catch { t.textContent = "Couldn't copy here"; }
+  t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 1400);
+});
+function tick(){
+  const d = new Date();
+  document.getElementById('tNow').textContent = d.toLocaleTimeString([], {hour:'numeric', minute:'2-digit'});
+  document.getElementById('dNow').textContent = d.toLocaleDateString([], {weekday:'long', month:'long', day:'numeric'});
+}
+
+/* ===== Simple / Advanced mode ===== */
+function applyMode(){
+  document.body.classList.toggle('simple', !state.advanced);
+  // Simple mode shows Guest, Service, Tip as steps 1–3
+  const tipN = document.querySelector('.step[data-step="4"] .step-n');
+  if (tipN) tipN.textContent = 'Step 4';
+  document.querySelector('.step-addons').hidden = state.advanced;
+  document.querySelector('.step-mt').hidden = state.advanced;
+}
+// The tool runs in the streamlined mode only (the Advanced switch was removed)
+state.advanced = false;
+applyMode();
+
+/* ===== Quick keys for services (ignored while typing in a field) ===== */
+document.addEventListener('keydown', e => {
+  if (e.metaKey || e.ctrlKey || e.altKey) return;
+  const tag = (e.target.tagName || '').toLowerCase();
+  if (tag === 'input' && e.target.type !== 'radio' && e.target.type !== 'checkbox' && e.target.type !== 'range') return;
+  if (tag === 'textarea' || e.target.isContentEditable) return;
+  // , . / set the Master Therapist fee to $0 / $12 / $18
+  const mtKey = {',': 0, '.': 1, '/': 2}[e.key];
+  if (mtKey !== undefined) {
+    if (!document.getElementById('mtRange').disabled) { e.preventDefault(); if (document.getElementById('pane-calc').hidden) document.getElementById('tab-calc').click(); setMt(mtKey); }
+    return;
+  }
+  // Letters A–F toggle Step 2 elevations & enhancements (down the left column, then the right)
+  if (/^[a-f]$/i.test(e.key)) {
+    const box = document.querySelectorAll('input[name=addonS]')[e.key.toUpperCase().charCodeAt(0) - 65];
+    if (box && !box.disabled) { e.preventDefault(); if (document.getElementById('pane-calc').hidden) document.getElementById('tab-calc').click(); box.click(); }
+    return;
+  }
+  const i = parseInt(e.key, 10) - 1; // number row or numpad
+  if (e.key.length !== 1 || isNaN(i) || i < 0 || i >= SERVICES.length) return;
+  if (document.getElementById('pane-calc').hidden) document.getElementById('tab-calc').click();
+  const r = document.querySelector(`input[name=svc][value="${SERVICES[i].id}"]`);
+  if (r) { e.preventDefault(); r.click(); }
+});
+
+// Checkout breakdown stays open unless the user collapses it; remember their choice across updates
+document.getElementById('results').addEventListener('click', e => {
+  const sm = e.target.closest('details.checkout > summary');
+  if (sm) state.checkoutOpen = !sm.parentElement.open;
+});
+
+/* ===== Couples add-ons: one per guest. Tap cycles off → 1 guest → both guests → off, max 2 total ===== */
+document.querySelectorAll('input[name=addonS]').forEach(box => box.addEventListener('click', e => {
+  const sv = SERVICES.find(x => x.id === state.svc);
+  if (!sv || sv.guests !== 2) return; // solo services: normal multi-select
+  e.preventDefault(); e.stopPropagation();
+  const id = box.value, q = state.addonQty[id] || 0;
+  const total = Object.values(state.addonQty).reduce((a, b) => a + b, 0);
+  let next = q === 0 ? (total < 2 ? 1 : 0) : (q === 1 && total < 2 ? 2 : 0);
+  if (q === 0 && total >= 2) return; // both guests already have one
+  if (next) state.addonQty[id] = next; else delete state.addonQty[id];
+  setTimeout(() => { box.checked = !!next; update(); }); // after the browser's own toggle is cancelled
+}));
+
+/* ===== Left column tabs ===== */
+document.querySelectorAll('.tabs .tab').forEach(t => t.addEventListener('click', () => {
+  document.querySelectorAll('.tabs .tab').forEach(x => x.setAttribute('aria-selected', String(x === t)));
+  document.querySelectorAll('.tabs .tab').forEach(x => { document.getElementById(x.getAttribute('aria-controls')).hidden = x !== t; });
+  // Objections tab: the right column swaps the pitch for the common objections list
+  // Promo details and Objections tabs swap the pitch for their own reference content
+  document.getElementById('results').hidden = t.id !== 'tab-calc';
+  document.getElementById('promoResults').hidden = t.id !== 'tab-promo';
+  document.getElementById('objResults').hidden = t.id !== 'tab-obj';
+  document.querySelector('.folder > .panel').scrollTop = 0;
+}));
+
+/* ===== Step flow ===== */
+let openStep = 1, reached = 1;
+const steps = [...document.querySelectorAll('.step[data-step]')];
+function stepSummary(n){
+  const svc = SERVICES.find(x => x.id === state.svc);
+  if (n === 1) return state.status === 'non' ? 'Non-member' : state.credits + (state.credits === 1 ? ' credit' : ' credits');
+  if (n === 2 && !svc) return 'Not picked';
+  if (n === 2) { const cr = Math.min(state.credits, creditsFor(svc)); return svc.name + (cr ? ` · ${cr} credit${cr === 1 ? '' : 's'}` : ''); }
+  if (n === 3) {
+    const parts = state.addons.map(id => ADDONS.find(a => a.id === id).name);
+    const svcNow = SERVICES.find(x => x.id === state.svc), mtName = v => v === 'joseph' ? 'Joseph' : 'Master Therapist';
+    if (svcNow && svcNow.guests === 2) { [state.mt, state.mt2].forEach((v, i) => { if (v !== 'none') parts.push(mtName(v) + ' (G' + (i + 1) + ')'); }); }
+    else if (state.mt !== 'none') parts.push(mtName(state.mt));
+    return parts.length ? parts.join(', ') : 'None';
+  }
+  if (n === 4) return state.tip ? $(state.tip) + (svc && svc.guests === 2 ? ' each' : '') : 'No gratuity';
+  if (n === 5) return state.retail ? $(state.retail) : 'None';
+  return '';
+}
+const isFacial = () => { const sv = SERVICES.find(x => x.id === state.svc); return !!(sv && sv.facial); };
+function renderSteps(){
+  const skip3 = isFacial();
+  if (skip3 && openStep === 3) openStep = 4;
+  steps.forEach(el => {
+    const n = +el.dataset.step;
+    el.classList.toggle('skipped', n === 3 && skip3);
+    el.classList.toggle('open', n === openStep);
+    el.classList.toggle('locked', n > reached);
+    el.classList.toggle('done', n < reached && n !== openStep);
+    const h = el.querySelector('.step-head');
+    h.setAttribute('aria-expanded', String(n === openStep));
+    h.setAttribute('aria-disabled', String(n > reached));
+    el.querySelector('.step-sum').textContent = n === 3 && skip3 ? 'Skipped for facials' : (n <= reached && n !== openStep ? stepSummary(n) : '');
+  });
+}
+function goStep(n){ if (n === 3 && isFacial()) n = 4; reached = Math.max(reached, n); openStep = n > steps.length ? 0 : n; renderSteps(); }
+steps.forEach(el => {
+  const n = +el.dataset.step;
+  el.querySelector('.step-head').addEventListener('click', () => { if (n > reached || el.classList.contains('skipped')) return; openStep = openStep === n ? 0 : n; renderSteps(); });
+  const nx = el.querySelector('.next'); if (nx) nx.addEventListener('click', () => goStep(n + 1));
+});
+// Renewal / PIF asks which term first; the other guest types move straight on
+document.querySelectorAll('input[name=status]').forEach(i => i.addEventListener('click', () => setTimeout(() => goStep(2))));
+document.querySelectorAll('input[name=term]').forEach(i => i.addEventListener('click', () => setTimeout(() => goStep(2))));
+tick(); setInterval(tick, 15000);
+update();
+</script>
+</body>
+</html>
