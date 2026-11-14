@@ -419,14 +419,45 @@ body.simple .step.done .step-n::after{content:''}
 .step-next{display:flex;justify-content:flex-end;padding-top:4px}
 .step-next .btn{min-height:46px;padding:0 28px}
 @media (max-width:520px){.step-sum{display:none}}
+
+
+/* Site menu: hamburger left of the title, links between the HWR tools */
+.nav-left{display:flex;align-items:center;gap:14px}
+.site-menu{position:relative;flex:none}
+.menu-btn{position:relative;display:grid;place-items:center;width:44px;height:44px;padding:0;color:#FBFCF7;cursor:pointer;border:1px solid rgba(251,252,247,.5);background:linear-gradient(180deg,rgba(255,255,255,.26) 0%,rgba(255,255,255,.05) 50%,rgba(255,255,255,.1) 100%);-webkit-backdrop-filter:blur(10px) saturate(1.5);backdrop-filter:blur(10px) saturate(1.5);box-shadow:inset 0 1.5px 1px rgba(255,255,255,.5),inset 0 -2px 5px rgba(255,255,255,.08),0 6px 12px -8px rgba(0,0,0,.5);border-radius:999px}
+.menu-btn:hover{filter:brightness(1.22)}
+.menu-btn:focus-visible{outline:3px solid #CD734C;outline-offset:3px}
+.menu-btn .bars{display:grid;gap:4px;width:18px}
+.menu-btn .bars i{display:block;height:2px;border-radius:2px;background:currentColor;transition:transform .2s ease,opacity .2s ease}
+.site-menu.open .bars i:nth-child(1){transform:translateY(6px) rotate(45deg)}
+.site-menu.open .bars i:nth-child(2){opacity:0}
+.site-menu.open .bars i:nth-child(3){transform:translateY(-6px) rotate(-45deg)}
+.site-nav{position:absolute;top:calc(100% + 10px);left:0;z-index:200;width:264px;padding:6px;display:grid;gap:2px;border-radius:18px;background:#FBFCF7;border:1px solid rgba(101,59,44,.14);box-shadow:0 18px 36px -16px rgba(39,39,39,.55);opacity:0;transform:translateY(-4px);pointer-events:none;visibility:hidden;transition:opacity .14s ease,transform .14s ease,visibility 0s linear .14s}
+.site-menu.open .site-nav{opacity:1;transform:none;pointer-events:auto;visibility:visible;transition:opacity .14s ease,transform .14s ease}
+.site-nav a{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:12px;color:#272727;text-decoration:none;font:500 15px/1.25 'Work Sans',system-ui,sans-serif;text-align:left}
+.site-nav a svg{flex:none;color:#CD734C}
+.site-nav a small{display:block;font-size:12.5px;font-weight:400;color:#6B5148;margin-top:1px}
+.site-nav a:hover{background:#F4EFE7}
+.site-nav a[aria-current="page"]{background:#F4EFE7;font-weight:600}
+.site-nav a:focus-visible{outline:3px solid #CD734C;outline-offset:1px}
 </style>
 </head>
 <body>
 <header>
   <div class="wrap nav">
-    <div>
-      <h1>Gift Card Pitch</h1>
-      <p class="sub-title">Holiday promo · Heights Wellness Retreat</p>
+    <div class="nav-left">
+      <div class="site-menu" id="siteMenu">
+        <button class="menu-btn" id="menuBtn" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="siteNav"><span class="bars" aria-hidden="true"><i></i><i></i><i></i></span></button>
+        <nav class="site-nav" id="siteNav" aria-label="HWR tools">
+          <a data-path="/" href="/"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5M9 2h6"/></svg><span>Technology Timers<small>Session timers</small></span></a>
+          <a data-path="/therapist-match/" href="/therapist-match/"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0M16 4.5a3.5 3.5 0 0 1 0 7M21.5 20a6.5 6.5 0 0 0-4-6"/></svg><span>Therapist Match<small>Pair guests with therapists</small></span></a>
+          <a data-path="/gift-card-pitch/" href="/gift-card-pitch/" aria-current="page"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="13" rx="2"/><path d="M3 12h18M12 8v13M12 8c-1.5-3-6-3.5-6-1s4 1 6 1c2 0 6 1.5 6-1s-4.5-2-6 1"/></svg><span>Gift Card Pitch<small>Holiday promo calculator</small></span></a>
+        </nav>
+      </div>
+      <div>
+        <h1>Gift Card Pitch</h1>
+        <p class="sub-title">Holiday promo · Heights Wellness Retreat</p>
+      </div>
     </div>
     <div class="nav-right">
       <div class="nav-btns">
@@ -1623,6 +1654,23 @@ document.querySelectorAll('input[name=status]').forEach(i => i.addEventListener(
 document.querySelectorAll('input[name=term]').forEach(i => i.addEventListener('click', () => setTimeout(() => goStep(2))));
 tick(); setInterval(tick, 15000);
 update();
+
+</script>
+<script>
+// Site menu. On the live site (or a Netlify preview) links stay in the same tab; anywhere else they open the live pages in a new tab.
+(function(){
+  const SITE = 'https://hwr-timers.netlify.app';
+  const onSite = /(^|\.|--)hwr-timers\.netlify\.app$/.test(location.hostname);
+  const menu = document.getElementById('siteMenu'), btn = document.getElementById('menuBtn');
+  if (!menu || !btn) return;
+  menu.querySelectorAll('a[data-path]').forEach(a => {
+    if (!onSite) { a.href = SITE + a.dataset.path; a.target = '_blank'; a.rel = 'noopener'; }
+  });
+  const setOpen = open => { menu.classList.toggle('open', open); btn.setAttribute('aria-expanded', open); btn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu'); };
+  btn.addEventListener('click', e => { e.stopPropagation(); setOpen(!menu.classList.contains('open')); });
+  document.addEventListener('click', e => { if (!menu.contains(e.target)) setOpen(false); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && menu.classList.contains('open')) { e.stopPropagation(); setOpen(false); btn.focus(); } }, true);
+})();
 </script>
 </body>
 </html>
