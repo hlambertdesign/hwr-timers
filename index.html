@@ -315,6 +315,23 @@ header .btn-ghost{color:var(--cream)}
 .site-nav a:hover{background:#F4EFE7}
 .site-nav a[aria-current="page"]{background:#F4EFE7;font-weight:600}
 .site-nav a:focus-visible{outline:3px solid #CD734C;outline-offset:1px}
+
+/* Shared header: identical size, spacing and type on every HWR tool page */
+header .nav{box-sizing:border-box;width:100%;max-width:1800px;min-height:76px;margin:0 auto;padding:16px max(24px,env(safe-area-inset-right,0px)) 16px max(24px,env(safe-area-inset-left,0px));display:flex;flex-wrap:wrap;gap:12px 24px;align-items:center;justify-content:space-between}
+header .nav-left{display:flex;align-items:center;gap:14px}
+header h1{margin:0;font-size:clamp(22px,2.3vw,32px);line-height:1.05;font-weight:600;letter-spacing:.01em}
+header .nav-right{display:flex;flex-wrap:wrap;gap:12px 24px;align-items:center;justify-content:flex-end}
+header .nav-btns{display:flex;align-items:center;gap:10px}
+header .clock{display:flex;flex-direction:column;gap:2px;align-items:flex-end}
+header .clock .time-now{font-size:26px;font-weight:500;line-height:1;font-variant-numeric:tabular-nums}
+header .clock .date-now{font-size:13px;line-height:16px;color:#E9C2A9}
+header .nav-btns .btn-ghost.icon-ghost{width:44px;height:44px;min-height:44px;padding:0}
+header .viewtoggle button{min-height:34px} /* keeps the layout toggle at the shared 44px button height */
+@media (max-width:1000px){
+  header .nav{min-height:64px;padding-top:10px;padding-bottom:10px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));gap:8px 16px}
+  header h1{font-size:clamp(20px,5vw,26px)}
+  header .clock .time-now{font-size:22px}
+}
 </style>
 </head>
 <body>
